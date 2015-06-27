@@ -1,0 +1,41 @@
+{
+  "name": "zpresent-injector",
+  "version": "2.1.0",
+  "description": "Injects Code files into zpresent slides",
+  "license": "MIT",
+  "author": {
+    "name": "Osama Alghanmi",
+    "email": "osamah.net.m@gmail.com",
+    "url": "http://www.itechdom.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itechdom/zpresent.git"
+  },
+  "scripts": {
+    "test": "jshint index.js; mocha test/test.js"
+  },
+  "main": [
+    "index.js"
+  ],
+  "keywords": [
+    "gulp",
+    "gulpplugin",
+    "markdown",
+    "yaml",
+    "marked",
+    "frontmatter",
+    "json",
+    "solidus",
+    "zpresent",
+    "documentation"
+  ],
+  "dependencies": {
+    "gulp-util": "^3.0.0",
+    "event-stream": "^3.1.0"
+  },
+  "devDependencies": {
+    "mocha": "~2.0.1",
+    "should": "^4.0.4"
+  }
+}
