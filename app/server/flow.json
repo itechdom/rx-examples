@@ -1,0 +1,7 @@
+[
+{"name":"init"}
+{"name":"router"},
+{"name":"controller"},
+{"name":"store"},
+{"name":"outputter"}
+]
