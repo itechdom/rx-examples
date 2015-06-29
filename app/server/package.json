@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "rx": "^2.5.3"
+    "rx": "^2.5.3",
+    "rx-node": "^1.0.1"
   }
 }

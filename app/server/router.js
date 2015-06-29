@@ -1,32 +1,26 @@
+//this file is used if I wanted to route to different controllers from a central point
+
 Rx = require('rx');
-util = require('util');
-var data = "this is fake data";
-	var observer = Rx.Observer.create(
-			function (stream) {
-				//console.log("hello");
-				//global.myApp.renderer.res.write("\nhello");
-				//global.myApp.renderer.res.end();
+//hello = require('./helloController');
 
-				stream.on('data',function(chunk){
-					data+=chunk;
-				});
+var routes = [{
+	'/': 'helloController'
+}];
 
-				stream.on('end',function(){
-					global.res.write(data);
-					global.res.end();
-				});
-				//console.log(stream);
-				//console.log(res);
-				//console.log('Next: ' + req[0]);
-				//res.end();
+//here can we have an observable that connects a url to a controller?
+module.exports = function(requestStream){
 
-			},
-			function (err) {
-				console.log('Error: ' + err);
-			},
-			function () {
-				console.log('Completed');
-			}
-	);
+	routes.forEach(function(route){
+		controller = require('./helloController');
+		controller(requestStream);
+	});
 
-module.exports = observer;
+	requestStream.subscribe(function(r){
+		console.log(r.url);
+	});
+
+	//urlStream = requestStream.filter(function(req){
+	//	return req.url == '/';
+	//});
+
+};
