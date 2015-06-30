@@ -1,6 +1,9 @@
 //this file is used if I wanted to route to different controllers from a central point
 
 Rx = require('rx');
+RouteParser = require('route-parser');
+var routeMatcher = require("route-matcher").routeMatcher;
+
 //hello = require('./helloController');
 
 var routes = [{
@@ -8,15 +11,11 @@ var routes = [{
 }];
 
 //here can we have an observable that connects a url to a controller?
-module.exports = function(requestStream){
+module.exports = function(requestStream,route){
 
-	routes.forEach(function(route){
-		controller = require('./helloController');
-		controller(requestStream);
-	});
-
-	requestStream.subscribe(function(r){
-		console.log(r.url);
+	return requestStream.filter(function(req){
+		matcher = routeMatcher(route);
+		return matcher.parse(req.url) != null;
 	});
 
 	//urlStream = requestStream.filter(function(req){

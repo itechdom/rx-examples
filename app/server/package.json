@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "route-matcher": "^0.1.0",
+    "route-parser": "0.0.3",
     "rx": "^2.5.3",
     "rx-node": "^1.0.1"
   }

@@ -39,12 +39,8 @@ server.on('request',function(req,res){
 var source = Rx.Observable.fromEvent(server, 'request');
 
 //or we could register them here?
-aS = source.filter(function(req){
-    return req.url == '/a';
-});
-
-a(aS);
-
+aStream = router(source,'/a');
+a(aStream);
 //router(source);
 
 //the router could register all the controllers to that source
@@ -59,7 +55,6 @@ c(source);
 source.subscribe(function(stream){
     console.log(stream.url+" was requested");
 });
-
 
 //plugin to routes here, or why not make this agnostic and leave it to the dispatcher to do that?
 server.listen(1337, '127.0.0.1');
