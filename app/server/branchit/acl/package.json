@@ -1,0 +1,4 @@
+{
+  "name": "Access control  Module, other modules extend it as a middleware",
+  "main": "acl.js"
+}

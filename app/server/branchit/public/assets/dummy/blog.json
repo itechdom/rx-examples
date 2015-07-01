@@ -1,0 +1,7 @@
+[
+  {
+  "title":"First Commit, Wait! Before you Commit!",
+  "text":"This is my first blog post. I am dedicating this blog post to talking about the tools I use now that I wish I knew before I started development. This post is intented for developers. If you are not, hop on board and get a little confused! \n History:\n I started web development back in 2010. I had no clue where to begin. Thanks to google and many tutorials online, I figured out how to write my first hello world in PHP and running the server successfully. Which is a big deal to anyone setuping his computer for the first time and running into so many errors and red madness. Even with my initial success, I had an urge to know how expereinced developers program in general. I felt that theres an effective way to program. At the time, I was looking at forums, but it was really confusing and scattered all over the place. Then came Stackoverflow (our savior), which helped tremendously in terms of eliminating classical forums and providing a fast and easy way to find common problems programmers run into. Then I found Github, using Git (I knew later on they were two separate things). Github enabled developers to share their code online and provided many tools that help track and manage it easily.",
+  "user":"Rebecca Sable"
+  }
+]

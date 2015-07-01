@@ -1,15 +1,25 @@
 var renderer = require('../renderer.js');
 var fs = require('fs');
+var Rx = require('rx');
 
 module.exports = function(stream){
 
+    //run it through an acl
+    var acl = require('../acl/acl.js');
+
+    s = acl(stream,'a');
+
+
     //start a stream here that will store the data to a file
-    stream.subscribe(function(req){
+    s.subscribe(function(req){
         //store a file locally
         var writeStream = fs.createWriteStream('./controllers/a.json');
         //write the data we get to a file
         req.pipe(writeStream);
         renderer('hello');
+
+    },function(err){
+        renderer('You are unauthorized to access this');
     });
 };
 

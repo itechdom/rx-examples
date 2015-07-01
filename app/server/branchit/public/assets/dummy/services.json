@@ -1,0 +1,23 @@
+[
+  {
+
+  "title":"Web Development",
+  "description":"We know there are lots of web designers to choose from. So here’s why you should choose us: We think before we speak. We look to be original. We stress substance, not bravado. And our designs are simple yet elegant, always keeping the customer in mind.",
+  "icon":"globe"
+  },
+  {
+  "title":"Mobile Development",
+  "description":"Whether you need a sleek website or a mobile app, together we’ll craft an engaging experience. Our company combines a rich background in IT with the ability to transform your ideas into compelling sites and apps.",
+  "icon":"mobile"
+  },
+  {
+  "title":"User Experience (UX)",
+  "description":"Have you ever clicked on a website and been so overwhelmed you just want out?  Ours keep the user’s ease of navigation in mind, marked by a strong and creative sense of design.",
+  "icon":"users"
+  },
+  {
+    "title":"Social Media Strategy",
+    "description":"Nowadays you’ve got to have a strong social media strategy to promote your business. We’ll work collaboratively with you to do just that.",
+    "icon":"facebook"
+  }
+]

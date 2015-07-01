@@ -13,24 +13,15 @@ var a = require('./controllers/a');
 var b = require('./controllers/b');
 var c = require('./controllers/c');
 
+
 //var RxNode = require('rx-node');
 
-function Renderer(req,res){
-    this.res = res;
-}
-
+//handle one side of the request, which is initializing the globals
 server.on('request',function(req,res){
 
     //we are making res global so we can render the response down the pipeline
     global.res = res;
     global.server = server;
-
-    //var renderer= new Renderer(req,res);
-    //
-    //if(!global.myApp) {
-    //    global.myApp = {};
-    //    global.myApp.renderer = renderer;
-    //}
     //dispatcher(source,'router');
 
 });
@@ -39,7 +30,7 @@ server.on('request',function(req,res){
 var source = Rx.Observable.fromEvent(server, 'request');
 
 //or we could register them here?
-aStream = router(source,'/a');
+aStream = router(source,'/auth');
 a(aStream);
 //router(source);
 
