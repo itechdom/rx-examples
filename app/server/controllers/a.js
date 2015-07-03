@@ -7,20 +7,36 @@ module.exports = function(stream){
     //run it through an acl
     var acl = require('../acl/acl.js');
 
-    s = acl(stream,'a');
+    //s = acl(stream,'a');
+    
+    h = acl(stream);
+
+
+   // h = Rx.Observable.when(acl(stream,'a')).catch(function(e){
+	  //renderer('you are unauthorized');
+//	  console.log("hello'");
+//	  return empty
+  //  });
+
 
 
     //start a stream here that will store the data to a file
-    s.subscribe(function(req){
+    h.subscribe(function(req){
         //store a file locally
-        var writeStream = fs.createWriteStream('./controllers/a.json');
+        //var writeStream = fs.createWriteStream('./controllers/a.json');
         //write the data we get to a file
-        req.pipe(writeStream);
+        //req.pipe(writeStream);
+	if(req.value == 404){
+		renderer('not ok');
+	}
+	else{
         renderer('hello');
-
-    },function(err){
-        renderer('You are unauthorized to access this');
+	}
+	
+    },function(e){
+	    renderer('not authorized');
     });
+    
 };
 
 //requestStream.subscribe (
