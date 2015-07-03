@@ -1,12 +1,11 @@
 var renderer = require('../renderer.js');
 
 module.exports = function(stream){
-    stream.filter(function(req){
-        return req.url == '/b';
-    }).subscribe(function(req){
+   stream.subscribe(function(req){
         renderer('hello');
     });
 };
+
 
 //requestStream.subscribe (
 //		function (stream) {

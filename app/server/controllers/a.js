@@ -11,7 +11,6 @@ module.exports = function(stream){
     
     h = acl(stream);
 
-
    // h = Rx.Observable.when(acl(stream,'a')).catch(function(e){
 	  //renderer('you are unauthorized');
 //	  console.log("hello'");
