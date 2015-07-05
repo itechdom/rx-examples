@@ -30,11 +30,11 @@ server.on('request',function(req,res){
 });
 
 //pass the request to router?
+//
 var source = Rx.Observable.fromEvent(server, 'request');
 var requestStream = Rx.Observable.fromEvent(customEvent,'request');
 var responseStream = Rx.Observable.fromEvent(customEvent,'response');
 request.stream = requestStream;
-
 
 //combines both of them at once
 var inputStream = Rx.Observable.combineLatest(requestStream,responseStream,function(req,res){
