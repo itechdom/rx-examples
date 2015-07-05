@@ -1,11 +1,13 @@
 //this file is used if I wanted to route to different controllers from a central point
 Rx = require('rx');
+var debug = require('../debugger.js');
+
 
 module.exports = function(stream,user){
 
 	empty = Rx.Observable.return(404);
 
-	return stream.map(function(req){
+	var outputStream = stream.map(function(req){
 		if(req.url == "/auth"){
 			return empty
 		}
@@ -13,6 +15,12 @@ module.exports = function(stream,user){
 		return req;
 		}
 	});
+
+	outputStream["from"] = "acl";
+
+	debug('acl',stream,outputStream);
+
+	return outputStream;
 
 /*     function testAuth (){
 		stream.map(function(req){

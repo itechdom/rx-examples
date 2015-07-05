@@ -9,9 +9,11 @@ var b = require('./controllers/b');
 var c = require('./controllers/c');
 var EventEmitter = require('events').EventEmitter,
         customEvent = new EventEmitter();
+var util = require('util');
 
 var renderer = require('./renderer.js');
 var request = require('./request.js');
+var debug = require('./debugger.js');
 
 //var RxNode = require('rx-node');
 
@@ -36,10 +38,14 @@ var requestStream = Rx.Observable.fromEvent(customEvent,'request');
 var responseStream = Rx.Observable.fromEvent(customEvent,'response');
 request.stream = requestStream;
 
+
 //combines both of them at once
 var inputStream = Rx.Observable.combineLatest(requestStream,responseStream,function(req,res){
 	return {request:req,response:res};
 });
+
+//add the information of the output here
+source['from'] = 'main';
 
 
 /*inputStream.subscribe(function(res){
@@ -47,12 +53,10 @@ var inputStream = Rx.Observable.combineLatest(requestStream,responseStream,funct
 });
 */
 
-
 //figure out a way to register these routes in the router memory and then look them up and assign to the right observable instead of filtering through every request
 a(router(source,'/a'));
 b(router(source,'/b'));
 c(router(source,'/c'));
-
 
 
 //we attach a debugger here to display the stream as we are going through
@@ -63,6 +67,9 @@ source.subscribe(function(req){
 	renderer("route aint here body");
     }
 });
+
+debug('main',null,source);
+
 
 //plugin to routes here, or why not make this agnostic and leave it to the dispatcher to do that?
 server.listen(3000, '127.0.0.1');

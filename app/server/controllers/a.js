@@ -1,6 +1,7 @@
 var renderer = require('../renderer.js');
 var fs = require('fs');
 var Rx = require('rx');
+var debug = require('../debugger.js');
 
 module.exports = function(stream){
 
@@ -16,7 +17,6 @@ module.exports = function(stream){
 //	  console.log("hello'");
 //	  return empty
   //  });
-
 
 
     //start a stream here that will store the data to a file
@@ -35,7 +35,9 @@ module.exports = function(stream){
     },function(e){
 	    renderer('not authorized');
     });
-    
+
+    debug('a',h,null);
+
 };
 
 //requestStream.subscribe (

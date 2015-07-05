@@ -16,9 +16,42 @@
 
 
 //here can we have an observable that connects a url to a controller?
-module.exports = function(requestStream,route){
 
+var data = {
+	"name":"component name",
+	"prev":"previous component it's connected to",
+	"input":"the input stream for this component",
+	"output":"the output stream of this component"
+}
+
+//formats the list of data respecting the relationships between them
+function format(json){
+
+}
+module.exports = function(componentName,input,output){
+
+	if(global.trace === undefined){
+		global.trace = [];
+	}
+
+	var filtered = global.trace.filter(function(element){
+		return element.name == componentName; 
+	})
+
+	if(filtered.length == 0){
+		//add the element here
+		var object = {};
+		object.name = componentName;
+		if(input){
+			object.prev = input.from;
+		}
+		object.input = input;
+		object.output = output;
+		global.trace.push(object);
+//		console.log(global.trace);
+//
+	}
+	else{
+		console.log("component already exists");
+	}
 };
-
-
-

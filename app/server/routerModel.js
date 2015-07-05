@@ -14,16 +14,13 @@ Model.prototype.addRoute = function(route){
 module.exports = function(routeStream){
 
 	//model = new Model(data);
-
 	return routeStream.subscribe(function(route){
-		
 		if(!global.myRoutes){
 			global.myRoutes = []
 		}
 		global.myRoutes.push(route);
 		console.log(global.myRoutes);
 	});
-
 	//urlStream = requestStream.filter(function(req){
 	//	return req.url == '/';
 	//});

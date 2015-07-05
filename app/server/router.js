@@ -4,16 +4,27 @@ RouteParser = require('route-parser');
 var routeMatcher = require("route-matcher").routeMatcher;
 RouterModel = require('./routerModel.js');
 var request = require('./request.js');
+var debug = require('./debugger.js');
 
 //here can we have an observable that connects a url to a controller?
 module.exports = function(requestStream,route){
-	//store the route in a model
+
+	// register this module, and say what it's connected to and what it's going to out put?
 	routeStream = Rx.Observable.return(route);
 	RouterModel(routeStream);
-	return requestStream.filter(function(req){
+
+	var outputStream = requestStream.filter(function(req){
 			matcher = routeMatcher(route);
 			return matcher.parse(req.url) != null;
 	});
+
+	//this is the component that will register everything 
+	outputStream["from"] = "router";
+
+ 	debug('router',requestStream,outputStream);
+
+	return outputStream;
+
 	//urlStream = requestStream.filter(function(req){
 	//	return req.url == '/';
 	//});
