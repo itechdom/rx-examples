@@ -11057,7 +11057,9 @@
 		var change = model();
 	
 		change.subscribe(function (data) {
-			console.log(data);
+			if (data) {
+				console.log(data);
+			}
 		});
 		view(change);
 	
@@ -20318,13 +20320,15 @@
 	var EventEmitter = __webpack_require__(10);
 	var dataEmitter = new EventEmitter();
 	
-	var initalTodos = [{
+	var initialTodos = [{
 		'name': 'hello'
 	}];
 	
 	module.exports = function () {
 	
 		var change = Rx.Observable.fromEvent(dataEmitter, 'data');
+	
+		var nchange = actions.changeRoute$.startWith(initialTodos);
 	
 		function notifyChange() {
 			setTimeout(function () {
@@ -20334,14 +20338,14 @@
 	
 		actions.changeRoute$.subscribe(function () {
 			console.log('route reloaded');
-			notifyChange();
 		});
 	
 		actions.insertTodo$.subscribe(function (todo) {
 			model.todos.push(todo);
+			notifyChange();
 		});
 	
-		return change;
+		return nchange;
 	};
 
 /***/ },
@@ -20835,8 +20839,12 @@
 	
 	module.exports = function (dataStream) {
 	
-		dataStream.subscribe(function (data) {
-			console.log(data, 'data from view');
+		var templateStream = Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'));
+	
+		var mergedStream = dataStream.startWith(templateStream);
+	
+		mergedStream.subscribe(function (data) {
+			console.log(data);
 			var elem = $('<h1>' + data + '</h1>');
 			$('body').append(elem);
 		});

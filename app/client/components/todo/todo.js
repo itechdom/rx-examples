@@ -5,9 +5,17 @@ var actions = require('./actions.js');
 
 module.exports = function(dataStream){
 
-	dataStream.subscribe(function(data){
-		console.log(data,"data from view");
+	var templateStream = Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'))
+
+	var mergedStream = dataStream.startWith(templateStream);
+	
+	mergedStream.subscribe(function(data){
+		console.log(data);
 		var elem = $("<h1>"+data+"</h1>");
 		$('body').append(elem);
+	})
+
+	actions.insertTodo$.subscribe(function(){
+		//do something here to deal with when the todo is inserting
 	})
 }

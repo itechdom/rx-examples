@@ -3,8 +3,7 @@ var actions = require("./actions.js")
 var EventEmitter = require('wolfy87-eventemitter');
 var dataEmitter = new EventEmitter();
 
-
-var initalTodos = [
+var initialTodos = [
 {
 	"name":"hello"
 }
@@ -14,6 +13,8 @@ module.exports = function(){
 
 	var change = Rx.Observable.fromEvent(dataEmitter,'data');
 
+	var nchange = actions.changeRoute$.startWith(initialTodos);
+
 	function notifyChange(){
 		setTimeout(function(){
 		dataEmitter.emitEvent("data",[initalTodos]);
@@ -22,13 +23,13 @@ module.exports = function(){
 
 	actions.changeRoute$.subscribe(function(){
 		console.log("route reloaded");
-		notifyChange();
 	})
 
 	actions.insertTodo$.subscribe(function(todo){
 		model.todos.push(todo);
+		notifyChange();
 	})
 
-	return change;
+	return nchange;
 }
 

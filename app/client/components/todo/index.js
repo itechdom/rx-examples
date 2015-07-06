@@ -13,7 +13,9 @@ module.exports = function(){
 var change = model();
 
 change.subscribe(function(data){
-	console.log(data);
+	if(data){
+		console.log(data);
+	}
 })
 	view(change);
 
