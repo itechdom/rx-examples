@@ -19,9 +19,5 @@ change.subscribe(function(data){
 })
 	view(change);
 
-
-//	inputStream.subscribe(function(element){
-//		$("body").load("/app/client/components/todo/todo.html");
-//	});
 }
 

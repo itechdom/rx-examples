@@ -14,5 +14,4 @@ module.exports =  {
 			return ev.keyCode === ENTER_KEY && trimmedVal;
 		})
 	.map(ev => String(ev.target.value).trim()),
-
 };
