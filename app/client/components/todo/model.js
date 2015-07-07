@@ -7,7 +7,7 @@ var initialTodos = [
 {
 	"name":"hello"
 }
-]
+];
 
 module.exports = function(){
 
@@ -23,13 +23,13 @@ module.exports = function(){
 
 	actions.changeRoute$.subscribe(function(){
 		console.log("route reloaded");
-	})
+	});
 
 	actions.insertTodo$.subscribe(function(todo){
 		model.todos.push(todo);
 		notifyChange();
-	})
+	});
 
 	return nchange;
-}
+};
 

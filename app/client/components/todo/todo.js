@@ -15,10 +15,10 @@ module.exports = function(dataStream){
 		//I can test the type of the data here before displaying it
 		console.log(data);
 		var elem = $("<h1>"+data+"</h1>");
-		$('body').append(elem);
-	})
+		$('body').html(elem);
+	});
 
 	actions.insertTodo$.subscribe(function(){
 		//do something here to deal with when the todo is inserting
 	})
-}
+};

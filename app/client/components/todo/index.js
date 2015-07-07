@@ -3,21 +3,18 @@ var $ = require('jquery');
 var Rx = require('rx');
 var model = require('./model.js');
 var actions = require('./actions');
-//I can import the view here too
 var view = require('./todo.js');
 var EventEmitter = require('wolfy87-eventemitter');
 var dataEmitter = new EventEmitter();
 
 module.exports = function(){
-	
-var change = model();
 
-change.subscribe(function(data){
-	if(data){
-		console.log(data);
-	}
-})
-	view(change);
+	//initialized model and view here to register themselves as actions
 
-}
+	//run the model hook registeration function
+	model();
+
+	//run the view hook registeration function
+	view();
+};
 
