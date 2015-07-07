@@ -9,12 +9,30 @@ var initialTodos = [
 }
 ];
 
-class todoModel{
+export default class todoModel{
 
-	constructor(stream) {
+	constructor() {
+
 		//expose any actions to actions and to any other component that wants to connect to it
-		this.actions;
+		this.actions:{
+			dataChanged$:Rx.Observable.fromEvent(dataEmitter,'data');
+		}
 
+
+		function notifyChange(){
+			setTimeout(function(){
+				dataEmitter.emitEvent("data",[initalTodos]);
+			},1000)
+		}
+
+		actions.changeRoute$.subscribe(function(){
+			console.log("route reloaded");
+		});
+
+		actions.insertTodo$.subscribe(function(todo){
+			model.todos.push(todo);
+			notifyChange();
+		});
 
 	}
 	//handles different actions
@@ -22,30 +40,3 @@ class todoModel{
 
 	}
 }
-
-
-
-module.exports = function(){
-
-	var change = Rx.Observable.fromEvent(dataEmitter,'data');
-
-	var nchange = actions.changeRoute$.startWith(initialTodos);
-
-	function notifyChange(){
-		setTimeout(function(){
-		dataEmitter.emitEvent("data",[initalTodos]);
-		},1000)
-	}
-
-	actions.changeRoute$.subscribe(function(){
-		console.log("route reloaded");
-	});
-
-	actions.insertTodo$.subscribe(function(todo){
-		model.todos.push(todo);
-		notifyChange();
-	});
-
-	return nchange;
-};
-

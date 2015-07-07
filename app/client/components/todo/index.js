@@ -4,18 +4,13 @@ var Rx = require('rx');
 var model = require('./model.js');
 var actions = require('./actions');
 var view = require('./todo.js');
-var EventEmitter = require('wolfy87-eventemitter');
-var dataEmitter = new EventEmitter();
 
-module.exports = function(){
+export default class todoMain(){
 
-	//initialized model and view here to register themselves as actions
+	constructor(){
+		this.actions = actions;
+		model();
+		view();
+	}
 
-	//run the model hook registeration function
-	model();
-
-	//run the view hook registeration function
-	//you can import the model here and register it's events as well
-	view();
-};
-
+}
