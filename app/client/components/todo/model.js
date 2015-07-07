@@ -12,12 +12,17 @@ var initialTodos = [
 export default class todoModel{
 
 	constructor() {
-
 		//expose any actions to actions and to any other component that wants to connect to it
 		this.actions:{
 			dataChanged$:Rx.Observable.fromEvent(dataEmitter,'data');
 		}
 
+
+
+
+	}
+	//handles different actions
+	play(){
 
 		function notifyChange(){
 			setTimeout(function(){
@@ -33,10 +38,6 @@ export default class todoModel{
 			model.todos.push(todo);
 			notifyChange();
 		});
-
-	}
-	//handles different actions
-	play(){
 
 	}
 }

@@ -2,7 +2,6 @@ var Rx = require('rx');
 var router = require('./router');
 
 //select main component
-
 //have all the main events trigger something here
 // so we have the window onload to load all the components
 var todoComponent = require('./components/todo/index.js');
