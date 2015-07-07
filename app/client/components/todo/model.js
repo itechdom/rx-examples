@@ -9,6 +9,22 @@ var initialTodos = [
 }
 ];
 
+class todoModel{
+
+	constructor(stream) {
+		//expose any actions to actions and to any other component that wants to connect to it
+		this.actions;
+
+
+	}
+	//handles different actions
+	play(){
+
+	}
+}
+
+
+
 module.exports = function(){
 
 	var change = Rx.Observable.fromEvent(dataEmitter,'data');

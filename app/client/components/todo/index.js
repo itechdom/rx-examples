@@ -15,6 +15,7 @@ module.exports = function(){
 	model();
 
 	//run the view hook registeration function
+	//you can import the model here and register it's events as well
 	view();
 };
 
