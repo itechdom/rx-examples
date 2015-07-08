@@ -13,6 +13,7 @@
     "route-matcher": "^0.1.0",
     "route-parser": "0.0.3",
     "rx": "^2.5.3",
+    "virtual-dom": "^2.0.1",
     "wolfy87-eventemitter": "^4.2.11"
   }
 }
