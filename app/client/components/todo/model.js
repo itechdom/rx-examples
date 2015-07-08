@@ -3,35 +3,37 @@ var actions = require("./actions.js")
 var EventEmitter = require('wolfy87-eventemitter');
 var dataEmitter = new EventEmitter();
 
-var initialTodos = [
-{
-	"name":"hello"
-}
-];
+console.log("called once");
 
-export default class todoModel{
+class todoModel{
 
 	constructor() {
-		//expose any actions to actions and to any other component that wants to connect to it
-		this.actions:{
-			dataChanged$:Rx.Observable.fromEvent(dataEmitter,'data');
+
+		this.initialTodos = [
+		{
+			"name":"hello"
 		}
+		];
 
 
-
+		this.actions = {
+			dataChanged$ : Rx.Observable.fromEvent(dataEmitter,'data')
+		}
 
 	}
 	//handles different actions
-	play(){
+	wire(){
 
-		function notifyChange(){
+
+		function notifyChange(initialTodos){
 			setTimeout(function(){
-				dataEmitter.emitEvent("data",[initalTodos]);
+				dataEmitter.emitEvent("data",[initialTodos]);
 			},1000)
 		}
 
-		actions.changeRoute$.subscribe(function(){
+		actions.changeRoute$.subscribe(() => {
 			console.log("route reloaded");
+			notifyChange(this.initialTodos);
 		});
 
 		actions.insertTodo$.subscribe(function(todo){
@@ -41,3 +43,6 @@ export default class todoModel{
 
 	}
 }
+
+module.exports = new todoModel();
+

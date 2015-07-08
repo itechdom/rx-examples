@@ -50,14 +50,13 @@
 	var router = __webpack_require__(4);
 	
 	//select main component
-	
 	//have all the main events trigger something here
 	// so we have the window onload to load all the components
 	var todoComponent = __webpack_require__(6);
 	
 	//optional route to register the component to
-	todoComponent();
-	
+	//todoComponent();
+
 	//load all the components here
 
 	//the issue here is routing isn't the only event? what are the other events
@@ -11043,58 +11042,26 @@
 	//this is the main todo file
 	'use strict';
 	
-	var $ = __webpack_require__(8);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var $ = __webpack_require__(7);
 	var Rx = __webpack_require__(1);
-	var model = __webpack_require__(9);
-	var actions = __webpack_require__(7);
-	//I can import the view here too
+	var model = __webpack_require__(8);
+	var actions = __webpack_require__(9);
 	var view = __webpack_require__(11);
-	var EventEmitter = __webpack_require__(10);
-	var dataEmitter = new EventEmitter();
 	
-	module.exports = function () {
+	var todoMain = function todoMain() {
+		_classCallCheck(this, todoMain);
 	
-		var change = model();
-	
-		change.subscribe(function (data) {
-			if (data) {
-				console.log(data);
-			}
-		});
-		view(change);
-	
-		//	inputStream.subscribe(function(element){
-		//		$("body").load("/app/client/components/todo/todo.html");
-		//	});
+		this.actions = actions;
+		model.wire();
+		view.wire();
 	};
+	
+	module.exports = new todoMain();
 
 /***/ },
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	//the list of actions shard between view and model
-	'use strict';
-	
-	var $ = __webpack_require__(8);
-	var Rx = __webpack_require__(1);
-	var fromEvent = Rx.Observable.fromEvent;
-	module.exports = {
-	
-		changeRoute$: Rx.Observable.fromEvent(window, 'hashchange').map(function (ev) {
-			return ev.newURL.match(/\#[^\#]*$/)[0].replace('#', '');
-		}).startWith(window.location.hash.replace('#', '')),
-	
-		insertTodo$: fromEvent($('#new-todo').on('keyup')).filter(function (ev) {
-			var trimmedVal = String(ev.target.value).trim();
-			return ev.keyCode === ENTER_KEY && trimmedVal;
-		}).map(function (ev) {
-			return String(ev.target.value).trim();
-		})
-	
-	};
-
-/***/ },
-/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -20310,42 +20277,87 @@
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
 	var Rx = __webpack_require__(1);
-	var actions = __webpack_require__(7);
+	var actions = __webpack_require__(9);
 	var EventEmitter = __webpack_require__(10);
 	var dataEmitter = new EventEmitter();
 	
-	var initialTodos = [{
-		'name': 'hello'
-	}];
+	console.log('called once');
 	
-	module.exports = function () {
+	var todoModel = (function () {
+		function todoModel() {
+			_classCallCheck(this, todoModel);
 	
-		var change = Rx.Observable.fromEvent(dataEmitter, 'data');
+			this.initialTodos = [{
+				'name': 'hello'
+			}];
 	
-		var nchange = actions.changeRoute$.startWith(initialTodos);
-	
-		function notifyChange() {
-			setTimeout(function () {
-				dataEmitter.emitEvent('data', [initalTodos]);
-			}, 1000);
+			this.actions = {
+				dataChanged$: Rx.Observable.fromEvent(dataEmitter, 'data')
+			};
 		}
 	
-		actions.changeRoute$.subscribe(function () {
-			console.log('route reloaded');
-		});
+		_createClass(todoModel, [{
+			key: 'wire',
 	
-		actions.insertTodo$.subscribe(function (todo) {
-			model.todos.push(todo);
-			notifyChange();
-		});
+			//handles different actions
+			value: function wire() {
+				var _this = this;
 	
-		return nchange;
+				function notifyChange(initialTodos) {
+					setTimeout(function () {
+						dataEmitter.emitEvent('data', [initialTodos]);
+					}, 1000);
+				}
+	
+				actions.changeRoute$.subscribe(function () {
+					console.log('route reloaded');
+					notifyChange(_this.initialTodos);
+				});
+	
+				actions.insertTodo$.subscribe(function (todo) {
+					model.todos.push(todo);
+					notifyChange();
+				});
+			}
+		}]);
+	
+		return todoModel;
+	})();
+	
+	module.exports = new todoModel();
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//the list of actions shard between view and model
+	'use strict';
+	
+	var $ = __webpack_require__(7);
+	var Rx = __webpack_require__(1);
+	var fromEvent = Rx.Observable.fromEvent;
+	module.exports = {
+	
+		changeRoute$: Rx.Observable.fromEvent(window, 'hashchange').map(function (ev) {
+			return ev.newURL.match(/\#[^\#]*$/)[0].replace('#', '');
+		}).startWith(window.location.hash.replace('#', '')),
+	
+		insertTodo$: fromEvent($('#new-todo').on('keyup')).filter(function (ev) {
+			var trimmedVal = String(ev.target.value).trim();
+			return ev.keyCode === ENTER_KEY && trimmedVal;
+		}).map(function (ev) {
+			return String(ev.target.value).trim();
+		})
 	};
 
 /***/ },
@@ -20833,22 +20845,56 @@
 	//this is the main todo file
 	'use strict';
 	
-	var $ = __webpack_require__(8);
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var $ = __webpack_require__(7);
 	var Rx = __webpack_require__(1);
-	var actions = __webpack_require__(7);
+	var actions = __webpack_require__(9);
+	var model = __webpack_require__(8);
+	//default actions
 	
-	module.exports = function (dataStream) {
+	var todoView = (function () {
+		function todoView() {
+			_classCallCheck(this, todoView);
 	
-		var templateStream = Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'));
+			this.actions = {
+				templateLoaded$: Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'))
+			};
+		}
 	
-		var mergedStream = dataStream.startWith(templateStream);
+		_createClass(todoView, [{
+			key: 'wire',
 	
-		mergedStream.subscribe(function (data) {
-			console.log(data);
-			var elem = $('<h1>' + data + '</h1>');
-			$('body').append(elem);
-		});
-	};
+			//registers todoModel events to actions
+			value: function wire() {
+	
+				//I can combine latest here and send back the template with its data
+				this.actions.templateLoaded$.subscribe(function (data) {
+					//I can test the type of the data here before diswireing it
+					console.log(data);
+					var elem = $('<h1>' + data + '</h1>');
+					$('body').html(elem);
+				});
+				actions.insertTodo$.subscribe(function () {});
+	
+				model.actions.dataChanged$.subscribe(function (data) {
+					console.log(data, 'data have changed from view');
+					$('body').html(data.toString());
+				});
+			}
+		}, {
+			key: 'unWire',
+			value: function unWire() {}
+		}]);
+	
+		return todoView;
+	})();
+	
+	module.exports = new todoView();
+	
+	//do something here to deal with when the todo is inserting
 
 /***/ }
 /******/ ]);

@@ -3,14 +3,18 @@ var $ = require('jquery');
 var Rx = require('rx');
 var model = require('./model.js');
 var actions = require('./actions');
-var view = require('./todo.js');
+var view = require('./view.js');
 
-export default class todoMain(){
+
+class todoMain{
 
 	constructor(){
 		this.actions = actions;
-		model();
-		view();
+		model.wire();
+		view.wire();
 	}
-
 }
+
+
+module.exports = new todoMain();
+
