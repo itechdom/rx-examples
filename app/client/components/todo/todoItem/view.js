@@ -9,17 +9,15 @@ var patch = require('virtual-dom/patch');
 var createElement = require('virtual-dom/create-element');
 
 
-//default actions
-
 class todoView{
 
 	constructor() {
 
 		this.actions = {
-			templateLoaded$: Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'))
-		}
+			templateLoaded$: Rx.Observable.fromPromise($.get('./app/client/components/todo/todoItem/todoItem.html'))
+		};
 
-		this.template = "<todo></todo>";
+		this.template = "<todo-item></todo-item>";
 
 		this.render = function(count){
 
@@ -29,7 +27,7 @@ class todoView{
 				c: 'Cherry',
 				d: 'Durian',
 				e: 'Elder Berry'
-			}
+			};
 
 			return h('table',
 				h('tr', h('th', 'letter'), h('th', 'fruit')),

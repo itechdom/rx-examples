@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "html2hscript": "^1.0.4",
     "jquery": "^2.1.4",
     "route-matcher": "^0.1.0",
     "route-parser": "0.0.3",

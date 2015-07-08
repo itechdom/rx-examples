@@ -11044,16 +11044,19 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var $ = __webpack_require__(7);
+	var $ = __webpack_require__(8);
 	var Rx = __webpack_require__(1);
-	var model = __webpack_require__(8);
-	var actions = __webpack_require__(9);
+	var model = __webpack_require__(9);
+	var actions = __webpack_require__(7);
 	var view = __webpack_require__(11);
+	var todoItemComponent = __webpack_require__(46);
 	
 	var todoMain = function todoMain() {
 		_classCallCheck(this, todoMain);
 	
 		this.actions = actions;
+	
+		//wire the different components to main
 		model.wire();
 		view.wire();
 	};
@@ -11062,6 +11065,30 @@
 
 /***/ },
 /* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//the list of actions shard between view and model
+	'use strict';
+	
+	var $ = __webpack_require__(8);
+	var Rx = __webpack_require__(1);
+	var fromEvent = Rx.Observable.fromEvent;
+	module.exports = {
+	
+		changeRoute$: Rx.Observable.fromEvent(window, 'hashchange').map(function (ev) {
+			return ev.newURL.match(/\#[^\#]*$/)[0].replace('#', '');
+		}).startWith(window.location.hash.replace('#', '')),
+	
+		insertTodo$: fromEvent($('#new-todo').on('keyup')).filter(function (ev) {
+			var trimmedVal = String(ev.target.value).trim();
+			return ev.keyCode === ENTER_KEY && trimmedVal;
+		}).map(function (ev) {
+			return String(ev.target.value).trim();
+		})
+	};
+
+/***/ },
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -20277,7 +20304,7 @@
 
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -20287,7 +20314,7 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	var Rx = __webpack_require__(1);
-	var actions = __webpack_require__(9);
+	var actions = __webpack_require__(7);
 	var EventEmitter = __webpack_require__(10);
 	var dataEmitter = new EventEmitter();
 	
@@ -20333,30 +20360,6 @@
 	})();
 	
 	module.exports = new todoModel();
-
-/***/ },
-/* 9 */
-/***/ function(module, exports, __webpack_require__) {
-
-	//the list of actions shard between view and model
-	'use strict';
-	
-	var $ = __webpack_require__(7);
-	var Rx = __webpack_require__(1);
-	var fromEvent = Rx.Observable.fromEvent;
-	module.exports = {
-	
-		changeRoute$: Rx.Observable.fromEvent(window, 'hashchange').map(function (ev) {
-			return ev.newURL.match(/\#[^\#]*$/)[0].replace('#', '');
-		}).startWith(window.location.hash.replace('#', '')),
-	
-		insertTodo$: fromEvent($('#new-todo').on('keyup')).filter(function (ev) {
-			var trimmedVal = String(ev.target.value).trim();
-			return ev.keyCode === ENTER_KEY && trimmedVal;
-		}).map(function (ev) {
-			return String(ev.target.value).trim();
-		})
-	};
 
 /***/ },
 /* 10 */
@@ -20847,10 +20850,10 @@
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
-	var $ = __webpack_require__(7);
+	var $ = __webpack_require__(8);
 	var Rx = __webpack_require__(1);
-	var actions = __webpack_require__(9);
-	var model = __webpack_require__(8);
+	var actions = __webpack_require__(7);
+	var model = __webpack_require__(9);
 	var h = __webpack_require__(12);
 	var diff = __webpack_require__(30);
 	var patch = __webpack_require__(36);
@@ -20869,15 +20872,18 @@
 			this.template = '<todo></todo>';
 	
 			this.render = function (count) {
-				return h('div', {
-					style: {
-						textAlign: 'center',
-						lineHeight: 100 + count + 'px',
-						border: '1px solid red',
-						width: 100 + count + 'px',
-						height: 100 + count + 'px'
-					}
-				}, [String(count)]);
+	
+				var obj = {
+					a: 'Apple',
+					b: 'Banana',
+					c: 'Cherry',
+					d: 'Durian',
+					e: 'Elder Berry'
+				};
+	
+				return h('table', h('tr', h('th', 'letter'), h('th', 'fruit')), Object.keys(obj).map(function (k) {
+					return h('tr', h('th', k), h('td', obj[k]));
+				}));
 			};
 		}
 	
@@ -22698,6 +22704,205 @@
 	
 	module.exports = createElement
 
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//this is the main todo file
+	'use strict';
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var $ = __webpack_require__(8);
+	var Rx = __webpack_require__(1);
+	var model = __webpack_require__(47);
+	var actions = __webpack_require__(48);
+	var view = __webpack_require__(49);
+	
+	var todoItemMain = function todoItemMain() {
+		_classCallCheck(this, todoItemMain);
+	
+		this.actions = actions;
+		//wire the different components to main
+		model.wire();
+		view.wire();
+	};
+	
+	module.exports = new todoItemMain();
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var Rx = __webpack_require__(1);
+	var actions = __webpack_require__(48);
+	var EventEmitter = __webpack_require__(10);
+	var dataEmitter = new EventEmitter();
+	var todoModel = __webpack_require__(9);
+	
+	var todoItemModel = (function () {
+		function todoItemModel() {
+			_classCallCheck(this, todoItemModel);
+	
+			this.initialTodos = [{
+				'name': 'hello'
+			}];
+	
+			this.actions = {
+				dataChanged$: Rx.Observable.fromEvent(dataEmitter, 'data')
+			};
+		}
+	
+		_createClass(todoItemModel, [{
+			key: 'wire',
+	
+			//handles different actions
+			value: function wire() {
+				var _this = this;
+	
+				function notifyChange(initialTodos) {
+					setTimeout(function () {
+						dataEmitter.emitEvent('data', [initialTodos]);
+					}, 1000);
+				}
+	
+				actions.changeRoute$.subscribe(function () {
+					console.log('route reloaded');
+					notifyChange(_this.initialTodos);
+				});
+	
+				actions.insertTodo$.subscribe(function (todo) {
+					model.todos.push(todo);
+					notifyChange();
+				});
+	
+				todoModel.actions.dataChanged$.subscribe(function (todos) {
+					console.log(todos);
+				});
+			}
+		}]);
+	
+		return todoItemModel;
+	})();
+	
+	module.exports = new todoItemModel();
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//the list of actions shard between view and model
+	'use strict';
+	
+	var $ = __webpack_require__(8);
+	var Rx = __webpack_require__(1);
+	var fromEvent = Rx.Observable.fromEvent;
+	module.exports = {
+	
+		changeRoute$: Rx.Observable.fromEvent(window, 'hashchange').map(function (ev) {
+			return ev.newURL.match(/\#[^\#]*$/)[0].replace('#', '');
+		}).startWith(window.location.hash.replace('#', '')),
+	
+		insertTodo$: fromEvent($('#new-todo').on('keyup')).filter(function (ev) {
+			var trimmedVal = String(ev.target.value).trim();
+			return ev.keyCode === ENTER_KEY && trimmedVal;
+		}).map(function (ev) {
+			return String(ev.target.value).trim();
+		})
+	};
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//this is the main todo file
+	'use strict';
+	
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var $ = __webpack_require__(8);
+	var Rx = __webpack_require__(1);
+	var actions = __webpack_require__(48);
+	var model = __webpack_require__(47);
+	var h = __webpack_require__(12);
+	var diff = __webpack_require__(30);
+	var patch = __webpack_require__(36);
+	var createElement = __webpack_require__(45);
+	
+	var todoView = (function () {
+		function todoView() {
+			_classCallCheck(this, todoView);
+	
+			this.actions = {
+				templateLoaded$: Rx.Observable.fromPromise($.get('./app/client/components/todo/todoItem/todoItem.html'))
+			};
+	
+			this.template = '<todo-item></todo-item>';
+	
+			this.render = function (count) {
+	
+				var obj = {
+					a: 'Apple',
+					b: 'Banana',
+					c: 'Cherry',
+					d: 'Durian',
+					e: 'Elder Berry'
+				};
+	
+				return h('table', h('tr', h('th', 'letter'), h('th', 'fruit')), Object.keys(obj).map(function (k) {
+					return h('tr', h('th', k), h('td', obj[k]));
+				}));
+			};
+		}
+	
+		_createClass(todoView, [{
+			key: 'wire',
+	
+			//registers todoModel events to actions
+			value: function wire() {
+				var _this = this;
+	
+				//I can combine latest here and send back the template with its data
+				this.actions.templateLoaded$.subscribe(function (data) {
+					//I can test the type of the data here before diswireing it
+					var count = 0;
+					var vtree = _this.render(count);
+					var nodeTree = createElement(vtree);
+					$('body').append(nodeTree);
+					//create the scene graph here
+				});
+	
+				actions.insertTodo$.subscribe(function () {});
+	
+				model.actions.dataChanged$.subscribe(function (data) {
+					//call vdom diff and rerender the dom?
+					var count = 1;
+					var vtree = _this.render(count);
+					var nodeTree = createElement(vtree);
+					$('body').html(nodeTree);
+				});
+			}
+		}, {
+			key: 'unWire',
+			value: function unWire() {}
+		}]);
+	
+		return todoView;
+	})();
+	
+	module.exports = new todoView();
+	
+	//do something here to deal with when the todo is inserting
+	//call the diff patch
 
 /***/ }
 /******/ ]);
