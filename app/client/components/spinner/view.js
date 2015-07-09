@@ -34,7 +34,7 @@ class spinnerView{
 
 		this.actions.templateLoaded$.subscribe((data) =>{
 			//I can test the type of the data here before diswireing it
-			$('app').html(data);
+			$('app').append(data);
 			var count = 0;
 			var vtree = this.render(count);
 			var rootNode = createElement(vtree);

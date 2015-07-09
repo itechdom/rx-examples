@@ -55,18 +55,6 @@
 	// so we have the window onload to load all the components
 	var todoComponent = __webpack_require__(8);
 	var spinnerComponent = __webpack_require__(47);
-	
-	console.log(actions);
-	
-	//load the actions component which stores all the actions for this app in one place
-
-	//:
-	//optional route to register the component to
-	//todoComponent();
-
-	//load all the components here
-
-	//the issue here is routing isn't the only event? what are the other events
 
 /***/ },
 /* 1 */
@@ -20910,21 +20898,28 @@
 			//export actions to the top actions
 			actions['todoView.templateLoaded$'] = Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'));
 	
-			this.template = '<todo></todo>';
+			this.template = 'todo';
 	
 			this.currentTree;
 	
 			this.currentNode;
 	
 			this.render = function (count) {
-				return h('div', ['hello, this is the todo main'], [String(count)]);
+				var obj = {
+					a: 'Apple',
+					b: 'Banana',
+					c: 'Cherry',
+					d: 'Durian',
+					e: 'Elder Berry'
+				};
+				return h('table', h('tr', h('th', 'letter'), h('th', 'fruit')), Object.keys(obj).map(function (k) {
+					return h('tr', h('th', k), h('td', obj[k]));
+				}));
 			};
 		}
 	
 		_createClass(todoView, [{
 			key: 'wire',
-	
-			//registers todoModel events to actions
 			value: function wire() {
 				var _this = this;
 	
@@ -20935,12 +20930,11 @@
 					var count = 0;
 					var vtree = _this.render(count);
 					var rootNode = createElement(vtree);
-	
 					_this.currentTree = vtree;
 					_this.currentNode = rootNode;
 	
 					//first load the template html
-					$('todo').append(_this.currentNode);
+					$('todo').html(_this.currentNode);
 					//create the scene graph here
 				});
 				actions.insertTodo$.subscribe(function () {});
@@ -22812,7 +22806,7 @@
 	
 				this.actions.templateLoaded$.subscribe(function (data) {
 					//I can test the type of the data here before diswireing it
-					$('app').html(data);
+					$('app').append(data);
 					var count = 0;
 					var vtree = _this.render(count);
 					var rootNode = createElement(vtree);

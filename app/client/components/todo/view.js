@@ -20,19 +20,32 @@ class todoView{
 		//export actions to the top actions
 		actions['todoView.templateLoaded$'] = Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'));
 
-		this.template = "<todo></todo>";
+		this.template = "todo";
 
 		this.currentTree;
 
 		this.currentNode;
 
 		this.render = function(count){
-			return h('div',['hello, this is the todo main'],[String(count)])
+			var obj = {
+				a: 'Apple',
+				b: 'Banana',
+				c: 'Cherry',
+				d: 'Durian',
+				e: 'Elder Berry'
+			}
+			return h('table',
+				h('tr', h('th', 'letter'), h('th', 'fruit')),
+				Object.keys(obj).map(function (k) {
+					return h('tr',
+						h('th', k),
+						h('td', obj[k])
+					)
+				})
+			)
 		}
 	}
-	//registers todoModel events to actions
 	wire(){
-
 		//I can combine latest here and send back the template with its data
 		this.actions.templateLoaded$.subscribe((data) =>{
 			//I can test the type of the data here before diswireing it
@@ -40,12 +53,11 @@ class todoView{
 			var count = 0;
 			var vtree = this.render(count);
 			var rootNode = createElement(vtree);
-
 			this.currentTree = vtree;
 			this.currentNode = rootNode;
 
 			//first load the template html
-			$('todo').append(this.currentNode);
+			$('todo').html(this.currentNode);
 			//create the scene graph here
 		});
 		actions.insertTodo$.subscribe(function(){
@@ -61,7 +73,6 @@ class todoView{
 		});
 	}
 	unWire(){
-
 
 	}
 }
