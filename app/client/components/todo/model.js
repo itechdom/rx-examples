@@ -1,5 +1,5 @@
 var Rx = require('rx');
-var actions = require("./actions.js")
+var actions = require("../actions/index.js")
 var EventEmitter = require('wolfy87-eventemitter');
 var dataEmitter = new EventEmitter();
 
@@ -10,7 +10,11 @@ class todoModel{
 		this.initialTodos = [
 		{
 			"name":"hello"
+		},
+		{
+			"name":"hi"
 		}
+
 		];
 
 		this.actions = {
@@ -42,6 +46,5 @@ class todoModel{
 
 	}
 }
-
 module.exports = new todoModel();
 

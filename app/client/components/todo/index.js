@@ -2,19 +2,18 @@
 var $ = require('jquery');
 var Rx = require('rx');
 var model = require('./model.js');
-var actions = require('./actions');
 var view = require('./view.js');
+
+//import any styles for todo list app
+var style = require('./todo.scss')
 
 class todoMain{
 
 	constructor(){
-		this.actions = actions;
-		//wire the different components to main
 		model.wire();
 		view.wire();
 	}
 }
-
 
 
 module.exports = new todoMain();

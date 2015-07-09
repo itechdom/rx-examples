@@ -26,25 +26,25 @@ class todoView{
 
 		this.currentNode;
 
-		this.render = function(count){
-			var obj = {
-				a: 'Apple',
-				b: 'Banana',
-				c: 'Cherry',
-				d: 'Durian',
-				e: 'Elder Berry'
+		this.render = function(todos){
+
+			if(!todos){
+				todos = [];
 			}
+
 			return h('table',
 				h('tr', h('th', 'letter'), h('th', 'fruit')),
-				Object.keys(obj).map(function (k) {
+				todos.map(function (element) {
 					return h('tr',
-						h('th', k),
-						h('td', obj[k])
+						h('th', element.name),
+						h('td', element.name)
 					)
 				})
 			)
 		}
+
 	}
+
 	wire(){
 		//I can combine latest here and send back the template with its data
 		this.actions.templateLoaded$.subscribe((data) =>{
@@ -55,7 +55,6 @@ class todoView{
 			var rootNode = createElement(vtree);
 			this.currentTree = vtree;
 			this.currentNode = rootNode;
-
 			//first load the template html
 			$('todo').html(this.currentNode);
 			//create the scene graph here
@@ -65,8 +64,10 @@ class todoView{
 		});
 		model.actions.dataChanged$.subscribe((data) => {
 			//call vdom diff and rerender the dom?
+			console.log(data);
+			//add
 			var count = 1;
-			var vtree = this.render(count);
+			var vtree = this.render(data);
             var patches = diff(this.currentTree, vtree);
             this.rootNode = patch(this.currentNode,patches);
             this.currentTree = vtree;

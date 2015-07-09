@@ -54,7 +54,7 @@
 	//have all the main events trigger something here
 	// so we have the window onload to load all the components
 	var todoComponent = __webpack_require__(8);
-	var spinnerComponent = __webpack_require__(47);
+	var spinnerComponent = __webpack_require__(50);
 
 /***/ },
 /* 1 */
@@ -20291,14 +20291,14 @@
 	var $ = __webpack_require__(7);
 	var Rx = __webpack_require__(1);
 	var model = __webpack_require__(9);
-	var actions = __webpack_require__(10);
-	var view = __webpack_require__(12);
+	var view = __webpack_require__(11);
+	
+	//import any styles for todo list app
+	var style = __webpack_require__(46);
 	
 	var todoMain = function todoMain() {
 		_classCallCheck(this, todoMain);
 	
-		this.actions = actions;
-		//wire the different components to main
 		model.wire();
 		view.wire();
 	};
@@ -20316,8 +20316,8 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	var Rx = __webpack_require__(1);
-	var actions = __webpack_require__(10);
-	var EventEmitter = __webpack_require__(11);
+	var actions = __webpack_require__(6);
+	var EventEmitter = __webpack_require__(10);
 	var dataEmitter = new EventEmitter();
 	
 	var todoModel = (function () {
@@ -20326,6 +20326,8 @@
 	
 			this.initialTodos = [{
 				'name': 'hello'
+			}, {
+				'name': 'hi'
 			}];
 	
 			this.actions = {
@@ -20367,30 +20369,6 @@
 
 /***/ },
 /* 10 */
-/***/ function(module, exports, __webpack_require__) {
-
-	//the list of actions shard between view and model
-	'use strict';
-	
-	var $ = __webpack_require__(7);
-	var Rx = __webpack_require__(1);
-	var fromEvent = Rx.Observable.fromEvent;
-	module.exports = {
-	
-		changeRoute$: Rx.Observable.fromEvent(window, 'hashchange').map(function (ev) {
-			return ev.newURL.match(/\#[^\#]*$/)[0].replace('#', '');
-		}).startWith(window.location.hash.replace('#', '')),
-	
-		insertTodo$: fromEvent($('#new-todo').on('keyup')).filter(function (ev) {
-			var trimmedVal = String(ev.target.value).trim();
-			return ev.keyCode === ENTER_KEY && trimmedVal;
-		}).map(function (ev) {
-			return String(ev.target.value).trim();
-		})
-	};
-
-/***/ },
-/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -20868,7 +20846,7 @@
 
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//this is the main todo file
@@ -20882,10 +20860,10 @@
 	var Rx = __webpack_require__(1);
 	var actions = __webpack_require__(6);
 	var model = __webpack_require__(9);
-	var h = __webpack_require__(13);
-	var diff = __webpack_require__(31);
-	var patch = __webpack_require__(37);
-	var createElement = __webpack_require__(46);
+	var h = __webpack_require__(12);
+	var diff = __webpack_require__(30);
+	var patch = __webpack_require__(36);
+	var createElement = __webpack_require__(45);
 	
 	var todoView = (function () {
 		function todoView() {
@@ -20904,16 +20882,14 @@
 	
 			this.currentNode;
 	
-			this.render = function (count) {
-				var obj = {
-					a: 'Apple',
-					b: 'Banana',
-					c: 'Cherry',
-					d: 'Durian',
-					e: 'Elder Berry'
-				};
-				return h('table', h('tr', h('th', 'letter'), h('th', 'fruit')), Object.keys(obj).map(function (k) {
-					return h('tr', h('th', k), h('td', obj[k]));
+			this.render = function (todos) {
+	
+				if (!todos) {
+					todos = [];
+				}
+	
+				return h('table', h('tr', h('th', 'letter'), h('th', 'fruit')), todos.map(function (element) {
+					return h('tr', h('th', element.name), h('td', element.name));
 				}));
 			};
 		}
@@ -20932,7 +20908,6 @@
 					var rootNode = createElement(vtree);
 					_this.currentTree = vtree;
 					_this.currentNode = rootNode;
-	
 					//first load the template html
 					$('todo').html(_this.currentNode);
 					//create the scene graph here
@@ -20940,8 +20915,10 @@
 				actions.insertTodo$.subscribe(function () {});
 				model.actions.dataChanged$.subscribe(function (data) {
 					//call vdom diff and rerender the dom?
+					console.log(data);
+					//add
 					var count = 1;
-					var vtree = _this.render(count);
+					var vtree = _this.render(data);
 					var patches = diff(_this.currentTree, vtree);
 					_this.rootNode = patch(_this.currentNode, patches);
 					_this.currentTree = vtree;
@@ -20958,33 +20935,33 @@
 	module.exports = new todoView();
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var h = __webpack_require__(14)
+	var h = __webpack_require__(13)
 	
 	module.exports = h
 
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var isArray = __webpack_require__(15);
+	var isArray = __webpack_require__(14);
 	
-	var VNode = __webpack_require__(16);
-	var VText = __webpack_require__(22);
-	var isVNode = __webpack_require__(18);
-	var isVText = __webpack_require__(23);
-	var isWidget = __webpack_require__(19);
-	var isHook = __webpack_require__(21);
-	var isVThunk = __webpack_require__(20);
+	var VNode = __webpack_require__(15);
+	var VText = __webpack_require__(21);
+	var isVNode = __webpack_require__(17);
+	var isVText = __webpack_require__(22);
+	var isWidget = __webpack_require__(18);
+	var isHook = __webpack_require__(20);
+	var isVThunk = __webpack_require__(19);
 	
-	var parseTag = __webpack_require__(24);
-	var softSetHook = __webpack_require__(26);
-	var evHook = __webpack_require__(27);
+	var parseTag = __webpack_require__(23);
+	var softSetHook = __webpack_require__(25);
+	var evHook = __webpack_require__(26);
 	
 	module.exports = h;
 	
@@ -21108,7 +21085,7 @@
 
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports) {
 
 	var nativeIsArray = Array.isArray
@@ -21122,14 +21099,14 @@
 
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(17)
-	var isVNode = __webpack_require__(18)
-	var isWidget = __webpack_require__(19)
-	var isThunk = __webpack_require__(20)
-	var isVHook = __webpack_require__(21)
+	var version = __webpack_require__(16)
+	var isVNode = __webpack_require__(17)
+	var isWidget = __webpack_require__(18)
+	var isThunk = __webpack_require__(19)
+	var isVHook = __webpack_require__(20)
 	
 	module.exports = VirtualNode
 	
@@ -21200,17 +21177,17 @@
 
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports) {
 
 	module.exports = "2"
 
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(17)
+	var version = __webpack_require__(16)
 	
 	module.exports = isVirtualNode
 	
@@ -21220,7 +21197,7 @@
 
 
 /***/ },
-/* 19 */
+/* 18 */
 /***/ function(module, exports) {
 
 	module.exports = isWidget
@@ -21231,7 +21208,7 @@
 
 
 /***/ },
-/* 20 */
+/* 19 */
 /***/ function(module, exports) {
 
 	module.exports = isThunk
@@ -21242,7 +21219,7 @@
 
 
 /***/ },
-/* 21 */
+/* 20 */
 /***/ function(module, exports) {
 
 	module.exports = isHook
@@ -21255,10 +21232,10 @@
 
 
 /***/ },
-/* 22 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(17)
+	var version = __webpack_require__(16)
 	
 	module.exports = VirtualText
 	
@@ -21271,10 +21248,10 @@
 
 
 /***/ },
-/* 23 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(17)
+	var version = __webpack_require__(16)
 	
 	module.exports = isVirtualText
 	
@@ -21284,12 +21261,12 @@
 
 
 /***/ },
-/* 24 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var split = __webpack_require__(25);
+	var split = __webpack_require__(24);
 	
 	var classIdSplit = /([\.#]?[a-zA-Z0-9_:-]+)/;
 	var notClassId = /^\.|#/;
@@ -21344,7 +21321,7 @@
 
 
 /***/ },
-/* 25 */
+/* 24 */
 /***/ function(module, exports) {
 
 	/*!
@@ -21456,7 +21433,7 @@
 
 
 /***/ },
-/* 26 */
+/* 25 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21479,12 +21456,12 @@
 
 
 /***/ },
-/* 27 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var EvStore = __webpack_require__(28);
+	var EvStore = __webpack_require__(27);
 	
 	module.exports = EvHook;
 	
@@ -21512,12 +21489,12 @@
 
 
 /***/ },
-/* 28 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var OneVersionConstraint = __webpack_require__(29);
+	var OneVersionConstraint = __webpack_require__(28);
 	
 	var MY_VERSION = '7';
 	OneVersionConstraint('ev-store', MY_VERSION);
@@ -21538,12 +21515,12 @@
 
 
 /***/ },
-/* 29 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Individual = __webpack_require__(30);
+	var Individual = __webpack_require__(29);
 	
 	module.exports = OneVersion;
 	
@@ -21566,7 +21543,7 @@
 
 
 /***/ },
-/* 30 */
+/* 29 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -21592,28 +21569,28 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 31 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var diff = __webpack_require__(32)
+	var diff = __webpack_require__(31)
 	
 	module.exports = diff
 
 
 /***/ },
-/* 32 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArray = __webpack_require__(15)
+	var isArray = __webpack_require__(14)
 	
-	var VPatch = __webpack_require__(33)
-	var isVNode = __webpack_require__(18)
-	var isVText = __webpack_require__(23)
-	var isWidget = __webpack_require__(19)
-	var isThunk = __webpack_require__(20)
-	var handleThunk = __webpack_require__(34)
+	var VPatch = __webpack_require__(32)
+	var isVNode = __webpack_require__(17)
+	var isVText = __webpack_require__(22)
+	var isWidget = __webpack_require__(18)
+	var isThunk = __webpack_require__(19)
+	var handleThunk = __webpack_require__(33)
 	
-	var diffProps = __webpack_require__(35)
+	var diffProps = __webpack_require__(34)
 	
 	module.exports = diff
 	
@@ -22034,10 +22011,10 @@
 
 
 /***/ },
-/* 33 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(17)
+	var version = __webpack_require__(16)
 	
 	VirtualPatch.NONE = 0
 	VirtualPatch.VTEXT = 1
@@ -22062,13 +22039,13 @@
 
 
 /***/ },
-/* 34 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isVNode = __webpack_require__(18)
-	var isVText = __webpack_require__(23)
-	var isWidget = __webpack_require__(19)
-	var isThunk = __webpack_require__(20)
+	var isVNode = __webpack_require__(17)
+	var isVText = __webpack_require__(22)
+	var isWidget = __webpack_require__(18)
+	var isThunk = __webpack_require__(19)
 	
 	module.exports = handleThunk
 	
@@ -22108,11 +22085,11 @@
 
 
 /***/ },
-/* 35 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(36)
-	var isHook = __webpack_require__(21)
+	var isObject = __webpack_require__(35)
+	var isHook = __webpack_require__(20)
 	
 	module.exports = diffProps
 	
@@ -22172,7 +22149,7 @@
 
 
 /***/ },
-/* 36 */
+/* 35 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -22183,23 +22160,23 @@
 
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var patch = __webpack_require__(38)
+	var patch = __webpack_require__(37)
 	
 	module.exports = patch
 
 
 /***/ },
-/* 38 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var document = __webpack_require__(39)
-	var isArray = __webpack_require__(15)
+	var document = __webpack_require__(38)
+	var isArray = __webpack_require__(14)
 	
-	var domIndex = __webpack_require__(41)
-	var patchOp = __webpack_require__(42)
+	var domIndex = __webpack_require__(40)
+	var patchOp = __webpack_require__(41)
 	module.exports = patch
 	
 	function patch(rootNode, patches) {
@@ -22274,12 +22251,12 @@
 
 
 /***/ },
-/* 39 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {var topLevel = typeof global !== 'undefined' ? global :
 	    typeof window !== 'undefined' ? window : {}
-	var minDoc = __webpack_require__(40);
+	var minDoc = __webpack_require__(39);
 	
 	if (typeof document !== 'undefined') {
 	    module.exports = document;
@@ -22296,13 +22273,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 40 */
+/* 39 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 41 */
+/* 40 */
 /***/ function(module, exports) {
 
 	// Maps a virtual DOM tree onto a real DOM tree in an efficient manner.
@@ -22393,16 +22370,16 @@
 
 
 /***/ },
-/* 42 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var applyProperties = __webpack_require__(43)
+	var applyProperties = __webpack_require__(42)
 	
-	var isWidget = __webpack_require__(19)
-	var VPatch = __webpack_require__(33)
+	var isWidget = __webpack_require__(18)
+	var VPatch = __webpack_require__(32)
 	
-	var render = __webpack_require__(44)
-	var updateWidget = __webpack_require__(45)
+	var render = __webpack_require__(43)
+	var updateWidget = __webpack_require__(44)
 	
 	module.exports = applyPatch
 	
@@ -22551,11 +22528,11 @@
 
 
 /***/ },
-/* 43 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(36)
-	var isHook = __webpack_require__(21)
+	var isObject = __webpack_require__(35)
+	var isHook = __webpack_require__(20)
 	
 	module.exports = applyProperties
 	
@@ -22654,17 +22631,17 @@
 
 
 /***/ },
-/* 44 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var document = __webpack_require__(39)
+	var document = __webpack_require__(38)
 	
-	var applyProperties = __webpack_require__(43)
+	var applyProperties = __webpack_require__(42)
 	
-	var isVNode = __webpack_require__(18)
-	var isVText = __webpack_require__(23)
-	var isWidget = __webpack_require__(19)
-	var handleThunk = __webpack_require__(34)
+	var isVNode = __webpack_require__(17)
+	var isVText = __webpack_require__(22)
+	var isWidget = __webpack_require__(18)
+	var handleThunk = __webpack_require__(33)
 	
 	module.exports = createElement
 	
@@ -22706,10 +22683,10 @@
 
 
 /***/ },
-/* 45 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isWidget = __webpack_require__(19)
+	var isWidget = __webpack_require__(18)
 	
 	module.exports = updateWidget
 	
@@ -22727,16 +22704,330 @@
 
 
 /***/ },
-/* 46 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var createElement = __webpack_require__(44)
+	var createElement = __webpack_require__(43)
 	
 	module.exports = createElement
 
 
 /***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+	
+	// load the styles
+	var content = __webpack_require__(47);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(49)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/sass-loader/index.js!./todo.scss", function() {
+				var newContent = require("!!./../../../../node_modules/css-loader/index.js!./../../../../node_modules/sass-loader/index.js!./todo.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
 /* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(48)();
+	exports.push([module.id, "body {\n  font-size: 100px; }\n", ""]);
+
+/***/ },
+/* 48 */
+/***/ function(module, exports) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function() {
+		var list = [];
+	
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for(var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if(item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+	
+		// import a list of modules into the list
+		list.i = function(modules, mediaQuery) {
+			if(typeof modules === "string")
+				modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for(var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if(typeof id === "number")
+					alreadyImportedModules[id] = true;
+			}
+			for(i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if(mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if(mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
+
+/***/ },
+/* 49 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	var stylesInDom = {},
+		memoize = function(fn) {
+			var memo;
+			return function () {
+				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+				return memo;
+			};
+		},
+		isOldIE = memoize(function() {
+			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+		}),
+		getHeadElement = memoize(function () {
+			return document.head || document.getElementsByTagName("head")[0];
+		}),
+		singletonElement = null,
+		singletonCounter = 0;
+	
+	module.exports = function(list, options) {
+		if(false) {
+			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+		}
+	
+		options = options || {};
+		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+		// tags it will allow on a page
+		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+	
+		var styles = listToStyles(list);
+		addStylesToDom(styles, options);
+	
+		return function update(newList) {
+			var mayRemove = [];
+			for(var i = 0; i < styles.length; i++) {
+				var item = styles[i];
+				var domStyle = stylesInDom[item.id];
+				domStyle.refs--;
+				mayRemove.push(domStyle);
+			}
+			if(newList) {
+				var newStyles = listToStyles(newList);
+				addStylesToDom(newStyles, options);
+			}
+			for(var i = 0; i < mayRemove.length; i++) {
+				var domStyle = mayRemove[i];
+				if(domStyle.refs === 0) {
+					for(var j = 0; j < domStyle.parts.length; j++)
+						domStyle.parts[j]();
+					delete stylesInDom[domStyle.id];
+				}
+			}
+		};
+	}
+	
+	function addStylesToDom(styles, options) {
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			if(domStyle) {
+				domStyle.refs++;
+				for(var j = 0; j < domStyle.parts.length; j++) {
+					domStyle.parts[j](item.parts[j]);
+				}
+				for(; j < item.parts.length; j++) {
+					domStyle.parts.push(addStyle(item.parts[j], options));
+				}
+			} else {
+				var parts = [];
+				for(var j = 0; j < item.parts.length; j++) {
+					parts.push(addStyle(item.parts[j], options));
+				}
+				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+			}
+		}
+	}
+	
+	function listToStyles(list) {
+		var styles = [];
+		var newStyles = {};
+		for(var i = 0; i < list.length; i++) {
+			var item = list[i];
+			var id = item[0];
+			var css = item[1];
+			var media = item[2];
+			var sourceMap = item[3];
+			var part = {css: css, media: media, sourceMap: sourceMap};
+			if(!newStyles[id])
+				styles.push(newStyles[id] = {id: id, parts: [part]});
+			else
+				newStyles[id].parts.push(part);
+		}
+		return styles;
+	}
+	
+	function createStyleElement() {
+		var styleElement = document.createElement("style");
+		var head = getHeadElement();
+		styleElement.type = "text/css";
+		head.appendChild(styleElement);
+		return styleElement;
+	}
+	
+	function createLinkElement() {
+		var linkElement = document.createElement("link");
+		var head = getHeadElement();
+		linkElement.rel = "stylesheet";
+		head.appendChild(linkElement);
+		return linkElement;
+	}
+	
+	function addStyle(obj, options) {
+		var styleElement, update, remove;
+	
+		if (options.singleton) {
+			var styleIndex = singletonCounter++;
+			styleElement = singletonElement || (singletonElement = createStyleElement());
+			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+		} else if(obj.sourceMap &&
+			typeof URL === "function" &&
+			typeof URL.createObjectURL === "function" &&
+			typeof URL.revokeObjectURL === "function" &&
+			typeof Blob === "function" &&
+			typeof btoa === "function") {
+			styleElement = createLinkElement();
+			update = updateLink.bind(null, styleElement);
+			remove = function() {
+				styleElement.parentNode.removeChild(styleElement);
+				if(styleElement.href)
+					URL.revokeObjectURL(styleElement.href);
+			};
+		} else {
+			styleElement = createStyleElement();
+			update = applyToTag.bind(null, styleElement);
+			remove = function() {
+				styleElement.parentNode.removeChild(styleElement);
+			};
+		}
+	
+		update(obj);
+	
+		return function updateStyle(newObj) {
+			if(newObj) {
+				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+					return;
+				update(obj = newObj);
+			} else {
+				remove();
+			}
+		};
+	}
+	
+	var replaceText = (function () {
+		var textStore = [];
+	
+		return function (index, replacement) {
+			textStore[index] = replacement;
+			return textStore.filter(Boolean).join('\n');
+		};
+	})();
+	
+	function applyToSingletonTag(styleElement, index, remove, obj) {
+		var css = remove ? "" : obj.css;
+	
+		if (styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = replaceText(index, css);
+		} else {
+			var cssNode = document.createTextNode(css);
+			var childNodes = styleElement.childNodes;
+			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+			if (childNodes.length) {
+				styleElement.insertBefore(cssNode, childNodes[index]);
+			} else {
+				styleElement.appendChild(cssNode);
+			}
+		}
+	}
+	
+	function applyToTag(styleElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+		var sourceMap = obj.sourceMap;
+	
+		if(media) {
+			styleElement.setAttribute("media", media)
+		}
+	
+		if(styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = css;
+		} else {
+			while(styleElement.firstChild) {
+				styleElement.removeChild(styleElement.firstChild);
+			}
+			styleElement.appendChild(document.createTextNode(css));
+		}
+	}
+	
+	function updateLink(linkElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+		var sourceMap = obj.sourceMap;
+	
+		if(sourceMap) {
+			// http://stackoverflow.com/a/26603875
+			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+		}
+	
+		var blob = new Blob([css], { type: "text/css" });
+	
+		var oldSrc = linkElement.href;
+	
+		linkElement.href = URL.createObjectURL(blob);
+	
+		if(oldSrc)
+			URL.revokeObjectURL(oldSrc);
+	}
+
+
+/***/ },
+/* 50 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//this is the main todo file
@@ -22746,7 +23037,7 @@
 	
 	var $ = __webpack_require__(7);
 	var Rx = __webpack_require__(1);
-	var view = __webpack_require__(48);
+	var view = __webpack_require__(51);
 	
 	var spinnerMain = function spinnerMain() {
 		_classCallCheck(this, spinnerMain);
@@ -22757,7 +23048,7 @@
 	module.exports = new spinnerMain();
 
 /***/ },
-/* 48 */
+/* 51 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//this is the main todo file
@@ -22770,10 +23061,10 @@
 	var $ = __webpack_require__(7);
 	var Rx = __webpack_require__(1);
 	var actions = __webpack_require__(6);
-	var h = __webpack_require__(13);
-	var diff = __webpack_require__(31);
-	var patch = __webpack_require__(37);
-	var createElement = __webpack_require__(46);
+	var h = __webpack_require__(12);
+	var diff = __webpack_require__(30);
+	var patch = __webpack_require__(36);
+	var createElement = __webpack_require__(45);
 	
 	var spinnerView = (function () {
 		function spinnerView() {
