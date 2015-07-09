@@ -5,8 +5,10 @@ var router = require('./router');
 //have all the main events trigger something here
 // so we have the window onload to load all the components
 var todoComponent = require('./components/todo/index.js');
+var spinnerComponent = require('./components/spinner/index.js');
 
 
+//load the actions component which stores all the actions for this app in one place
 
 
 //:
