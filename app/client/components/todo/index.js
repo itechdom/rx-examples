@@ -4,8 +4,6 @@ var Rx = require('rx');
 var model = require('./model.js');
 var actions = require('./actions');
 var view = require('./view.js');
-var todoItemComponent = require('./todoItem/index.js');
-
 
 class todoMain{
 
@@ -14,9 +12,6 @@ class todoMain{
 		//wire the different components to main
 		model.wire();
 		view.wire();
-
-
-
 	}
 }
 
