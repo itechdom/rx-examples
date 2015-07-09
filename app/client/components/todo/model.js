@@ -3,7 +3,6 @@ var actions = require("./actions.js")
 var EventEmitter = require('wolfy87-eventemitter');
 var dataEmitter = new EventEmitter();
 
-
 class todoModel{
 
 	constructor() {

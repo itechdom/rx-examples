@@ -4,6 +4,7 @@ var Rx = require('rx');
 var fromEvent = Rx.Observable.fromEvent; 
 module.exports =  {
 
+
 	changeRoute$: Rx.Observable.fromEvent(window, 'hashchange')
 		.map(ev => ev.newURL.match(/\#[^\#]*$/)[0].replace('#', ''))
 		.startWith(window.location.hash.replace('#', '')),
