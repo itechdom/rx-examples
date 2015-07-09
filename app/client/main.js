@@ -7,6 +7,8 @@ var router = require('./router');
 var todoComponent = require('./components/todo/index.js');
 
 
+
+
 //:
 //optional route to register the component to
 //todoComponent();

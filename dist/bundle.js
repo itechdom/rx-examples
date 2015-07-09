@@ -11056,7 +11056,6 @@
 		_classCallCheck(this, todoMain);
 	
 		this.actions = actions;
-	
 		//wire the different components to main
 		model.wire();
 		view.wire();
@@ -20330,6 +20329,8 @@
 			this.actions = {
 				dataChanged$: Rx.Observable.fromEvent(dataEmitter, 'data')
 			};
+	
+			actions['todoModel.dataChanged$'] = Rx.Observable.fromEvent(dataEmitter, 'data');
 		}
 	
 		_createClass(todoModel, [{
@@ -20860,8 +20861,6 @@
 	var patch = __webpack_require__(36);
 	var createElement = __webpack_require__(45);
 	
-	//default actions
-	
 	var todoView = (function () {
 		function todoView() {
 			_classCallCheck(this, todoView);
@@ -20870,9 +20869,13 @@
 				templateLoaded$: Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'))
 			};
 	
+			//export actions to the top actions
+			actions['todoView.templateLoaded$'] = Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'));
+	
 			this.template = '<todo></todo>';
 	
 			this.currentTree;
+	
 			this.currentNode;
 	
 			this.render = function (count) {
@@ -20902,7 +20905,6 @@
 					$('todo').append(_this.currentNode);
 					//create the scene graph here
 				});
-	
 				actions.insertTodo$.subscribe(function () {});
 				model.actions.dataChanged$.subscribe(function (data) {
 					//call vdom diff and rerender the dom?
@@ -20922,9 +20924,6 @@
 	})();
 	
 	module.exports = new todoView();
-	
-	//do something here to deal with when the todo is inserting
-	//call the diff patch
 
 /***/ },
 /* 12 */
@@ -22831,7 +22830,7 @@
 	var $ = __webpack_require__(8);
 	var Rx = __webpack_require__(1);
 	var actions = __webpack_require__(48);
-	var model = __webpack_require__(47);
+	var model = __webpack_require__(9);
 	var h = __webpack_require__(12);
 	var diff = __webpack_require__(30);
 	var patch = __webpack_require__(36);

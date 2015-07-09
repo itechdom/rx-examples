@@ -9,8 +9,6 @@ var patch = require('virtual-dom/patch');
 var createElement = require('virtual-dom/create-element');
 
 
-//default actions
-
 class todoView{
 
 	constructor() {
@@ -19,9 +17,13 @@ class todoView{
 			templateLoaded$: Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'))
 		};
 
+		//export actions to the top actions
+		actions['todoView.templateLoaded$'] = Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'));
+
 		this.template = "<todo></todo>";
 
 		this.currentTree;
+
 		this.currentNode;
 
 		this.render = function(count){
@@ -46,10 +48,7 @@ class todoView{
 			$('todo').append(this.currentNode);
 			//create the scene graph here
 		});
-
 		actions.insertTodo$.subscribe(function(){
-			//do something here to deal with when the todo is inserting
-			//call the diff patch
 
 		});
 		model.actions.dataChanged$.subscribe((data) => {
@@ -60,7 +59,6 @@ class todoView{
             this.rootNode = patch(this.currentNode,patches);
             this.currentTree = vtree;
 		});
-
 	}
 	unWire(){
 

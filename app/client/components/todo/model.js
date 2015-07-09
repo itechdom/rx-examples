@@ -13,10 +13,11 @@ class todoModel{
 		}
 		];
 
-
 		this.actions = {
 			dataChanged$ : Rx.Observable.fromEvent(dataEmitter,'data')
-		}
+		};
+
+		actions['todoModel.dataChanged$'] = Rx.Observable.fromEvent(dataEmitter,'data');
 
 	}
 	//handles different actions
