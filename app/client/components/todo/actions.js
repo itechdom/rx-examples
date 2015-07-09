@@ -15,3 +15,4 @@ module.exports =  {
 		})
 	.map(ev => String(ev.target.value).trim())
 };
+

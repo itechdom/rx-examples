@@ -1,6 +1,7 @@
 //this is the main todo file
 var $ = require('jquery');
 var Rx = require('rx');
+var actions = require('../actions/index.js');
 var h = require('virtual-dom/h');
 var diff = require('virtual-dom/diff');
 var patch = require('virtual-dom/patch');
@@ -48,14 +49,7 @@ class spinnerView{
 		actions.insertTodo$.subscribe(function(){
 
 		});
-		model.actions.dataChanged$.subscribe((data) => {
-			//call vdom diff and rerender the dom?
-			var count = 1;
-			var vtree = this.render(count);
-            var patches = diff(this.currentTree, vtree);
-            this.rootNode = patch(this.currentNode,patches);
-            this.currentTree = vtree;
-		});
+
 	}
 	unWire(){
 
@@ -63,4 +57,4 @@ class spinnerView{
 	}
 }
 
-module.exports = new todoView();
+module.exports = new spinnerView();

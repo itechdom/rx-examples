@@ -48,13 +48,18 @@
 	
 	var Rx = __webpack_require__(1);
 	var router = __webpack_require__(4);
+	var actions = __webpack_require__(6);
 	
 	//select main component
 	//have all the main events trigger something here
 	// so we have the window onload to load all the components
-	var todoComponent = __webpack_require__(6);
-	var spinnerComponent = __webpack_require__(46);
+	var todoComponent = __webpack_require__(8);
+	var spinnerComponent = __webpack_require__(47);
 	
+	console.log(actions);
+	
+	//load the actions component which stores all the actions for this app in one place
+
 	//:
 	//optional route to register the component to
 	//todoComponent();
@@ -11048,20 +11053,27 @@
 	
 	var $ = __webpack_require__(7);
 	var Rx = __webpack_require__(1);
-	var model = __webpack_require__(8);
-	var actions = __webpack_require__(9);
-	var view = __webpack_require__(11);
+	var fromEvent = Rx.Observable.fromEvent;
 	
-	var todoMain = function todoMain() {
-		_classCallCheck(this, todoMain);
+	var actionMain = function actionMain() {
+		_classCallCheck(this, actionMain);
 	
-		this.actions = actions;
-		//wire the different components to main
-		model.wire();
-		view.wire();
+		//All the default actions for this app
+		return {
+			changeRoute$: Rx.Observable.fromEvent(window, 'hashchange').map(function (ev) {
+				return ev.newURL.match(/\#[^\#]*$/)[0].replace('#', '');
+			}).startWith(window.location.hash.replace('#', '')),
+	
+			insertTodo$: fromEvent($('#new-todo').on('keyup')).filter(function (ev) {
+				var trimmedVal = String(ev.target.value).trim();
+				return ev.keyCode === ENTER_KEY && trimmedVal;
+			}).map(function (ev) {
+				return String(ev.target.value).trim();
+			})
+		};
 	};
 	
-	module.exports = new todoMain();
+	module.exports = new actionMain();
 
 /***/ },
 /* 7 */
@@ -20283,6 +20295,32 @@
 /* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
+	//this is the main todo file
+	'use strict';
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+	
+	var $ = __webpack_require__(7);
+	var Rx = __webpack_require__(1);
+	var model = __webpack_require__(9);
+	var actions = __webpack_require__(10);
+	var view = __webpack_require__(12);
+	
+	var todoMain = function todoMain() {
+		_classCallCheck(this, todoMain);
+	
+		this.actions = actions;
+		//wire the different components to main
+		model.wire();
+		view.wire();
+	};
+	
+	module.exports = new todoMain();
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
 	'use strict';
 	
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -20290,8 +20328,8 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 	
 	var Rx = __webpack_require__(1);
-	var actions = __webpack_require__(9);
-	var EventEmitter = __webpack_require__(10);
+	var actions = __webpack_require__(10);
+	var EventEmitter = __webpack_require__(11);
 	var dataEmitter = new EventEmitter();
 	
 	var todoModel = (function () {
@@ -20340,7 +20378,7 @@
 	module.exports = new todoModel();
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//the list of actions shard between view and model
@@ -20364,7 +20402,7 @@
 	};
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -20842,7 +20880,7 @@
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//this is the main todo file
@@ -20854,12 +20892,12 @@
 	
 	var $ = __webpack_require__(7);
 	var Rx = __webpack_require__(1);
-	var actions = __webpack_require__(9);
-	var model = __webpack_require__(8);
-	var h = __webpack_require__(12);
-	var diff = __webpack_require__(30);
-	var patch = __webpack_require__(36);
-	var createElement = __webpack_require__(45);
+	var actions = __webpack_require__(6);
+	var model = __webpack_require__(9);
+	var h = __webpack_require__(13);
+	var diff = __webpack_require__(31);
+	var patch = __webpack_require__(37);
+	var createElement = __webpack_require__(46);
 	
 	var todoView = (function () {
 		function todoView() {
@@ -20926,33 +20964,33 @@
 	module.exports = new todoView();
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var h = __webpack_require__(13)
+	var h = __webpack_require__(14)
 	
 	module.exports = h
 
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var isArray = __webpack_require__(14);
+	var isArray = __webpack_require__(15);
 	
-	var VNode = __webpack_require__(15);
-	var VText = __webpack_require__(21);
-	var isVNode = __webpack_require__(17);
-	var isVText = __webpack_require__(22);
-	var isWidget = __webpack_require__(18);
-	var isHook = __webpack_require__(20);
-	var isVThunk = __webpack_require__(19);
+	var VNode = __webpack_require__(16);
+	var VText = __webpack_require__(22);
+	var isVNode = __webpack_require__(18);
+	var isVText = __webpack_require__(23);
+	var isWidget = __webpack_require__(19);
+	var isHook = __webpack_require__(21);
+	var isVThunk = __webpack_require__(20);
 	
-	var parseTag = __webpack_require__(23);
-	var softSetHook = __webpack_require__(25);
-	var evHook = __webpack_require__(26);
+	var parseTag = __webpack_require__(24);
+	var softSetHook = __webpack_require__(26);
+	var evHook = __webpack_require__(27);
 	
 	module.exports = h;
 	
@@ -21076,7 +21114,7 @@
 
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
 	var nativeIsArray = Array.isArray
@@ -21090,14 +21128,14 @@
 
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(16)
-	var isVNode = __webpack_require__(17)
-	var isWidget = __webpack_require__(18)
-	var isThunk = __webpack_require__(19)
-	var isVHook = __webpack_require__(20)
+	var version = __webpack_require__(17)
+	var isVNode = __webpack_require__(18)
+	var isWidget = __webpack_require__(19)
+	var isThunk = __webpack_require__(20)
+	var isVHook = __webpack_require__(21)
 	
 	module.exports = VirtualNode
 	
@@ -21168,17 +21206,17 @@
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
 	module.exports = "2"
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(16)
+	var version = __webpack_require__(17)
 	
 	module.exports = isVirtualNode
 	
@@ -21188,7 +21226,7 @@
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports) {
 
 	module.exports = isWidget
@@ -21199,7 +21237,7 @@
 
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports) {
 
 	module.exports = isThunk
@@ -21210,7 +21248,7 @@
 
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports) {
 
 	module.exports = isHook
@@ -21223,10 +21261,10 @@
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(16)
+	var version = __webpack_require__(17)
 	
 	module.exports = VirtualText
 	
@@ -21239,10 +21277,10 @@
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(16)
+	var version = __webpack_require__(17)
 	
 	module.exports = isVirtualText
 	
@@ -21252,12 +21290,12 @@
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var split = __webpack_require__(24);
+	var split = __webpack_require__(25);
 	
 	var classIdSplit = /([\.#]?[a-zA-Z0-9_:-]+)/;
 	var notClassId = /^\.|#/;
@@ -21312,7 +21350,7 @@
 
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports) {
 
 	/*!
@@ -21424,7 +21462,7 @@
 
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -21447,12 +21485,12 @@
 
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var EvStore = __webpack_require__(27);
+	var EvStore = __webpack_require__(28);
 	
 	module.exports = EvHook;
 	
@@ -21480,12 +21518,12 @@
 
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var OneVersionConstraint = __webpack_require__(28);
+	var OneVersionConstraint = __webpack_require__(29);
 	
 	var MY_VERSION = '7';
 	OneVersionConstraint('ev-store', MY_VERSION);
@@ -21506,12 +21544,12 @@
 
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Individual = __webpack_require__(29);
+	var Individual = __webpack_require__(30);
 	
 	module.exports = OneVersion;
 	
@@ -21534,7 +21572,7 @@
 
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
@@ -21560,28 +21598,28 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var diff = __webpack_require__(31)
+	var diff = __webpack_require__(32)
 	
 	module.exports = diff
 
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArray = __webpack_require__(14)
+	var isArray = __webpack_require__(15)
 	
-	var VPatch = __webpack_require__(32)
-	var isVNode = __webpack_require__(17)
-	var isVText = __webpack_require__(22)
-	var isWidget = __webpack_require__(18)
-	var isThunk = __webpack_require__(19)
-	var handleThunk = __webpack_require__(33)
+	var VPatch = __webpack_require__(33)
+	var isVNode = __webpack_require__(18)
+	var isVText = __webpack_require__(23)
+	var isWidget = __webpack_require__(19)
+	var isThunk = __webpack_require__(20)
+	var handleThunk = __webpack_require__(34)
 	
-	var diffProps = __webpack_require__(34)
+	var diffProps = __webpack_require__(35)
 	
 	module.exports = diff
 	
@@ -22002,10 +22040,10 @@
 
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(16)
+	var version = __webpack_require__(17)
 	
 	VirtualPatch.NONE = 0
 	VirtualPatch.VTEXT = 1
@@ -22030,13 +22068,13 @@
 
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isVNode = __webpack_require__(17)
-	var isVText = __webpack_require__(22)
-	var isWidget = __webpack_require__(18)
-	var isThunk = __webpack_require__(19)
+	var isVNode = __webpack_require__(18)
+	var isVText = __webpack_require__(23)
+	var isWidget = __webpack_require__(19)
+	var isThunk = __webpack_require__(20)
 	
 	module.exports = handleThunk
 	
@@ -22076,11 +22114,11 @@
 
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(35)
-	var isHook = __webpack_require__(20)
+	var isObject = __webpack_require__(36)
+	var isHook = __webpack_require__(21)
 	
 	module.exports = diffProps
 	
@@ -22140,7 +22178,7 @@
 
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -22151,23 +22189,23 @@
 
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var patch = __webpack_require__(37)
+	var patch = __webpack_require__(38)
 	
 	module.exports = patch
 
 
 /***/ },
-/* 37 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var document = __webpack_require__(38)
-	var isArray = __webpack_require__(14)
+	var document = __webpack_require__(39)
+	var isArray = __webpack_require__(15)
 	
-	var domIndex = __webpack_require__(40)
-	var patchOp = __webpack_require__(41)
+	var domIndex = __webpack_require__(41)
+	var patchOp = __webpack_require__(42)
 	module.exports = patch
 	
 	function patch(rootNode, patches) {
@@ -22242,12 +22280,12 @@
 
 
 /***/ },
-/* 38 */
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {var topLevel = typeof global !== 'undefined' ? global :
 	    typeof window !== 'undefined' ? window : {}
-	var minDoc = __webpack_require__(39);
+	var minDoc = __webpack_require__(40);
 	
 	if (typeof document !== 'undefined') {
 	    module.exports = document;
@@ -22264,13 +22302,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 39 */
+/* 40 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 40 */
+/* 41 */
 /***/ function(module, exports) {
 
 	// Maps a virtual DOM tree onto a real DOM tree in an efficient manner.
@@ -22361,16 +22399,16 @@
 
 
 /***/ },
-/* 41 */
+/* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var applyProperties = __webpack_require__(42)
+	var applyProperties = __webpack_require__(43)
 	
-	var isWidget = __webpack_require__(18)
-	var VPatch = __webpack_require__(32)
+	var isWidget = __webpack_require__(19)
+	var VPatch = __webpack_require__(33)
 	
-	var render = __webpack_require__(43)
-	var updateWidget = __webpack_require__(44)
+	var render = __webpack_require__(44)
+	var updateWidget = __webpack_require__(45)
 	
 	module.exports = applyPatch
 	
@@ -22519,11 +22557,11 @@
 
 
 /***/ },
-/* 42 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(35)
-	var isHook = __webpack_require__(20)
+	var isObject = __webpack_require__(36)
+	var isHook = __webpack_require__(21)
 	
 	module.exports = applyProperties
 	
@@ -22622,17 +22660,17 @@
 
 
 /***/ },
-/* 43 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var document = __webpack_require__(38)
+	var document = __webpack_require__(39)
 	
-	var applyProperties = __webpack_require__(42)
+	var applyProperties = __webpack_require__(43)
 	
-	var isVNode = __webpack_require__(17)
-	var isVText = __webpack_require__(22)
-	var isWidget = __webpack_require__(18)
-	var handleThunk = __webpack_require__(33)
+	var isVNode = __webpack_require__(18)
+	var isVText = __webpack_require__(23)
+	var isWidget = __webpack_require__(19)
+	var handleThunk = __webpack_require__(34)
 	
 	module.exports = createElement
 	
@@ -22674,10 +22712,10 @@
 
 
 /***/ },
-/* 44 */
+/* 45 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isWidget = __webpack_require__(18)
+	var isWidget = __webpack_require__(19)
 	
 	module.exports = updateWidget
 	
@@ -22695,16 +22733,16 @@
 
 
 /***/ },
-/* 45 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var createElement = __webpack_require__(43)
+	var createElement = __webpack_require__(44)
 	
 	module.exports = createElement
 
 
 /***/ },
-/* 46 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//this is the main todo file
@@ -22714,7 +22752,7 @@
 	
 	var $ = __webpack_require__(7);
 	var Rx = __webpack_require__(1);
-	var view = __webpack_require__(47);
+	var view = __webpack_require__(48);
 	
 	var spinnerMain = function spinnerMain() {
 		_classCallCheck(this, spinnerMain);
@@ -22725,7 +22763,7 @@
 	module.exports = new spinnerMain();
 
 /***/ },
-/* 47 */
+/* 48 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//this is the main todo file
@@ -22737,10 +22775,11 @@
 	
 	var $ = __webpack_require__(7);
 	var Rx = __webpack_require__(1);
-	var h = __webpack_require__(12);
-	var diff = __webpack_require__(30);
-	var patch = __webpack_require__(36);
-	var createElement = __webpack_require__(45);
+	var actions = __webpack_require__(6);
+	var h = __webpack_require__(13);
+	var diff = __webpack_require__(31);
+	var patch = __webpack_require__(37);
+	var createElement = __webpack_require__(46);
 	
 	var spinnerView = (function () {
 		function spinnerView() {
@@ -22786,14 +22825,6 @@
 					//create the scene graph here
 				});
 				actions.insertTodo$.subscribe(function () {});
-				model.actions.dataChanged$.subscribe(function (data) {
-					//call vdom diff and rerender the dom?
-					var count = 1;
-					var vtree = _this.render(count);
-					var patches = diff(_this.currentTree, vtree);
-					_this.rootNode = patch(_this.currentNode, patches);
-					_this.currentTree = vtree;
-				});
 			}
 		}, {
 			key: 'unWire',
@@ -22803,7 +22834,7 @@
 		return spinnerView;
 	})();
 	
-	module.exports = new todoView();
+	module.exports = new spinnerView();
 
 /***/ }
 /******/ ]);

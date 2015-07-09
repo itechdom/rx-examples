@@ -1,7 +1,7 @@
 //this is the main todo file
 var $ = require('jquery');
 var Rx = require('rx');
-var actions = require('./actions.js');
+var actions = require('../actions/index.js');
 var model = require('./model.js')
 var h = require('virtual-dom/h');
 var diff = require('virtual-dom/diff');
