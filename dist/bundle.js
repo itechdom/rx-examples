@@ -20871,19 +20871,11 @@
 	
 			this.template = '<todo></todo>';
 	
+			this.currentTree;
+			this.currentNode;
+	
 			this.render = function (count) {
-	
-				var obj = {
-					a: 'Apple',
-					b: 'Banana',
-					c: 'Cherry',
-					d: 'Durian',
-					e: 'Elder Berry'
-				};
-	
-				return h('table', h('tr', h('th', 'letter'), h('th', 'fruit')), Object.keys(obj).map(function (k) {
-					return h('tr', h('th', k), h('td', obj[k]));
-				}));
+				return h('div', ['hello, this is the todo main'], [String(count)]);
 			};
 		}
 	
@@ -20897,21 +20889,27 @@
 				//I can combine latest here and send back the template with its data
 				this.actions.templateLoaded$.subscribe(function (data) {
 					//I can test the type of the data here before diswireing it
+					$('body').html(data);
 					var count = 0;
 					var vtree = _this.render(count);
-					var nodeTree = createElement(vtree);
-					$('body').append(nodeTree);
+					var rootNode = createElement(vtree);
+	
+					_this.currentTree = vtree;
+					_this.currentNode = rootNode;
+	
+					//first load the template html
+					$('todo').append(_this.currentNode);
 					//create the scene graph here
 				});
 	
 				actions.insertTodo$.subscribe(function () {});
-	
 				model.actions.dataChanged$.subscribe(function (data) {
 					//call vdom diff and rerender the dom?
-					var count = 1;
+					count++;
 					var vtree = _this.render(count);
-					var nodeTree = createElement(vtree);
-					$('body').html(nodeTree);
+					var patches = diff(_this.currentTree, vtree);
+					_this.rootNode = patch(_this.currentNode, patches);
+					_this.currentTree = vtree;
 				});
 			}
 		}, {
@@ -22843,13 +22841,12 @@
 			_classCallCheck(this, todoView);
 	
 			this.actions = {
-				templateLoaded$: Rx.Observable.fromPromise($.get('./app/client/components/todo/todoItem/todoItem.html'))
+				templateLoaded$: Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'))
 			};
 	
-			this.template = '<todo-item></todo-item>';
+			this.template = 'todo-item';
 	
 			this.render = function (count) {
-	
 				var obj = {
 					a: 'Apple',
 					b: 'Banana',
@@ -22877,7 +22874,7 @@
 					var count = 0;
 					var vtree = _this.render(count);
 					var nodeTree = createElement(vtree);
-					$('body').append(nodeTree);
+					$('todo-item').append(nodeTree);
 					//create the scene graph here
 				});
 	
@@ -22888,7 +22885,7 @@
 					var count = 1;
 					var vtree = _this.render(count);
 					var nodeTree = createElement(vtree);
-					$('body').html(nodeTree);
+					$('todo-item').html(nodeTree);
 				});
 			}
 		}, {
