@@ -54,6 +54,7 @@
 	// so we have the window onload to load all the components
 	var todoComponent = __webpack_require__(6);
 	
+	//:
 	//optional route to register the component to
 	//todoComponent();
 
