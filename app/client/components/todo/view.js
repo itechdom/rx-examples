@@ -34,7 +34,7 @@ class todoView{
 		//I can combine latest here and send back the template with its data
 		this.actions.templateLoaded$.subscribe((data) =>{
 			//I can test the type of the data here before diswireing it
-			$('body').html(data);
+			$('app').html(data);
 			var count = 0;
 			var vtree = this.render(count);
 			var rootNode = createElement(vtree);
@@ -54,7 +54,7 @@ class todoView{
 		});
 		model.actions.dataChanged$.subscribe((data) => {
 			//call vdom diff and rerender the dom?
-			count++;
+			var count = 1;
 			var vtree = this.render(count);
             var patches = diff(this.currentTree, vtree);
             this.rootNode = patch(this.currentNode,patches);

@@ -20889,7 +20889,7 @@
 				//I can combine latest here and send back the template with its data
 				this.actions.templateLoaded$.subscribe(function (data) {
 					//I can test the type of the data here before diswireing it
-					$('body').html(data);
+					$('app').html(data);
 					var count = 0;
 					var vtree = _this.render(count);
 					var rootNode = createElement(vtree);
@@ -20905,7 +20905,7 @@
 				actions.insertTodo$.subscribe(function () {});
 				model.actions.dataChanged$.subscribe(function (data) {
 					//call vdom diff and rerender the dom?
-					count++;
+					var count = 1;
 					var vtree = _this.render(count);
 					var patches = diff(_this.currentTree, vtree);
 					_this.rootNode = patch(_this.currentNode, patches);
