@@ -66,8 +66,6 @@ class todoView{
 
 		});
 		model.actions.dataChanged$.subscribe((data) => {
-			//call vdom diff and rerender the dom?
-			console.log(data);
 			//add
 			var count = 1;
 			var vtree = this.render(data);

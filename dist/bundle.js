@@ -50,9 +50,6 @@
 	var router = __webpack_require__(4);
 	var actions = __webpack_require__(6);
 	
-	//select main component
-	//have all the main events trigger something here
-	// so we have the window onload to load all the components
 	var todoComponent = __webpack_require__(8);
 	var spinnerComponent = __webpack_require__(50);
 
@@ -20293,7 +20290,6 @@
 	var Rx = __webpack_require__(1);
 	var model = __webpack_require__(9);
 	var view = __webpack_require__(11);
-	
 	//import any styles for todo list app
 	var style = __webpack_require__(46);
 	
@@ -20915,8 +20911,6 @@
 				});
 				actions.insertTodo$.subscribe(function () {});
 				model.actions.dataChanged$.subscribe(function (data) {
-					//call vdom diff and rerender the dom?
-					console.log(data);
 					//add
 					var count = 1;
 					var vtree = _this.render(data);
