@@ -32,15 +32,18 @@ class todoView{
 				todos = [];
 			}
 
-			return h('table',
-				h('tr', h('th', 'letter'), h('th', 'fruit')),
-				todos.map(function (element) {
-					return h('tr',
-						h('th', element.name),
-						h('td', element.name)
-					)
-				})
-			)
+			return 	h("ul.todo-list",todos.map(function(todo){
+				return	h("li", [
+						h("div.view", [
+							h("input.toggle", { "type": "checkbox"}),
+							h("label", [ todo.name ]),
+							h("button.destroy")
+							]),
+						h("form", [
+							h("input.edit")
+							])
+						])
+			}))
 		}
 
 	}
@@ -68,9 +71,9 @@ class todoView{
 			//add
 			var count = 1;
 			var vtree = this.render(data);
-            var patches = diff(this.currentTree, vtree);
-            this.rootNode = patch(this.currentNode,patches);
-            this.currentTree = vtree;
+			var patches = diff(this.currentTree, vtree);
+			this.rootNode = patch(this.currentNode,patches);
+			this.currentTree = vtree;
 		});
 	}
 	unWire(){
