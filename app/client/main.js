@@ -8,3 +8,4 @@ var actions = require('./components/actions/index.js');
 // so we have the window onload to load all the components
 var todoComponent = require('./components/todo/index.js');
 var spinnerComponent = require('./components/spinner/index.js');
+

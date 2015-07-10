@@ -8,6 +8,7 @@ class actionMain{
 	constructor(){
 		//All the default actions for this app
 		return {
+
 			changeRoute$: Rx.Observable.fromEvent(window, 'hashchange')
 				.map(ev => ev.newURL.match(/\#[^\#]*$/)[0].replace('#', ''))
 				.startWith(window.location.hash.replace('#', '')),
@@ -19,7 +20,6 @@ class actionMain{
 				})
 				.map(ev => String(ev.target.value).trim())
 		}
-
 	}
 }
 
