@@ -1,5 +1,4 @@
 'use strict';
-
 var gulp = require('gulp');
 var serve = require('browser-sync');
 
@@ -9,7 +8,6 @@ gulp.task('reload',function(){
 	serve.reload();
 });
 gulp.task('watch', function(){
-	var files = options.main+"/*/**";
-	gulp.watch(files, ['webpack', 'reload']);
+	gulp.watch(options.main+"**/*", ['webpack:build-dev', 'reload']);
 });
 };

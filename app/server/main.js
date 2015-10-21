@@ -38,7 +38,6 @@ var requestStream = Rx.Observable.fromEvent(customEvent,'request');
 var responseStream = Rx.Observable.fromEvent(customEvent,'response');
 request.stream = requestStream;
 
-
 //combines both of them at once
 var inputStream = Rx.Observable.combineLatest(requestStream,responseStream,function(req,res){
 	return {request:req,response:res};
@@ -46,7 +45,6 @@ var inputStream = Rx.Observable.combineLatest(requestStream,responseStream,funct
 
 //add the information of the output here
 source['from'] = 'main';
-
 
 /*inputStream.subscribe(function(res){
 	//console.log(req,"--------Request--------------");

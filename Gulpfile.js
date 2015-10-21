@@ -1,18 +1,16 @@
-'use strict';
-
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var _ = require('lodash');
 var wrench = require('wrench');
 var sync = require('run-sequence');
 
-
-
 var options = {
-  src: './app/client/main.js',
-  dist: 'dist',
-  main:'./app/client',
+  src: './app/app.js',
+  dist: './dist/',
+  main:'./app/',
+  components:'app/**/*.component.js',
   tmp: '.tmp',
+  test:'app/**/*.spec.js',
   errorHandler: function(title) {
     return function(err) {
       gutil.log(gutil.colors.red('[' + title + ']'), err.toString());
@@ -28,6 +26,5 @@ wrench.readdirSyncRecursive('./gulp').filter(function(file) {
 });
 
 gulp.task('default', function(done){
-	sync('webpack', 'serve', 'watch', done);
+  sync('webpack:build-dev', 'serve', 'watch', done);
 });
-

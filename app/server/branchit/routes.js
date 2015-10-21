@@ -13,7 +13,6 @@ var express = require('express')
 //route for the public folder which contains the front end
 app.use(express.static(__dirname+"/public"));
 
-
 // Local includes
 //var modHello = require('./hello');
 

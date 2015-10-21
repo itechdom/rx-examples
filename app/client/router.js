@@ -9,12 +9,10 @@ module.exports = function(requestStream,route){
 			matcher = routeMatcher(route);
 			return matcher.parse(req.url) != null;
 	});
-
 	//this is the component that will register everything 
 	outputStream["from"] = "router";
 
 	return outputStream;
-
 	//urlStream = requestStream.filter(function(req){
 	//	return req.url == '/';
 	//});
