@@ -1,19 +1,14 @@
 //init all data here
 var http = require('http');
 var server = http.createServer();
-var dispatcher = require('./dispatcher');
 var Rx = require('rx');
-var router = require('./router.js');
-var a = require('./controllers/a');
-var b = require('./controllers/b');
-var c = require('./controllers/c');
+var router = require('./components/router.js');
 var EventEmitter = require('events').EventEmitter,
         customEvent = new EventEmitter();
 var util = require('util');
-
-var renderer = require('./renderer.js');
-var request = require('./request.js');
-var debug = require('./debugger.js');
+var renderer = require('./components/renderer.js');
+var request = require('./components/request.js');
+var debug = require('./components/debugger.js');
 
 //var RxNode = require('rx-node');
 
@@ -31,8 +26,7 @@ server.on('request',function(req,res){
     //check to see if the route belongs to us?
 });
 
-//pass the request to router?
-//
+
 var source = Rx.Observable.fromEvent(server, 'request');
 var requestStream = Rx.Observable.fromEvent(customEvent,'request');
 var responseStream = Rx.Observable.fromEvent(customEvent,'response');
@@ -46,23 +40,13 @@ var inputStream = Rx.Observable.combineLatest(requestStream,responseStream,funct
 //add the information of the output here
 source['from'] = 'main';
 
-/*inputStream.subscribe(function(res){
-	//console.log(req,"--------Request--------------");
-});
-*/
-
-//figure out a way to register these routes in the router memory and then look them up and assign to the right observable instead of filtering through every request
-a(router(source,'/a'));
-b(router(source,'/b'));
-c(router(source,'/c'));
-
 
 //we attach a debugger here to display the stream as we are going through
 //final resort is here
 source.subscribe(function(req){
     index = global.myRoutes.indexOf(req.url);
     if(index == -1){
-	renderer("route aint here body");
+	renderer("route aint here buddy");
     }
 });
 

@@ -2,7 +2,6 @@
 Rx = require('rx');
 RouteParser = require('route-parser');
 var routeMatcher = require("route-matcher").routeMatcher;
-RouterModel = require('./routerModel.js');
 var request = require('./request.js');
 var debug = require('./debugger.js');
 
@@ -11,7 +10,7 @@ module.exports = function(requestStream,route){
 
 	// register this module, and say what it's connected to and what it's going to out put?
 	routeStream = Rx.Observable.return(route);
-	RouterModel(routeStream);
+
 
 	var outputStream = requestStream.filter(function(req){
 			matcher = routeMatcher(route);
@@ -24,8 +23,4 @@ module.exports = function(requestStream,route){
  	debug('router',requestStream,outputStream);
 
 	return outputStream;
-
-	//urlStream = requestStream.filter(function(req){
-	//	return req.url == '/';
-	//});
 };
