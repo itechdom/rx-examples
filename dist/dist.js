@@ -1,41 +1,41 @@
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
-/******/
+
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
+/******/ 	__webpack_require__.p = "/dist/";
+
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
@@ -45,23 +45,20 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
+
 	var Rx = __webpack_require__(1);
 	var router = __webpack_require__(4);
-	__webpack_require__(6);
-	var actions = __webpack_require__(16);
-	
-	var todoComponent = __webpack_require__(18);
-	var spinnerComponent = __webpack_require__(58);
+	var actions = __webpack_require__(6);
+	var todoComponent = __webpack_require__(8);
 
 /***/ },
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(module, global, process) {// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved. See License.txt in the project root for license information.
-	
+
 	;(function (undefined) {
-	
+
 	  var objectTypes = {
 	    'boolean': false,
 	    'function': true,
@@ -70,17 +67,17 @@
 	    'string': false,
 	    'undefined': false
 	  };
-	
+
 	  var root = (objectTypes[typeof window] && window) || this,
 	    freeExports = objectTypes[typeof exports] && exports && !exports.nodeType && exports,
 	    freeModule = objectTypes[typeof module] && module && !module.nodeType && module,
 	    moduleExports = freeModule && freeModule.exports === freeExports && freeExports,
 	    freeGlobal = objectTypes[typeof global] && global;
-	
+
 	  if (freeGlobal && (freeGlobal.global === freeGlobal || freeGlobal.window === freeGlobal)) {
 	    root = freeGlobal;
 	  }
-	
+
 	  var Rx = {
 	      internals: {},
 	      config: {
@@ -88,7 +85,7 @@
 	      },
 	      helpers: { }
 	  };
-	
+
 	  // Defaults
 	  var noop = Rx.helpers.noop = function () { },
 	    notDefined = Rx.helpers.notDefined = function (x) { return typeof x === 'undefined'; },
@@ -104,23 +101,23 @@
 	    asArray = Rx.helpers.asArray = function () { return Array.prototype.slice.call(arguments); },
 	    not = Rx.helpers.not = function (a) { return !a; },
 	    isFunction = Rx.helpers.isFunction = (function () {
-	
+
 	      var isFn = function (value) {
 	        return typeof value == 'function' || false;
 	      }
-	
+
 	      // fallback for older versions of Chrome and Safari
 	      if (isFn(/x/)) {
 	        isFn = function(value) {
 	          return typeof value == 'function' && toString.call(value) == '[object Function]';
 	        };
 	      }
-	
+
 	      return isFn;
 	    }());
-	
+
 	  function cloneArray(arr) { for(var a = [], i = 0, len = arr.length; i < len; i++) { a.push(arr[i]); } return a;}
-	
+
 	  Rx.config.longStackSupport = false;
 	  var hasStacks = false;
 	  try {
@@ -128,12 +125,12 @@
 	  } catch (e) {
 	    hasStacks = !!e.stack;
 	  }
-	
+
 	  // All code after this point will be filtered from stack traces reported by RxJS
 	  var rStartingLine = captureLine(), rFileName;
-	
+
 	  var STACK_JUMP_SEPARATOR = "From previous event:";
-	
+
 	  function makeStackTraceLong(error, observable) {
 	      // If possible, transform the error stack trace by removing Node and RxJS
 	      // cruft, then concatenating with the stack trace of `observable`.
@@ -151,45 +148,45 @@
 	          }
 	        }
 	        stacks.unshift(error.stack);
-	
+
 	        var concatedStacks = stacks.join("\n" + STACK_JUMP_SEPARATOR + "\n");
 	        error.stack = filterStackString(concatedStacks);
 	    }
 	  }
-	
+
 	  function filterStackString(stackString) {
 	    var lines = stackString.split("\n"),
 	        desiredLines = [];
 	    for (var i = 0, len = lines.length; i < len; i++) {
 	      var line = lines[i];
-	
+
 	      if (!isInternalFrame(line) && !isNodeFrame(line) && line) {
 	        desiredLines.push(line);
 	      }
 	    }
 	    return desiredLines.join("\n");
 	  }
-	
+
 	  function isInternalFrame(stackLine) {
 	    var fileNameAndLineNumber = getFileNameAndLineNumber(stackLine);
 	    if (!fileNameAndLineNumber) {
 	      return false;
 	    }
 	    var fileName = fileNameAndLineNumber[0], lineNumber = fileNameAndLineNumber[1];
-	
+
 	    return fileName === rFileName &&
 	      lineNumber >= rStartingLine &&
 	      lineNumber <= rEndingLine;
 	  }
-	
+
 	  function isNodeFrame(stackLine) {
 	    return stackLine.indexOf("(module.js:") !== -1 ||
 	      stackLine.indexOf("(node.js:") !== -1;
 	  }
-	
+
 	  function captureLine() {
 	    if (!hasStacks) { return; }
-	
+
 	    try {
 	      throw new Error();
 	    } catch (e) {
@@ -197,64 +194,64 @@
 	      var firstLine = lines[0].indexOf("@") > 0 ? lines[1] : lines[2];
 	      var fileNameAndLineNumber = getFileNameAndLineNumber(firstLine);
 	      if (!fileNameAndLineNumber) { return; }
-	
+
 	      rFileName = fileNameAndLineNumber[0];
 	      return fileNameAndLineNumber[1];
 	    }
 	  }
-	
+
 	  function getFileNameAndLineNumber(stackLine) {
 	    // Named functions: "at functionName (filename:lineNumber:columnNumber)"
 	    var attempt1 = /at .+ \((.+):(\d+):(?:\d+)\)$/.exec(stackLine);
 	    if (attempt1) { return [attempt1[1], Number(attempt1[2])]; }
-	
+
 	    // Anonymous functions: "at filename:lineNumber:columnNumber"
 	    var attempt2 = /at ([^ ]+):(\d+):(?:\d+)$/.exec(stackLine);
 	    if (attempt2) { return [attempt2[1], Number(attempt2[2])]; }
-	
+
 	    // Firefox style: "function@filename:lineNumber or @filename:lineNumber"
 	    var attempt3 = /.*@(.+):(\d+)$/.exec(stackLine);
 	    if (attempt3) { return [attempt3[1], Number(attempt3[2])]; }
 	  }
-	
+
 	  var EmptyError = Rx.EmptyError = function() {
 	    this.message = 'Sequence contains no elements.';
 	    Error.call(this);
 	  };
 	  EmptyError.prototype = Error.prototype;
-	
+
 	  var ObjectDisposedError = Rx.ObjectDisposedError = function() {
 	    this.message = 'Object has been disposed';
 	    Error.call(this);
 	  };
 	  ObjectDisposedError.prototype = Error.prototype;
-	
+
 	  var ArgumentOutOfRangeError = Rx.ArgumentOutOfRangeError = function () {
 	    this.message = 'Argument out of range';
 	    Error.call(this);
 	  };
 	  ArgumentOutOfRangeError.prototype = Error.prototype;
-	
+
 	  var NotSupportedError = Rx.NotSupportedError = function (message) {
 	    this.message = message || 'This operation is not supported';
 	    Error.call(this);
 	  };
 	  NotSupportedError.prototype = Error.prototype;
-	
+
 	  var NotImplementedError = Rx.NotImplementedError = function (message) {
 	    this.message = message || 'This operation is not implemented';
 	    Error.call(this);
 	  };
 	  NotImplementedError.prototype = Error.prototype;
-	
+
 	  var notImplemented = Rx.helpers.notImplemented = function () {
 	    throw new NotImplementedError();
 	  };
-	
+
 	  var notSupported = Rx.helpers.notSupported = function () {
 	    throw new NotSupportedError();
 	  };
-	
+
 	  // Shim in iterator support
 	  var $iterator$ = (typeof Symbol === 'function' && Symbol.iterator) ||
 	    '_es6shim_iterator_';
@@ -262,19 +259,19 @@
 	  if (root.Set && typeof new root.Set()['@@iterator'] === 'function') {
 	    $iterator$ = '@@iterator';
 	  }
-	
+
 	  var doneEnumerator = Rx.doneEnumerator = { done: true, value: undefined };
-	
+
 	  var isIterable = Rx.helpers.isIterable = function (o) {
 	    return o[$iterator$] !== undefined;
 	  }
-	
+
 	  var isArrayLike = Rx.helpers.isArrayLike = function (o) {
 	    return o && o.length !== undefined;
 	  }
-	
+
 	  Rx.helpers.iterator = $iterator$;
-	
+
 	  var bindCallback = Rx.internals.bindCallback = function (func, thisArg, argCount) {
 	    if (typeof thisArg === 'undefined') { return func; }
 	    switch(argCount) {
@@ -295,12 +292,12 @@
 	          return func.call(thisArg, value, index, collection);
 	        };
 	    }
-	
+
 	    return function() {
 	      return func.apply(thisArg, arguments);
 	    };
 	  };
-	
+
 	  /** Used to determine if values are of the language type Object */
 	  var dontEnums = ['toString',
 	    'toLocaleString',
@@ -310,7 +307,7 @@
 	    'propertyIsEnumerable',
 	    'constructor'],
 	  dontEnumsLength = dontEnums.length;
-	
+
 	  /** `Object#toString` result shortcuts */
 	  var argsClass = '[object Arguments]',
 	    arrayClass = '[object Array]',
@@ -322,7 +319,7 @@
 	    objectClass = '[object Object]',
 	    regexpClass = '[object RegExp]',
 	    stringClass = '[object String]';
-	
+
 	  var toString = Object.prototype.toString,
 	    hasOwnProperty = Object.prototype.hasOwnProperty,
 	    supportsArgsClass = toString.call(arguments) == argsClass, // For less <IE9 && FF<4
@@ -331,46 +328,46 @@
 	    objectProto = Object.prototype,
 	    stringProto = String.prototype,
 	    propertyIsEnumerable = objectProto.propertyIsEnumerable;
-	
+
 	  try {
 	    supportNodeClass = !(toString.call(document) == objectClass && !({ 'toString': 0 } + ''));
 	  } catch (e) {
 	    supportNodeClass = true;
 	  }
-	
+
 	  var nonEnumProps = {};
 	  nonEnumProps[arrayClass] = nonEnumProps[dateClass] = nonEnumProps[numberClass] = { 'constructor': true, 'toLocaleString': true, 'toString': true, 'valueOf': true };
 	  nonEnumProps[boolClass] = nonEnumProps[stringClass] = { 'constructor': true, 'toString': true, 'valueOf': true };
 	  nonEnumProps[errorClass] = nonEnumProps[funcClass] = nonEnumProps[regexpClass] = { 'constructor': true, 'toString': true };
 	  nonEnumProps[objectClass] = { 'constructor': true };
-	
+
 	  var support = {};
 	  (function () {
 	    var ctor = function() { this.x = 1; },
 	      props = [];
-	
+
 	    ctor.prototype = { 'valueOf': 1, 'y': 1 };
 	    for (var key in new ctor) { props.push(key); }
 	    for (key in arguments) { }
-	
+
 	    // Detect if `name` or `message` properties of `Error.prototype` are enumerable by default.
 	    support.enumErrorProps = propertyIsEnumerable.call(errorProto, 'message') || propertyIsEnumerable.call(errorProto, 'name');
-	
+
 	    // Detect if `prototype` properties are enumerable by default.
 	    support.enumPrototypes = propertyIsEnumerable.call(ctor, 'prototype');
-	
+
 	    // Detect if `arguments` object indexes are non-enumerable
 	    support.nonEnumArgs = key != 0;
-	
+
 	    // Detect if properties shadowing those on `Object.prototype` are non-enumerable.
 	    support.nonEnumShadows = !/valueOf/.test(props);
 	  }(1));
-	
+
 	  var isObject = Rx.internals.isObject = function(value) {
 	    var type = typeof value;
 	    return value && (type == 'function' || type == 'object') || false;
 	  };
-	
+
 	  function keysIn(object) {
 	    var result = [];
 	    if (!isObject(object)) {
@@ -381,19 +378,19 @@
 	    }
 	    var skipProto = support.enumPrototypes && typeof object == 'function',
 	        skipErrorProps = support.enumErrorProps && (object === errorProto || object instanceof Error);
-	
+
 	    for (var key in object) {
 	      if (!(skipProto && key == 'prototype') &&
 	          !(skipErrorProps && (key == 'message' || key == 'name'))) {
 	        result.push(key);
 	      }
 	    }
-	
+
 	    if (support.nonEnumShadows && object !== objectProto) {
 	      var ctor = object.constructor,
 	          index = -1,
 	          length = dontEnumsLength;
-	
+
 	      if (object === (ctor && ctor.prototype)) {
 	        var className = object === stringProto ? stringClass : object === errorProto ? errorClass : toString.call(object),
 	            nonEnum = nonEnumProps[className];
@@ -407,12 +404,12 @@
 	    }
 	    return result;
 	  }
-	
+
 	  function internalFor(object, callback, keysFunc) {
 	    var index = -1,
 	      props = keysFunc(object),
 	      length = props.length;
-	
+
 	    while (++index < length) {
 	      var key = props[index];
 	      if (callback(object[key], key, object) === false) {
@@ -421,32 +418,32 @@
 	    }
 	    return object;
 	  }
-	
+
 	  function internalForIn(object, callback) {
 	    return internalFor(object, callback, keysIn);
 	  }
-	
+
 	  function isNode(value) {
 	    // IE < 9 presents DOM nodes as `Object` objects except they have `toString`
 	    // methods that are `typeof` "string" and still can coerce nodes to strings
 	    return typeof value.toString != 'function' && typeof (value + '') == 'string';
 	  }
-	
+
 	  var isArguments = function(value) {
 	    return (value && typeof value == 'object') ? toString.call(value) == argsClass : false;
 	  }
-	
+
 	  // fallback for browsers that can't detect `arguments` objects by [[Class]]
 	  if (!supportsArgsClass) {
 	    isArguments = function(value) {
 	      return (value && typeof value == 'object') ? hasOwnProperty.call(value, 'callee') : false;
 	    };
 	  }
-	
+
 	  var isEqual = Rx.internals.isEqual = function (x, y) {
 	    return deepEquals(x, y, [], []);
 	  };
-	
+
 	  /** @private
 	   * Used for deep comparison
 	   **/
@@ -456,20 +453,20 @@
 	      // treat `+0` vs. `-0` as not equal
 	      return a !== 0 || (1 / a == 1 / b);
 	    }
-	
+
 	    var type = typeof a,
 	        otherType = typeof b;
-	
+
 	    // exit early for unlike primitive values
 	    if (a === a && (a == null || b == null ||
 	        (type != 'function' && type != 'object' && otherType != 'function' && otherType != 'object'))) {
 	      return false;
 	    }
-	
+
 	    // compare [[Class]] names
 	    var className = toString.call(a),
 	        otherClass = toString.call(b);
-	
+
 	    if (className == argsClass) {
 	      className = objectClass;
 	    }
@@ -485,14 +482,14 @@
 	        // coerce dates and booleans to numbers, dates to milliseconds and booleans
 	        // to `1` or `0` treating invalid dates coerced to `NaN` as not equal
 	        return +a == +b;
-	
+
 	      case numberClass:
 	        // treat `NaN` vs. `NaN` as equal
 	        return (a != +a) ?
 	          b != +b :
 	          // but treat `-0` vs. `+0` as not equal
 	          (a == 0 ? (1 / a == 1 / b) : a == +b);
-	
+
 	      case regexpClass:
 	      case stringClass:
 	        // coerce regexes to strings (http://es5.github.io/#x15.10.6.4)
@@ -501,7 +498,7 @@
 	    }
 	    var isArr = className == arrayClass;
 	    if (!isArr) {
-	
+
 	      // exit for functions and DOM nodes
 	      if (className != objectClass || (!support.nodeClass && (isNode(a) || isNode(b)))) {
 	        return false;
@@ -509,7 +506,7 @@
 	      // in older versions of Opera, `arguments` objects have `Array` constructors
 	      var ctorA = !support.argsObject && isArguments(a) ? Object : a.constructor,
 	          ctorB = !support.argsObject && isArguments(b) ? Object : b.constructor;
-	
+
 	      // non `Object` object instances with different constructors are not equal
 	      if (ctorA != ctorB &&
 	            !(hasOwnProperty.call(a, 'constructor') && hasOwnProperty.call(b, 'constructor')) &&
@@ -525,7 +522,7 @@
 	    var initedStack = !stackA;
 	    stackA || (stackA = []);
 	    stackB || (stackB = []);
-	
+
 	    var length = stackA.length;
 	    while (length--) {
 	      if (stackA[length] == a) {
@@ -534,24 +531,24 @@
 	    }
 	    var size = 0;
 	    var result = true;
-	
+
 	    // add `a` and `b` to the stack of traversed objects
 	    stackA.push(a);
 	    stackB.push(b);
-	
+
 	    // recursively compare objects and arrays (susceptible to call stack limits)
 	    if (isArr) {
 	      // compare lengths to determine if a deep comparison is necessary
 	      length = a.length;
 	      size = b.length;
 	      result = size == length;
-	
+
 	      if (result) {
 	        // deep compare the contents, ignoring non-numeric properties
 	        while (size--) {
 	          var index = length,
 	              value = b[size];
-	
+
 	          if (!(result = deepEquals(a[size], value, stackA, stackB))) {
 	            break;
 	          }
@@ -569,7 +566,7 @@
 	          return (result = hasOwnProperty.call(a, key) && deepEquals(a[key], value, stackA, stackB));
 	        }
 	      });
-	
+
 	      if (result) {
 	        // ensure both objects have the same number of properties
 	        internalForIn(a, function(value, key, a) {
@@ -582,19 +579,19 @@
 	    }
 	    stackA.pop();
 	    stackB.pop();
-	
+
 	    return result;
 	  }
-	
+
 	  var hasProp = {}.hasOwnProperty,
 	      slice = Array.prototype.slice;
-	
+
 	  var inherits = this.inherits = Rx.internals.inherits = function (child, parent) {
 	    function __() { this.constructor = child; }
 	    __.prototype = parent.prototype;
 	    child.prototype = new __();
 	  };
-	
+
 	  var addProperties = Rx.internals.addProperties = function (obj) {
 	    for(var sources = [], i = 1, len = arguments.length; i < len; i++) { sources.push(arguments[i]); }
 	    for (var idx = 0, ln = sources.length; idx < ln; idx++) {
@@ -604,14 +601,14 @@
 	      }
 	    }
 	  };
-	
+
 	  // Rx Utils
 	  var addRef = Rx.internals.addRef = function (xs, r) {
 	    return new AnonymousObservable(function (observer) {
 	      return new CompositeDisposable(r.getDisposable(), xs.subscribe(observer));
 	    });
 	  };
-	
+
 	  function arrayInitialize(count, factory) {
 	    var a = new Array(count);
 	    for (var i = 0; i < count; i++) {
@@ -619,7 +616,7 @@
 	    }
 	    return a;
 	  }
-	
+
 	  var errorObj = {e: {}};
 	  var tryCatchTarget;
 	  function tryCatcher() {
@@ -638,30 +635,30 @@
 	  function thrower(e) {
 	    throw e;
 	  }
-	
+
 	  // Collections
 	  function IndexedItem(id, value) {
 	    this.id = id;
 	    this.value = value;
 	  }
-	
+
 	  IndexedItem.prototype.compareTo = function (other) {
 	    var c = this.value.compareTo(other.value);
 	    c === 0 && (c = this.id - other.id);
 	    return c;
 	  };
-	
+
 	  // Priority Queue for Scheduling
 	  var PriorityQueue = Rx.internals.PriorityQueue = function (capacity) {
 	    this.items = new Array(capacity);
 	    this.length = 0;
 	  };
-	
+
 	  var priorityProto = PriorityQueue.prototype;
 	  priorityProto.isHigherPriority = function (left, right) {
 	    return this.items[left].compareTo(this.items[right]) < 0;
 	  };
-	
+
 	  priorityProto.percolate = function (index) {
 	    if (index >= this.length || index < 0) { return; }
 	    var parent = index - 1 >> 1;
@@ -673,7 +670,7 @@
 	      this.percolate(parent);
 	    }
 	  };
-	
+
 	  priorityProto.heapify = function (index) {
 	    +index || (index = 0);
 	    if (index >= this.length || index < 0) { return; }
@@ -693,27 +690,27 @@
 	      this.heapify(first);
 	    }
 	  };
-	
+
 	  priorityProto.peek = function () { return this.items[0].value; };
-	
+
 	  priorityProto.removeAt = function (index) {
 	    this.items[index] = this.items[--this.length];
 	    this.items[this.length] = undefined;
 	    this.heapify();
 	  };
-	
+
 	  priorityProto.dequeue = function () {
 	    var result = this.peek();
 	    this.removeAt(0);
 	    return result;
 	  };
-	
+
 	  priorityProto.enqueue = function (item) {
 	    var index = this.length++;
 	    this.items[index] = new IndexedItem(PriorityQueue.count++, item);
 	    this.percolate(index);
 	  };
-	
+
 	  priorityProto.remove = function (item) {
 	    for (var i = 0; i < this.length; i++) {
 	      if (this.items[i].value === item) {
@@ -724,7 +721,7 @@
 	    return false;
 	  };
 	  PriorityQueue.count = 0;
-	
+
 	  /**
 	   * Represents a group of disposable resources that are disposed together.
 	   * @constructor
@@ -746,9 +743,9 @@
 	    this.isDisposed = false;
 	    this.length = args.length;
 	  };
-	
+
 	  var CompositeDisposablePrototype = CompositeDisposable.prototype;
-	
+
 	  /**
 	   * Adds a disposable to the CompositeDisposable or disposes the disposable if the CompositeDisposable is disposed.
 	   * @param {Mixed} item Disposable to add.
@@ -761,7 +758,7 @@
 	      this.length++;
 	    }
 	  };
-	
+
 	  /**
 	   * Removes and disposes the first occurrence of a disposable from the CompositeDisposable.
 	   * @param {Mixed} item Disposable to remove.
@@ -780,7 +777,7 @@
 	    }
 	    return shouldDispose;
 	  };
-	
+
 	  /**
 	   *  Disposes all disposables in the group and removes them from the group.
 	   */
@@ -791,13 +788,13 @@
 	      for(var i = 0; i < len; i++) { currentDisposables[i] = this.disposables[i]; }
 	      this.disposables = [];
 	      this.length = 0;
-	
+
 	      for (i = 0; i < len; i++) {
 	        currentDisposables[i].dispose();
 	      }
 	    }
 	  };
-	
+
 	  /**
 	   * Provides a set of static methods for creating Disposables.
 	   * @param {Function} dispose Action to run during the first call to dispose. The action is guaranteed to be run at most once.
@@ -806,7 +803,7 @@
 	    this.isDisposed = false;
 	    this.action = action || noop;
 	  };
-	
+
 	  /** Performs the task of cleaning up resources. */
 	  Disposable.prototype.dispose = function () {
 	    if (!this.isDisposed) {
@@ -814,19 +811,19 @@
 	      this.isDisposed = true;
 	    }
 	  };
-	
+
 	  /**
 	   * Creates a disposable object that invokes the specified action when disposed.
 	   * @param {Function} dispose Action to run during the first call to dispose. The action is guaranteed to be run at most once.
 	   * @return {Disposable} The disposable object that runs the given action upon disposal.
 	   */
 	  var disposableCreate = Disposable.create = function (action) { return new Disposable(action); };
-	
+
 	  /**
 	   * Gets the disposable that does nothing when disposed.
 	   */
 	  var disposableEmpty = Disposable.empty = { dispose: noop };
-	
+
 	  /**
 	   * Validates whether the given object is a disposable
 	   * @param {Object} Object to test whether it has a dispose method
@@ -835,11 +832,11 @@
 	  var isDisposable = Disposable.isDisposable = function (d) {
 	    return d && isFunction(d.dispose);
 	  };
-	
+
 	  var checkDisposed = Disposable.checkDisposed = function (disposable) {
 	    if (disposable.isDisposed) { throw new ObjectDisposedError(); }
 	  };
-	
+
 	  // Single assignment
 	  var SingleAssignmentDisposable = Rx.SingleAssignmentDisposable = function () {
 	    this.isDisposed = false;
@@ -862,7 +859,7 @@
 	    }
 	    old && old.dispose();
 	  };
-	
+
 	  // Multiple assignment disposable
 	  var SerialDisposable = Rx.SerialDisposable = function () {
 	    this.isDisposed = false;
@@ -888,18 +885,18 @@
 	    }
 	    old && old.dispose();
 	  };
-	
+
 	  /**
 	   * Represents a disposable resource that only disposes its underlying disposable resource when all dependent disposable objects have been disposed.
 	   */
 	  var RefCountDisposable = Rx.RefCountDisposable = (function () {
-	
+
 	    function InnerDisposable(disposable) {
 	      this.disposable = disposable;
 	      this.disposable.count++;
 	      this.isInnerDisposed = false;
 	    }
-	
+
 	    InnerDisposable.prototype.dispose = function () {
 	      if (!this.disposable.isDisposed && !this.isInnerDisposed) {
 	        this.isInnerDisposed = true;
@@ -910,7 +907,7 @@
 	        }
 	      }
 	    };
-	
+
 	    /**
 	     * Initializes a new instance of the RefCountDisposable with the specified disposable.
 	     * @constructor
@@ -922,7 +919,7 @@
 	      this.isPrimaryDisposed = false;
 	      this.count = 0;
 	    }
-	
+
 	    /**
 	     * Disposes the underlying disposable only when all dependent disposables have been disposed
 	     */
@@ -935,7 +932,7 @@
 	        }
 	      }
 	    };
-	
+
 	    /**
 	     * Returns a dependent disposable that when disposed decreases the refcount on the underlying disposable.
 	     * @returns {Disposable} A dependent disposable contributing to the reference count that manages the underlying disposable's lifetime.
@@ -943,27 +940,27 @@
 	    RefCountDisposable.prototype.getDisposable = function () {
 	      return this.isDisposed ? disposableEmpty : new InnerDisposable(this);
 	    };
-	
+
 	    return RefCountDisposable;
 	  })();
-	
+
 	  function ScheduledDisposable(scheduler, disposable) {
 	    this.scheduler = scheduler;
 	    this.disposable = disposable;
 	    this.isDisposed = false;
 	  }
-	
+
 	  function scheduleItem(s, self) {
 	    if (!self.isDisposed) {
 	      self.isDisposed = true;
 	      self.disposable.dispose();
 	    }
 	  }
-	
+
 	  ScheduledDisposable.prototype.dispose = function () {
 	    this.scheduler.scheduleWithState(this, scheduleItem);
 	  };
-	
+
 	  var ScheduledItem = Rx.internals.ScheduledItem = function (scheduler, state, action, dueTime, comparer) {
 	    this.scheduler = scheduler;
 	    this.state = state;
@@ -972,45 +969,45 @@
 	    this.comparer = comparer || defaultSubComparer;
 	    this.disposable = new SingleAssignmentDisposable();
 	  }
-	
+
 	  ScheduledItem.prototype.invoke = function () {
 	    this.disposable.setDisposable(this.invokeCore());
 	  };
-	
+
 	  ScheduledItem.prototype.compareTo = function (other) {
 	    return this.comparer(this.dueTime, other.dueTime);
 	  };
-	
+
 	  ScheduledItem.prototype.isCancelled = function () {
 	    return this.disposable.isDisposed;
 	  };
-	
+
 	  ScheduledItem.prototype.invokeCore = function () {
 	    return this.action(this.scheduler, this.state);
 	  };
-	
+
 	  /** Provides a set of static properties to access commonly used schedulers. */
 	  var Scheduler = Rx.Scheduler = (function () {
-	
+
 	    function Scheduler(now, schedule, scheduleRelative, scheduleAbsolute) {
 	      this.now = now;
 	      this._schedule = schedule;
 	      this._scheduleRelative = scheduleRelative;
 	      this._scheduleAbsolute = scheduleAbsolute;
 	    }
-	
+
 	    /** Determines whether the given object is a scheduler */
 	    Scheduler.isScheduler = function (s) {
 	      return s instanceof Scheduler;
 	    }
-	
+
 	    function invokeAction(scheduler, action) {
 	      action();
 	      return disposableEmpty;
 	    }
-	
+
 	    var schedulerProto = Scheduler.prototype;
-	
+
 	    /**
 	     * Schedules an action to be executed.
 	     * @param {Function} action Action to execute.
@@ -1019,7 +1016,7 @@
 	    schedulerProto.schedule = function (action) {
 	      return this._schedule(action, invokeAction);
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed.
 	     * @param state State passed to the action to be executed.
@@ -1029,7 +1026,7 @@
 	    schedulerProto.scheduleWithState = function (state, action) {
 	      return this._schedule(state, action);
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed after the specified relative due time.
 	     * @param {Function} action Action to execute.
@@ -1039,7 +1036,7 @@
 	    schedulerProto.scheduleWithRelative = function (dueTime, action) {
 	      return this._scheduleRelative(action, dueTime, invokeAction);
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed after dueTime.
 	     * @param state State passed to the action to be executed.
@@ -1050,7 +1047,7 @@
 	    schedulerProto.scheduleWithRelativeAndState = function (state, dueTime, action) {
 	      return this._scheduleRelative(state, dueTime, action);
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed at the specified absolute due time.
 	     * @param {Function} action Action to execute.
@@ -1060,7 +1057,7 @@
 	    schedulerProto.scheduleWithAbsolute = function (dueTime, action) {
 	      return this._scheduleAbsolute(action, dueTime, invokeAction);
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed at dueTime.
 	     * @param {Mixed} state State passed to the action to be executed.
@@ -1071,10 +1068,10 @@
 	    schedulerProto.scheduleWithAbsoluteAndState = function (state, dueTime, action) {
 	      return this._scheduleAbsolute(state, dueTime, action);
 	    };
-	
+
 	    /** Gets the current time according to the local machine's system clock. */
 	    Scheduler.now = defaultNow;
-	
+
 	    /**
 	     * Normalizes the specified TimeSpan value to a positive value.
 	     * @param {Number} timeSpan The time span value to normalize.
@@ -1084,17 +1081,17 @@
 	      timeSpan < 0 && (timeSpan = 0);
 	      return timeSpan;
 	    };
-	
+
 	    return Scheduler;
 	  }());
-	
+
 	  var normalizeTime = Scheduler.normalize, isScheduler = Scheduler.isScheduler;
-	
+
 	  (function (schedulerProto) {
-	
+
 	    function invokeRecImmediate(scheduler, pair) {
 	      var state = pair[0], action = pair[1], group = new CompositeDisposable();
-	
+
 	      function recursiveAction(state1) {
 	        action(state1, function (state2) {
 	          var isAdded = false, isDone = false,
@@ -1116,7 +1113,7 @@
 	      recursiveAction(state);
 	      return group;
 	    }
-	
+
 	    function invokeRecDate(scheduler, pair, method) {
 	      var state = pair[0], action = pair[1], group = new CompositeDisposable();
 	      function recursiveAction(state1) {
@@ -1140,11 +1137,11 @@
 	      recursiveAction(state);
 	      return group;
 	    }
-	
+
 	    function scheduleInnerRecursive(action, self) {
 	      action(function(dt) { self(action, dt); });
 	    }
-	
+
 	    /**
 	     * Schedules an action to be executed recursively.
 	     * @param {Function} action Action to execute recursively. The parameter passed to the action is used to trigger recursive scheduling of the action.
@@ -1153,7 +1150,7 @@
 	    schedulerProto.scheduleRecursive = function (action) {
 	      return this.scheduleRecursiveWithState(action, scheduleInnerRecursive);
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed recursively.
 	     * @param {Mixed} state State passed to the action to be executed.
@@ -1163,7 +1160,7 @@
 	    schedulerProto.scheduleRecursiveWithState = function (state, action) {
 	      return this.scheduleWithState([state, action], invokeRecImmediate);
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed recursively after a specified relative due time.
 	     * @param {Function} action Action to execute recursively. The parameter passed to the action is used to trigger recursive scheduling of the action at the specified relative time.
@@ -1173,7 +1170,7 @@
 	    schedulerProto.scheduleRecursiveWithRelative = function (dueTime, action) {
 	      return this.scheduleRecursiveWithRelativeAndState(action, dueTime, scheduleInnerRecursive);
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed recursively after a specified relative due time.
 	     * @param {Mixed} state State passed to the action to be executed.
@@ -1186,7 +1183,7 @@
 	        return invokeRecDate(s, p, 'scheduleWithRelativeAndState');
 	      });
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed recursively at a specified absolute due time.
 	     * @param {Function} action Action to execute recursively. The parameter passed to the action is used to trigger recursive scheduling of the action at the specified absolute time.
@@ -1196,7 +1193,7 @@
 	    schedulerProto.scheduleRecursiveWithAbsolute = function (dueTime, action) {
 	      return this.scheduleRecursiveWithAbsoluteAndState(action, dueTime, scheduleInnerRecursive);
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed recursively at a specified absolute due time.
 	     * @param {Mixed} state State passed to the action to be executed.
@@ -1210,9 +1207,9 @@
 	      });
 	    };
 	  }(Scheduler.prototype));
-	
+
 	  (function (schedulerProto) {
-	
+
 	    /**
 	     * Schedules a periodic piece of work by dynamically discovering the scheduler's capabilities. The periodic task will be scheduled using window.setInterval for the base implementation.
 	     * @param {Number} period Period for running the work periodically.
@@ -1222,7 +1219,7 @@
 	    Scheduler.prototype.schedulePeriodic = function (period, action) {
 	      return this.schedulePeriodicWithState(null, period, action);
 	    };
-	
+
 	    /**
 	     * Schedules a periodic piece of work by dynamically discovering the scheduler's capabilities. The periodic task will be scheduled using window.setInterval for the base implementation.
 	     * @param {Mixed} state Initial state passed to the action upon the first iteration.
@@ -1236,9 +1233,9 @@
 	      var s = state, id = root.setInterval(function () { s = action(s); }, period);
 	      return disposableCreate(function () { root.clearInterval(id); });
 	    };
-	
+
 	  }(Scheduler.prototype));
-	
+
 	  (function (schedulerProto) {
 	    /**
 	     * Returns a scheduler that wraps the original scheduler, adding exception handling for scheduled actions.
@@ -1249,7 +1246,7 @@
 	      return new CatchScheduler(this, handler);
 	    };
 	  }(Scheduler.prototype));
-	
+
 	  var SchedulePeriodicRecursive = Rx.internals.SchedulePeriodicRecursive = (function () {
 	    function tick(command, recurse) {
 	      recurse(0, this._period);
@@ -1260,51 +1257,51 @@
 	        throw e;
 	      }
 	    }
-	
+
 	    function SchedulePeriodicRecursive(scheduler, state, period, action) {
 	      this._scheduler = scheduler;
 	      this._state = state;
 	      this._period = period;
 	      this._action = action;
 	    }
-	
+
 	    SchedulePeriodicRecursive.prototype.start = function () {
 	      var d = new SingleAssignmentDisposable();
 	      this._cancel = d;
 	      d.setDisposable(this._scheduler.scheduleRecursiveWithRelativeAndState(0, this._period, tick.bind(this)));
-	
+
 	      return d;
 	    };
-	
+
 	    return SchedulePeriodicRecursive;
 	  }());
-	
+
 	  /** Gets a scheduler that schedules work immediately on the current thread. */
 	  var immediateScheduler = Scheduler.immediate = (function () {
 	    function scheduleNow(state, action) { return action(this, state); }
 	    return new Scheduler(defaultNow, scheduleNow, notSupported, notSupported);
 	  }());
-	
+
 	  /**
 	   * Gets a scheduler that schedules work as soon as possible on the current thread.
 	   */
 	  var currentThreadScheduler = Scheduler.currentThread = (function () {
 	    var queue;
-	
+
 	    function runTrampoline () {
 	      while (queue.length > 0) {
 	        var item = queue.dequeue();
 	        !item.isCancelled() && item.invoke();
 	      }
 	    }
-	
+
 	    function scheduleNow(state, action) {
 	      var si = new ScheduledItem(this, state, action, this.now());
-	
+
 	      if (!queue) {
 	        queue = new PriorityQueue(4);
 	        queue.enqueue(si);
-	
+
 	        var result = tryCatch(runTrampoline)();
 	        queue = null;
 	        if (result === errorObj) { return thrower(result.e); }
@@ -1313,15 +1310,15 @@
 	      }
 	      return si.disposable;
 	    }
-	
+
 	    var currentScheduler = new Scheduler(defaultNow, scheduleNow, notSupported, notSupported);
 	    currentScheduler.scheduleRequired = function () { return !queue; };
-	
+
 	    return currentScheduler;
 	  }());
-	
+
 	  var scheduleMethod, clearMethod;
-	
+
 	  var localTimer = (function () {
 	    var localSetTimeout, localClearTimeout = noop;
 	    if (!!root.setTimeout) {
@@ -1335,7 +1332,7 @@
 	    } else {
 	      throw new NotSupportedError();
 	    }
-	
+
 	    return {
 	      setTimeout: localSetTimeout,
 	      clearTimeout: localClearTimeout
@@ -1343,15 +1340,15 @@
 	  }());
 	  var localSetTimeout = localTimer.setTimeout,
 	    localClearTimeout = localTimer.clearTimeout;
-	
+
 	  (function () {
-	
+
 	    var nextHandle = 1, tasksByHandle = {}, currentlyRunning = false;
-	
+
 	    clearMethod = function (handle) {
 	      delete tasksByHandle[handle];
 	    };
-	
+
 	    function runTask(handle) {
 	      if (currentlyRunning) {
 	        localSetTimeout(function () { runTask(handle) }, 0);
@@ -1366,16 +1363,16 @@
 	        }
 	      }
 	    }
-	
+
 	    var reNative = RegExp('^' +
 	      String(toString)
 	        .replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 	        .replace(/toString| for [^\]]+/g, '.*?') + '$'
 	    );
-	
+
 	    var setImmediate = typeof (setImmediate = freeGlobal && moduleExports && freeGlobal.setImmediate) == 'function' &&
 	      !reNative.test(setImmediate) && setImmediate;
-	
+
 	    function postMessageSupported () {
 	      // Ensure not in a worker
 	      if (!root.postMessage || root.importScripts) { return false; }
@@ -1384,17 +1381,17 @@
 	      root.onmessage = function () { isAsync = true; };
 	      root.postMessage('', '*');
 	      root.onmessage = oldHandler;
-	
+
 	      return isAsync;
 	    }
-	
+
 	    // Use in order, setImmediate, nextTick, postMessage, MessageChannel, script readystatechanged, setTimeout
 	    if (isFunction(setImmediate)) {
 	      scheduleMethod = function (action) {
 	        var id = nextHandle++;
 	        tasksByHandle[id] = action;
 	        setImmediate(function () { runTask(id); });
-	
+
 	        return id;
 	      };
 	    } else if (typeof process !== 'undefined' && {}.toString.call(process) === '[object process]') {
@@ -1402,19 +1399,19 @@
 	        var id = nextHandle++;
 	        tasksByHandle[id] = action;
 	        process.nextTick(function () { runTask(id); });
-	
+
 	        return id;
 	      };
 	    } else if (postMessageSupported()) {
 	      var MSG_PREFIX = 'ms.rx.schedule' + Math.random();
-	
+
 	      function onGlobalPostMessage(event) {
 	        // Only if we're a match to avoid any other global events
 	        if (typeof event.data === 'string' && event.data.substring(0, MSG_PREFIX.length) === MSG_PREFIX) {
 	          runTask(event.data.substring(MSG_PREFIX.length));
 	        }
 	      }
-	
+
 	      if (root.addEventListener) {
 	        root.addEventListener('message', onGlobalPostMessage, false);
 	      } else if (root.attachEvent) {
@@ -1422,7 +1419,7 @@
 	      } else {
 	        root.onmessage = onGlobalPostMessage;
 	      }
-	
+
 	      scheduleMethod = function (action) {
 	        var id = nextHandle++;
 	        tasksByHandle[id] = action;
@@ -1431,9 +1428,9 @@
 	      };
 	    } else if (!!root.MessageChannel) {
 	      var channel = new root.MessageChannel();
-	
+
 	      channel.port1.onmessage = function (e) { runTask(e.data); };
-	
+
 	      scheduleMethod = function (action) {
 	        var id = nextHandle++;
 	        tasksByHandle[id] = action;
@@ -1441,12 +1438,12 @@
 	        return id;
 	      };
 	    } else if ('document' in root && 'onreadystatechange' in root.document.createElement('script')) {
-	
+
 	      scheduleMethod = function (action) {
 	        var scriptElement = root.document.createElement('script');
 	        var id = nextHandle++;
 	        tasksByHandle[id] = action;
-	
+
 	        scriptElement.onreadystatechange = function () {
 	          runTask(id);
 	          scriptElement.onreadystatechange = null;
@@ -1456,7 +1453,7 @@
 	        root.document.documentElement.appendChild(scriptElement);
 	        return id;
 	      };
-	
+
 	    } else {
 	      scheduleMethod = function (action) {
 	        var id = nextHandle++;
@@ -1464,17 +1461,17 @@
 	        localSetTimeout(function () {
 	          runTask(id);
 	        }, 0);
-	
+
 	        return id;
 	      };
 	    }
 	  }());
-	
+
 	  /**
 	   * Gets a scheduler that schedules work via a timed callback based upon platform.
 	   */
 	  var timeoutScheduler = Scheduler.timeout = Scheduler['default'] = (function () {
-	
+
 	    function scheduleNow(state, action) {
 	      var scheduler = this, disposable = new SingleAssignmentDisposable();
 	      var id = scheduleMethod(function () {
@@ -1484,7 +1481,7 @@
 	        clearMethod(id);
 	      }));
 	    }
-	
+
 	    function scheduleRelative(state, dueTime, action) {
 	      var scheduler = this, dt = Scheduler.normalize(dueTime), disposable = new SingleAssignmentDisposable();
 	      if (dt === 0) { return scheduler.scheduleWithState(state, action); }
@@ -1495,30 +1492,30 @@
 	        localClearTimeout(id);
 	      }));
 	    }
-	
+
 	    function scheduleAbsolute(state, dueTime, action) {
 	      return this.scheduleWithRelativeAndState(state, dueTime - this.now(), action);
 	    }
-	
+
 	    return new Scheduler(defaultNow, scheduleNow, scheduleRelative, scheduleAbsolute);
 	  })();
-	
+
 	  var CatchScheduler = (function (__super__) {
-	
+
 	    function scheduleNow(state, action) {
 	      return this._scheduler.scheduleWithState(state, this._wrap(action));
 	    }
-	
+
 	    function scheduleRelative(state, dueTime, action) {
 	      return this._scheduler.scheduleWithRelativeAndState(state, dueTime, this._wrap(action));
 	    }
-	
+
 	    function scheduleAbsolute(state, dueTime, action) {
 	      return this._scheduler.scheduleWithAbsoluteAndState(state, dueTime, this._wrap(action));
 	    }
-	
+
 	    inherits(CatchScheduler, __super__);
-	
+
 	    function CatchScheduler(scheduler, handler) {
 	      this._scheduler = scheduler;
 	      this._handler = handler;
@@ -1526,11 +1523,11 @@
 	      this._recursiveWrapper = null;
 	      __super__.call(this, this._scheduler.now.bind(this._scheduler), scheduleNow, scheduleRelative, scheduleAbsolute);
 	    }
-	
+
 	    CatchScheduler.prototype._clone = function (scheduler) {
 	        return new CatchScheduler(scheduler, this._handler);
 	    };
-	
+
 	    CatchScheduler.prototype._wrap = function (action) {
 	      var parent = this;
 	      return function (self, state) {
@@ -1542,7 +1539,7 @@
 	        }
 	      };
 	    };
-	
+
 	    CatchScheduler.prototype._getRecursiveWrapper = function (scheduler) {
 	      if (this._recursiveOriginal !== scheduler) {
 	        this._recursiveOriginal = scheduler;
@@ -1553,10 +1550,10 @@
 	      }
 	      return this._recursiveWrapper;
 	    };
-	
+
 	    CatchScheduler.prototype.schedulePeriodicWithState = function (state, period, action) {
 	      var self = this, failed = false, d = new SingleAssignmentDisposable();
-	
+
 	      d.setDisposable(this._scheduler.schedulePeriodicWithState(state, period, function (state1) {
 	        if (failed) { return null; }
 	        try {
@@ -1568,13 +1565,13 @@
 	          return null;
 	        }
 	      }));
-	
+
 	      return d;
 	    };
-	
+
 	    return CatchScheduler;
 	  }(Scheduler));
-	
+
 	  /**
 	   *  Represents a notification to an observer.
 	   */
@@ -1587,7 +1584,7 @@
 	      this._acceptObservable = acceptObservable;
 	      this.toString = toString;
 	    }
-	
+
 	    /**
 	     * Invokes the delegate corresponding to the notification or the observer's method corresponding to the notification and returns the produced result.
 	     *
@@ -1602,7 +1599,7 @@
 	        this._acceptObservable(observerOrOnNext) :
 	        this._accept(observerOrOnNext, onError, onCompleted);
 	    };
-	
+
 	    /**
 	     * Returns an observable sequence with a single notification.
 	     *
@@ -1620,10 +1617,10 @@
 	        });
 	      });
 	    };
-	
+
 	    return Notification;
 	  })();
-	
+
 	  /**
 	   * Creates an object that represents an OnNext notification to an observer.
 	   * @param {Any} value The value contained in the notification.
@@ -1633,12 +1630,12 @@
 	      function _accept(onNext) { return onNext(this.value); }
 	      function _acceptObservable(observer) { return observer.onNext(this.value); }
 	      function toString() { return 'OnNext(' + this.value + ')'; }
-	
+
 	      return function (value) {
 	        return new Notification('N', value, null, _accept, _acceptObservable, toString);
 	      };
 	  }());
-	
+
 	  /**
 	   * Creates an object that represents an OnError notification to an observer.
 	   * @param {Any} error The exception contained in the notification.
@@ -1648,12 +1645,12 @@
 	    function _accept (onNext, onError) { return onError(this.exception); }
 	    function _acceptObservable(observer) { return observer.onError(this.exception); }
 	    function toString () { return 'OnError(' + this.exception + ')'; }
-	
+
 	    return function (e) {
 	      return new Notification('E', null, e, _accept, _acceptObservable, toString);
 	    };
 	  }());
-	
+
 	  /**
 	   * Creates an object that represents an OnCompleted notification to an observer.
 	   * @returns {Notification} The OnCompleted notification.
@@ -1662,17 +1659,17 @@
 	    function _accept (onNext, onError, onCompleted) { return onCompleted(); }
 	    function _acceptObservable(observer) { return observer.onCompleted(); }
 	    function toString () { return 'OnCompleted()'; }
-	
+
 	    return function () {
 	      return new Notification('C', null, null, _accept, _acceptObservable, toString);
 	    };
 	  }());
-	
+
 	  /**
 	   * Supports push-style iteration over an observable sequence.
 	   */
 	  var Observer = Rx.Observer = function () { };
-	
+
 	  /**
 	   *  Creates a notification callback from an observer.
 	   * @returns The action that forwards its input notification to the underlying observer.
@@ -1681,7 +1678,7 @@
 	    var observer = this;
 	    return function (n) { return n.accept(observer); };
 	  };
-	
+
 	  /**
 	   *  Hides the identity of an observer.
 	   * @returns An observer that hides the identity of the specified observer.
@@ -1689,14 +1686,14 @@
 	  Observer.prototype.asObserver = function () {
 	    return new AnonymousObserver(this.onNext.bind(this), this.onError.bind(this), this.onCompleted.bind(this));
 	  };
-	
+
 	  /**
 	   *  Checks access to the observer for grammar violations. This includes checking for multiple OnError or OnCompleted calls, as well as reentrancy in any of the observer methods.
 	   *  If a violation is detected, an Error is thrown from the offending observer method call.
 	   * @returns An observer that checks callbacks invocations against the observer grammar and, if the checks pass, forwards those to the specified observer.
 	   */
 	  Observer.prototype.checked = function () { return new CheckedObserver(this); };
-	
+
 	  /**
 	   *  Creates an observer from the specified OnNext, along with optional OnError, and OnCompleted actions.
 	   * @param {Function} [onNext] Observer's OnNext action implementation.
@@ -1710,7 +1707,7 @@
 	    onCompleted || (onCompleted = noop);
 	    return new AnonymousObserver(onNext, onError, onCompleted);
 	  };
-	
+
 	  /**
 	   *  Creates an observer from a notification callback.
 	   *
@@ -1728,7 +1725,7 @@
 	      return handler.call(thisArg, notificationCreateOnCompleted());
 	    });
 	  };
-	
+
 	  /**
 	   * Schedules the invocation of observer methods on the given scheduler.
 	   * @param {Scheduler} scheduler Scheduler to schedule observer messages on.
@@ -1737,18 +1734,18 @@
 	  Observer.prototype.notifyOn = function (scheduler) {
 	    return new ObserveOnObserver(scheduler, this);
 	  };
-	
+
 	  Observer.prototype.makeSafe = function(disposable) {
 	    return new AnonymousSafeObserver(this._onNext, this._onError, this._onCompleted, disposable);
 	  };
-	
+
 	  /**
 	   * Abstract base class for implementations of the Observer class.
 	   * This base class enforces the grammar of observers where OnError and OnCompleted are terminal messages.
 	   */
 	  var AbstractObserver = Rx.internals.AbstractObserver = (function (__super__) {
 	    inherits(AbstractObserver, __super__);
-	
+
 	    /**
 	     * Creates a new observer in a non-stopped state.
 	     */
@@ -1756,12 +1753,12 @@
 	      this.isStopped = false;
 	      __super__.call(this);
 	    }
-	
+
 	    // Must be implemented by other observers
 	    AbstractObserver.prototype.next = notImplemented;
 	    AbstractObserver.prototype.error = notImplemented;
 	    AbstractObserver.prototype.completed = notImplemented;
-	
+
 	    /**
 	     * Notifies the observer of a new element in the sequence.
 	     * @param {Any} value Next element in the sequence.
@@ -1769,7 +1766,7 @@
 	    AbstractObserver.prototype.onNext = function (value) {
 	      if (!this.isStopped) { this.next(value); }
 	    };
-	
+
 	    /**
 	     * Notifies the observer that an exception has occurred.
 	     * @param {Any} error The error that has occurred.
@@ -1780,7 +1777,7 @@
 	        this.error(error);
 	      }
 	    };
-	
+
 	    /**
 	     * Notifies the observer of the end of the sequence.
 	     */
@@ -1790,33 +1787,33 @@
 	        this.completed();
 	      }
 	    };
-	
+
 	    /**
 	     * Disposes the observer, causing it to transition to the stopped state.
 	     */
 	    AbstractObserver.prototype.dispose = function () {
 	      this.isStopped = true;
 	    };
-	
+
 	    AbstractObserver.prototype.fail = function (e) {
 	      if (!this.isStopped) {
 	        this.isStopped = true;
 	        this.error(e);
 	        return true;
 	      }
-	
+
 	      return false;
 	    };
-	
+
 	    return AbstractObserver;
 	  }(Observer));
-	
+
 	  /**
 	   * Class to create an Observer instance from delegate-based implementations of the on* methods.
 	   */
 	  var AnonymousObserver = Rx.AnonymousObserver = (function (__super__) {
 	    inherits(AnonymousObserver, __super__);
-	
+
 	    /**
 	     * Creates an observer from the specified OnNext, OnError, and OnCompleted actions.
 	     * @param {Any} onNext Observer's OnNext action implementation.
@@ -1829,7 +1826,7 @@
 	      this._onError = onError;
 	      this._onCompleted = onCompleted;
 	    }
-	
+
 	    /**
 	     * Calls the onNext action.
 	     * @param {Any} value Next element in the sequence.
@@ -1837,7 +1834,7 @@
 	    AnonymousObserver.prototype.next = function (value) {
 	      this._onNext(value);
 	    };
-	
+
 	    /**
 	     * Calls the onError action.
 	     * @param {Any} error The error that has occurred.
@@ -1845,61 +1842,61 @@
 	    AnonymousObserver.prototype.error = function (error) {
 	      this._onError(error);
 	    };
-	
+
 	    /**
 	     *  Calls the onCompleted action.
 	     */
 	    AnonymousObserver.prototype.completed = function () {
 	      this._onCompleted();
 	    };
-	
+
 	    return AnonymousObserver;
 	  }(AbstractObserver));
-	
+
 	  var CheckedObserver = (function (__super__) {
 	    inherits(CheckedObserver, __super__);
-	
+
 	    function CheckedObserver(observer) {
 	      __super__.call(this);
 	      this._observer = observer;
 	      this._state = 0; // 0 - idle, 1 - busy, 2 - done
 	    }
-	
+
 	    var CheckedObserverPrototype = CheckedObserver.prototype;
-	
+
 	    CheckedObserverPrototype.onNext = function (value) {
 	      this.checkAccess();
 	      var res = tryCatch(this._observer.onNext).call(this._observer, value);
 	      this._state = 0;
 	      res === errorObj && thrower(res.e);
 	    };
-	
+
 	    CheckedObserverPrototype.onError = function (err) {
 	      this.checkAccess();
 	      var res = tryCatch(this._observer.onError).call(this._observer, err);
 	      this._state = 2;
 	      res === errorObj && thrower(res.e);
 	    };
-	
+
 	    CheckedObserverPrototype.onCompleted = function () {
 	      this.checkAccess();
 	      var res = tryCatch(this._observer.onCompleted).call(this._observer);
 	      this._state = 2;
 	      res === errorObj && thrower(res.e);
 	    };
-	
+
 	    CheckedObserverPrototype.checkAccess = function () {
 	      if (this._state === 1) { throw new Error('Re-entrancy detected'); }
 	      if (this._state === 2) { throw new Error('Observer completed'); }
 	      if (this._state === 0) { this._state = 1; }
 	    };
-	
+
 	    return CheckedObserver;
 	  }(Observer));
-	
+
 	  var ScheduledObserver = Rx.internals.ScheduledObserver = (function (__super__) {
 	    inherits(ScheduledObserver, __super__);
-	
+
 	    function ScheduledObserver(scheduler, observer) {
 	      __super__.call(this);
 	      this.scheduler = scheduler;
@@ -1909,22 +1906,22 @@
 	      this.queue = [];
 	      this.disposable = new SerialDisposable();
 	    }
-	
+
 	    ScheduledObserver.prototype.next = function (value) {
 	      var self = this;
 	      this.queue.push(function () { self.observer.onNext(value); });
 	    };
-	
+
 	    ScheduledObserver.prototype.error = function (e) {
 	      var self = this;
 	      this.queue.push(function () { self.observer.onError(e); });
 	    };
-	
+
 	    ScheduledObserver.prototype.completed = function () {
 	      var self = this;
 	      this.queue.push(function () { self.observer.onCompleted(); });
 	    };
-	
+
 	    ScheduledObserver.prototype.ensureActive = function () {
 	      var isOwner = false, parent = this;
 	      if (!this.hasFaulted && this.queue.length > 0) {
@@ -1951,54 +1948,54 @@
 	        }));
 	      }
 	    };
-	
+
 	    ScheduledObserver.prototype.dispose = function () {
 	      __super__.prototype.dispose.call(this);
 	      this.disposable.dispose();
 	    };
-	
+
 	    return ScheduledObserver;
 	  }(AbstractObserver));
-	
+
 	  var ObserveOnObserver = (function (__super__) {
 	    inherits(ObserveOnObserver, __super__);
-	
+
 	    function ObserveOnObserver(scheduler, observer, cancel) {
 	      __super__.call(this, scheduler, observer);
 	      this._cancel = cancel;
 	    }
-	
+
 	    ObserveOnObserver.prototype.next = function (value) {
 	      __super__.prototype.next.call(this, value);
 	      this.ensureActive();
 	    };
-	
+
 	    ObserveOnObserver.prototype.error = function (e) {
 	      __super__.prototype.error.call(this, e);
 	      this.ensureActive();
 	    };
-	
+
 	    ObserveOnObserver.prototype.completed = function () {
 	      __super__.prototype.completed.call(this);
 	      this.ensureActive();
 	    };
-	
+
 	    ObserveOnObserver.prototype.dispose = function () {
 	      __super__.prototype.dispose.call(this);
 	      this._cancel && this._cancel.dispose();
 	      this._cancel = null;
 	    };
-	
+
 	    return ObserveOnObserver;
 	  })(ScheduledObserver);
-	
+
 	  var observableProto;
-	
+
 	  /**
 	   * Represents a push-style collection.
 	   */
 	  var Observable = Rx.Observable = (function () {
-	
+
 	    function Observable(subscribe) {
 	      if (Rx.config.longStackSupport && hasStacks) {
 	        try {
@@ -2006,25 +2003,25 @@
 	        } catch (e) {
 	          this.stack = e.stack.substring(e.stack.indexOf("\n") + 1);
 	        }
-	
+
 	        var self = this;
 	        this._subscribe = function (observer) {
 	          var oldOnError = observer.onError.bind(observer);
-	
+
 	          observer.onError = function (err) {
 	            makeStackTraceLong(err, self);
 	            oldOnError(err);
 	          };
-	
+
 	          return subscribe.call(self, observer);
 	        };
 	      } else {
 	        this._subscribe = subscribe;
 	      }
 	    }
-	
+
 	    observableProto = Observable.prototype;
-	
+
 	    /**
 	     *  Subscribes an observer to the observable sequence.
 	     *  @param {Mixed} [observerOrOnNext] The object that is to receive notifications or an action to invoke for each element in the observable sequence.
@@ -2037,7 +2034,7 @@
 	        observerOrOnNext :
 	        observerCreate(observerOrOnNext, onError, onCompleted));
 	    };
-	
+
 	    /**
 	     * Subscribes to the next value in the sequence with an optional "this" argument.
 	     * @param {Function} onNext The function to invoke on each element in the observable sequence.
@@ -2047,7 +2044,7 @@
 	    observableProto.subscribeOnNext = function (onNext, thisArg) {
 	      return this._subscribe(observerCreate(typeof thisArg !== 'undefined' ? function(x) { onNext.call(thisArg, x); } : onNext));
 	    };
-	
+
 	    /**
 	     * Subscribes to an exceptional condition in the sequence with an optional "this" argument.
 	     * @param {Function} onError The function to invoke upon exceptional termination of the observable sequence.
@@ -2057,7 +2054,7 @@
 	    observableProto.subscribeOnError = function (onError, thisArg) {
 	      return this._subscribe(observerCreate(null, typeof thisArg !== 'undefined' ? function(e) { onError.call(thisArg, e); } : onError));
 	    };
-	
+
 	    /**
 	     * Subscribes to the next value in the sequence with an optional "this" argument.
 	     * @param {Function} onCompleted The function to invoke upon graceful termination of the observable sequence.
@@ -2067,31 +2064,31 @@
 	    observableProto.subscribeOnCompleted = function (onCompleted, thisArg) {
 	      return this._subscribe(observerCreate(null, null, typeof thisArg !== 'undefined' ? function() { onCompleted.call(thisArg); } : onCompleted));
 	    };
-	
+
 	    return Observable;
 	  })();
-	
+
 	  var ObservableBase = Rx.ObservableBase = (function (__super__) {
 	    inherits(ObservableBase, __super__);
-	
+
 	    function fixSubscriber(subscriber) {
 	      return subscriber && isFunction(subscriber.dispose) ? subscriber :
 	        isFunction(subscriber) ? disposableCreate(subscriber) : disposableEmpty;
 	    }
-	
+
 	    function setDisposable(s, state) {
 	      var ado = state[0], self = state[1];
 	      var sub = tryCatch(self.subscribeCore).call(self, ado);
-	
+
 	      if (sub === errorObj) {
 	        if(!ado.fail(errorObj.e)) { return thrower(errorObj.e); }
 	      }
 	      ado.setDisposable(fixSubscriber(sub));
 	    }
-	
+
 	    function subscribe(observer) {
 	      var ado = new AutoDetachObserver(observer), state = [ado, this];
-	
+
 	      if (currentThreadScheduler.scheduleRequired()) {
 	        currentThreadScheduler.scheduleWithState(state, setDisposable);
 	      } else {
@@ -2099,18 +2096,18 @@
 	      }
 	      return ado;
 	    }
-	
+
 	    function ObservableBase() {
 	      __super__.call(this, subscribe);
 	    }
-	
+
 	    ObservableBase.prototype.subscribeCore = notImplemented;
-	
+
 	    return ObservableBase;
 	  }(Observable));
-	
+
 	  var Enumerable = Rx.internals.Enumerable = function () { };
-	
+
 	  var ConcatEnumerableObservable = (function(__super__) {
 	    inherits(ConcatEnumerableObservable, __super__);
 	    function ConcatEnumerableObservable(sources) {
@@ -2124,20 +2121,20 @@
 	        if (isDisposed) { return; }
 	        var currentItem = tryCatch(e.next).call(e);
 	        if (currentItem === errorObj) { return o.onError(currentItem.e); }
-	
+
 	        if (currentItem.done) {
 	          return o.onCompleted();
 	        }
-	
+
 	        // Check if promise
 	        var currentValue = currentItem.value;
 	        isPromise(currentValue) && (currentValue = observableFromPromise(currentValue));
-	
+
 	        var d = new SingleAssignmentDisposable();
 	        subscription.setDisposable(d);
 	        d.setDisposable(currentValue.subscribe(new InnerObserver(o, self, e)));
 	      });
-	
+
 	      return new CompositeDisposable(subscription, cancelable, disposableCreate(function () {
 	        isDisposed = true;
 	      }));
@@ -2174,7 +2171,7 @@
 	    
 	    return ConcatEnumerableObservable;
 	  }(ObservableBase));
-	
+
 	  Enumerable.prototype.concat = function () {
 	    return new ConcatEnumerableObservable(this);
 	  };
@@ -2188,21 +2185,21 @@
 	    
 	    CatchErrorObservable.prototype.subscribeCore = function (o) {
 	      var e = this.sources[$iterator$]();
-	
+
 	      var isDisposed, subscription = new SerialDisposable();
 	      var cancelable = immediateScheduler.scheduleRecursiveWithState(null, function (lastException, self) {
 	        if (isDisposed) { return; }
 	        var currentItem = tryCatch(e.next).call(e);
 	        if (currentItem === errorObj) { return o.onError(currentItem.e); }
-	
+
 	        if (currentItem.done) {
 	          return lastException !== null ? o.onError(lastException) : o.onCompleted();
 	        }
-	
+
 	        // Check if promise
 	        var currentValue = currentItem.value;
 	        isPromise(currentValue) && (currentValue = observableFromPromise(currentValue));
-	
+
 	        var d = new SingleAssignmentDisposable();
 	        subscription.setDisposable(d);
 	        d.setDisposable(currentValue.subscribe(
@@ -2217,11 +2214,11 @@
 	    
 	    return CatchErrorObservable;
 	  }(ObservableBase));
-	
+
 	  Enumerable.prototype.catchError = function () {
 	    return new CatchErrorObservable(this);
 	  };
-	
+
 	  Enumerable.prototype.catchErrorWhen = function (notificationHandler) {
 	    var sources = this;
 	    return new AnonymousObservable(function (o) {
@@ -2229,9 +2226,9 @@
 	        notifier = new Subject(),
 	        handled = notificationHandler(exceptions),
 	        notificationDisposable = handled.subscribe(notifier);
-	
+
 	      var e = sources[$iterator$]();
-	
+
 	      var isDisposed,
 	        lastException,
 	        subscription = new SerialDisposable();
@@ -2239,7 +2236,7 @@
 	        if (isDisposed) { return; }
 	        var currentItem = tryCatch(e.next).call(e);
 	        if (currentItem === errorObj) { return o.onError(currentItem.e); }
-	
+
 	        if (currentItem.done) {
 	          if (lastException) {
 	            o.onError(lastException);
@@ -2248,11 +2245,11 @@
 	          }
 	          return;
 	        }
-	
+
 	        // Check if promise
 	        var currentValue = currentItem.value;
 	        isPromise(currentValue) && (currentValue = observableFromPromise(currentValue));
-	
+
 	        var outer = new SingleAssignmentDisposable();
 	        var inner = new SingleAssignmentDisposable();
 	        subscription.setDisposable(new CompositeDisposable(inner, outer));
@@ -2264,12 +2261,12 @@
 	            }, function() {
 	              o.onCompleted();
 	            }));
-	
+
 	            exceptions.onNext(exn);
 	          },
 	          function() { o.onCompleted(); }));
 	      });
-	
+
 	      return new CompositeDisposable(notificationDisposable, subscription, cancelable, disposableCreate(function () {
 	        isDisposed = true;
 	      }));
@@ -2299,7 +2296,7 @@
 	    
 	    return RepeatEnumerable;
 	  }(Enumerable));
-	
+
 	  var enumerableRepeat = Enumerable.repeat = function (value, repeatCount) {
 	    return new RepeatEnumerable(value, repeatCount);
 	  };
@@ -2328,11 +2325,11 @@
 	    
 	    return OfEnumerable;
 	  }(Enumerable));
-	
+
 	  var enumerableOf = Enumerable.of = function (source, selector, thisArg) {
 	    return new OfEnumerable(source, selector, thisArg);
 	  };
-	
+
 	   /**
 	   *  Wraps the source sequence in order to run its observer callbacks on the specified scheduler.
 	   *
@@ -2348,14 +2345,14 @@
 	      return source.subscribe(new ObserveOnObserver(scheduler, observer));
 	    }, source);
 	  };
-	
+
 	   /**
 	   *  Wraps the source sequence in order to run its subscription and unsubscription logic on the specified scheduler. This operation is not commonly used;
 	   *  see the remarks section for more information on the distinction between subscribeOn and observeOn.
-	
+
 	   *  This only performs the side-effects of subscription and unsubscription on the specified scheduler. In order to invoke observer
 	   *  callbacks on a scheduler, use observeOn.
-	
+
 	   *  @param {Scheduler} scheduler Scheduler to perform subscription and unsubscription actions on.
 	   *  @returns {Observable} The source sequence whose subscriptions and unsubscriptions happen on the specified scheduler.
 	   */
@@ -2370,7 +2367,7 @@
 	      return d;
 	    }, source);
 	  };
-	
+
 		var FromPromiseObservable = (function(__super__) {
 			inherits(FromPromiseObservable, __super__);
 			function FromPromiseObservable(p) {
@@ -2423,18 +2420,18 @@
 	      });
 	    });
 	  };
-	
+
 	  var ToArrayObservable = (function(__super__) {
 	    inherits(ToArrayObservable, __super__);
 	    function ToArrayObservable(source) {
 	      this.source = source;
 	      __super__.call(this);
 	    }
-	
+
 	    ToArrayObservable.prototype.subscribeCore = function(o) {
 	      return this.source.subscribe(new InnerObserver(o));
 	    };
-	
+
 	    function InnerObserver(o) {
 	      this.o = o;
 	      this.a = [];
@@ -2464,10 +2461,10 @@
 	 
 	      return false;
 	    };
-	
+
 	    return ToArrayObservable;
 	  }(ObservableBase));
-	
+
 	  /**
 	  * Creates an array from an observable sequence.
 	  * @returns {Observable} An observable sequence containing a single element with a list containing all the elements of the source sequence.
@@ -2475,7 +2472,7 @@
 	  observableProto.toArray = function () {
 	    return new ToArrayObservable(this);
 	  };
-	
+
 	  /**
 	   *  Creates an observable sequence from a specified subscribe method implementation.
 	   * @example
@@ -2488,7 +2485,7 @@
 	  Observable.create = Observable.createWithDisposable = function (subscribe, parent) {
 	    return new AnonymousObservable(subscribe, parent);
 	  };
-	
+
 	  /**
 	   *  Returns an observable sequence that invokes the specified factory function whenever a new observer subscribes.
 	   *
@@ -2509,35 +2506,35 @@
 	      return result.subscribe(observer);
 	    });
 	  };
-	
+
 	  var EmptyObservable = (function(__super__) {
 	    inherits(EmptyObservable, __super__);
 	    function EmptyObservable(scheduler) {
 	      this.scheduler = scheduler;
 	      __super__.call(this);
 	    }
-	
+
 	    EmptyObservable.prototype.subscribeCore = function (observer) {
 	      var sink = new EmptySink(observer, this);
 	      return sink.run();
 	    };
-	
+
 	    function EmptySink(observer, parent) {
 	      this.observer = observer;
 	      this.parent = parent;
 	    }
-	
+
 	    function scheduleItem(s, state) {
 	      state.onCompleted();
 	    }
-	
+
 	    EmptySink.prototype.run = function () {
 	      return this.parent.scheduler.scheduleWithState(this.observer, scheduleItem);
 	    };
-	
+
 	    return EmptyObservable;
 	  }(ObservableBase));
-	
+
 	  /**
 	   *  Returns an empty observable sequence, using the specified scheduler to send out the single OnCompleted message.
 	   *
@@ -2551,7 +2548,7 @@
 	    isScheduler(scheduler) || (scheduler = immediateScheduler);
 	    return new EmptyObservable(scheduler);
 	  };
-	
+
 	  var FromObservable = (function(__super__) {
 	    inherits(FromObservable, __super__);
 	    function FromObservable(iterable, mapper, scheduler) {
@@ -2560,27 +2557,27 @@
 	      this.scheduler = scheduler;
 	      __super__.call(this);
 	    }
-	
+
 	    FromObservable.prototype.subscribeCore = function (observer) {
 	      var sink = new FromSink(observer, this);
 	      return sink.run();
 	    };
-	
+
 	    return FromObservable;
 	  }(ObservableBase));
-	
+
 	  var FromSink = (function () {
 	    function FromSink(observer, parent) {
 	      this.observer = observer;
 	      this.parent = parent;
 	    }
-	
+
 	    FromSink.prototype.run = function () {
 	      var list = Object(this.parent.iterable),
 	          it = getIterable(list),
 	          observer = this.observer,
 	          mapper = this.parent.mapper;
-	
+
 	      function loopRecursive(i, recurse) {
 	        try {
 	          var next = it.next();
@@ -2590,9 +2587,9 @@
 	        if (next.done) {
 	          return observer.onCompleted();
 	        }
-	
+
 	        var result = next.value;
-	
+
 	        if (mapper) {
 	          try {
 	            result = mapper(result, i);
@@ -2600,71 +2597,71 @@
 	            return observer.onError(e);
 	          }
 	        }
-	
+
 	        observer.onNext(result);
 	        recurse(i + 1);
 	      }
-	
+
 	      return this.parent.scheduler.scheduleRecursiveWithState(0, loopRecursive);
 	    };
-	
+
 	    return FromSink;
 	  }());
-	
+
 	  var maxSafeInteger = Math.pow(2, 53) - 1;
-	
+
 	  function StringIterable(str) {
 	    this._s = s;
 	  }
-	
+
 	  StringIterable.prototype[$iterator$] = function () {
 	    return new StringIterator(this._s);
 	  };
-	
+
 	  function StringIterator(str) {
 	    this._s = s;
 	    this._l = s.length;
 	    this._i = 0;
 	  }
-	
+
 	  StringIterator.prototype[$iterator$] = function () {
 	    return this;
 	  };
-	
+
 	  StringIterator.prototype.next = function () {
 	    return this._i < this._l ? { done: false, value: this._s.charAt(this._i++) } : doneEnumerator;
 	  };
-	
+
 	  function ArrayIterable(a) {
 	    this._a = a;
 	  }
-	
+
 	  ArrayIterable.prototype[$iterator$] = function () {
 	    return new ArrayIterator(this._a);
 	  };
-	
+
 	  function ArrayIterator(a) {
 	    this._a = a;
 	    this._l = toLength(a);
 	    this._i = 0;
 	  }
-	
+
 	  ArrayIterator.prototype[$iterator$] = function () {
 	    return this;
 	  };
-	
+
 	  ArrayIterator.prototype.next = function () {
 	    return this._i < this._l ? { done: false, value: this._a[this._i++] } : doneEnumerator;
 	  };
-	
+
 	  function numberIsFinite(value) {
 	    return typeof value === 'number' && root.isFinite(value);
 	  }
-	
+
 	  function isNan(n) {
 	    return n !== n;
 	  }
-	
+
 	  function getIterable(o) {
 	    var i = o[$iterator$], it;
 	    if (!i && typeof o === 'string') {
@@ -2678,14 +2675,14 @@
 	    if (!i) { throw new TypeError('Object is not iterable'); }
 	    return o[$iterator$]();
 	  }
-	
+
 	  function sign(value) {
 	    var number = +value;
 	    if (number === 0) { return number; }
 	    if (isNaN(number)) { return number; }
 	    return number < 0 ? -1 : 1;
 	  }
-	
+
 	  function toLength(o) {
 	    var len = +o.length;
 	    if (isNaN(len)) { return 0; }
@@ -2695,7 +2692,7 @@
 	    if (len > maxSafeInteger) { return maxSafeInteger; }
 	    return len;
 	  }
-	
+
 	  /**
 	  * This method creates a new Observable sequence from an array-like or iterable object.
 	  * @param {Any} arrayLike An array-like or iterable object to convert to an Observable sequence.
@@ -2716,7 +2713,7 @@
 	    isScheduler(scheduler) || (scheduler = currentThreadScheduler);
 	    return new FromObservable(iterable, mapper, scheduler);
 	  }
-	
+
 	  var FromArrayObservable = (function(__super__) {
 	    inherits(FromArrayObservable, __super__);
 	    function FromArrayObservable(args, scheduler) {
@@ -2724,20 +2721,20 @@
 	      this.scheduler = scheduler;
 	      __super__.call(this);
 	    }
-	
+
 	    FromArrayObservable.prototype.subscribeCore = function (observer) {
 	      var sink = new FromArraySink(observer, this);
 	      return sink.run();
 	    };
-	
+
 	    return FromArrayObservable;
 	  }(ObservableBase));
-	
+
 	  function FromArraySink(observer, parent) {
 	    this.observer = observer;
 	    this.parent = parent;
 	  }
-	
+
 	  FromArraySink.prototype.run = function () {
 	    var observer = this.observer, args = this.parent.args, len = args.length;
 	    function loopRecursive(i, recurse) {
@@ -2748,10 +2745,10 @@
 	        observer.onCompleted();
 	      }
 	    }
-	
+
 	    return this.parent.scheduler.scheduleRecursiveWithState(0, loopRecursive);
 	  };
-	
+
 	  /**
 	  *  Converts an array to an observable sequence, using an optional scheduler to enumerate the array.
 	  * @deprecated use Observable.from or Observable.of
@@ -2762,7 +2759,7 @@
 	    isScheduler(scheduler) || (scheduler = currentThreadScheduler);
 	    return new FromArrayObservable(array, scheduler)
 	  };
-	
+
 	  /**
 	   *  Generates an observable sequence by running a state-driven loop producing the sequence's elements, using the specified scheduler to send out observer messages.
 	   *
@@ -2802,12 +2799,12 @@
 	      });
 	    });
 	  };
-	
+
 	  function observableOf (scheduler, array) {
 	    isScheduler(scheduler) || (scheduler = currentThreadScheduler);
 	    return new FromArrayObservable(array, scheduler);
 	  }
-	
+
 	  /**
 	  *  This method creates a new Observable instance with a variable number of arguments, regardless of number or type of the arguments.
 	  * @returns {Observable} The observable sequence whose elements are pulled from the given arguments.
@@ -2817,7 +2814,7 @@
 	    for(var i = 0; i < len; i++) { args[i] = arguments[i]; }
 	    return new FromArrayObservable(args, currentThreadScheduler);
 	  };
-	
+
 	  /**
 	  *  This method creates a new Observable instance with a variable number of arguments, regardless of number or type of the arguments.
 	  * @param {Scheduler} scheduler A scheduler to use for scheduling the arguments.
@@ -2828,7 +2825,7 @@
 	    for(var i = 1; i < len; i++) { args[i - 1] = arguments[i]; }
 	    return new FromArrayObservable(args, scheduler);
 	  };
-	
+
 	  /**
 	   * Creates an Observable sequence from changes to an array using Array.observe.
 	   * @param {Array} array An array to observe changes.
@@ -2845,13 +2842,13 @@
 	      }
 	      
 	      Array.observe(array, observerFn);
-	
+
 	      return function () {
 	        Array.unobserve(array, observerFn);
 	      };
 	    });
 	  };
-	
+
 	  /**
 	   * Creates an Observable sequence from changes to an object using Object.observe.
 	   * @param {Object} obj An object to observe changes.
@@ -2866,28 +2863,28 @@
 	          observer.onNext(changes[i]);
 	        }
 	      }
-	
+
 	      Object.observe(obj, observerFn);
-	
+
 	      return function () {
 	        Object.unobserve(obj, observerFn);
 	      };
 	    });
 	  };
-	
+
 	  var NeverObservable = (function(__super__) {
 	    inherits(NeverObservable, __super__);
 	    function NeverObservable() {
 	      __super__.call(this);
 	    }
-	
+
 	    NeverObservable.prototype.subscribeCore = function (observer) {
 	      return disposableEmpty;
 	    };
-	
+
 	    return NeverObservable;
 	  }(ObservableBase));
-	
+
 	  /**
 	   * Returns a non-terminating observable sequence, which can be used to denote an infinite duration (e.g. when using reactive joins).
 	   * @returns {Observable} An observable sequence whose observers will never get called.
@@ -2895,7 +2892,7 @@
 	  var observableNever = Observable.never = function () {
 	    return new NeverObservable();
 	  };
-	
+
 	  var PairsObservable = (function(__super__) {
 	    inherits(PairsObservable, __super__);
 	    function PairsObservable(obj, scheduler) {
@@ -2904,20 +2901,20 @@
 	      this.scheduler = scheduler;
 	      __super__.call(this);
 	    }
-	
+
 	    PairsObservable.prototype.subscribeCore = function (observer) {
 	      var sink = new PairsSink(observer, this);
 	      return sink.run();
 	    };
-	
+
 	    return PairsObservable;
 	  }(ObservableBase));
-	
+
 	  function PairsSink(observer, parent) {
 	    this.observer = observer;
 	    this.parent = parent;
 	  }
-	
+
 	  PairsSink.prototype.run = function () {
 	    var observer = this.observer, obj = this.parent.obj, keys = this.parent.keys, len = keys.length;
 	    function loopRecursive(i, recurse) {
@@ -2929,10 +2926,10 @@
 	        observer.onCompleted();
 	      }
 	    }
-	
+
 	    return this.parent.scheduler.scheduleRecursiveWithState(0, loopRecursive);
 	  };
-	
+
 	  /**
 	   * Convert an object into an observable sequence of [key, value] pairs.
 	   * @param {Object} obj The object to inspect.
@@ -2943,7 +2940,7 @@
 	    scheduler || (scheduler = currentThreadScheduler);
 	    return new PairsObservable(obj, scheduler);
 	  };
-	
+
 	    var RangeObservable = (function(__super__) {
 	    inherits(RangeObservable, __super__);
 	    function RangeObservable(start, count, scheduler) {
@@ -2952,21 +2949,21 @@
 	      this.scheduler = scheduler;
 	      __super__.call(this);
 	    }
-	
+
 	    RangeObservable.prototype.subscribeCore = function (observer) {
 	      var sink = new RangeSink(observer, this);
 	      return sink.run();
 	    };
-	
+
 	    return RangeObservable;
 	  }(ObservableBase));
-	
+
 	  var RangeSink = (function () {
 	    function RangeSink(observer, parent) {
 	      this.observer = observer;
 	      this.parent = parent;
 	    }
-	
+
 	    RangeSink.prototype.run = function () {
 	      var start = this.parent.start, count = this.parent.rangeCount, observer = this.observer;
 	      function loopRecursive(i, recurse) {
@@ -2977,13 +2974,13 @@
 	          observer.onCompleted();
 	        }
 	      }
-	
+
 	      return this.parent.scheduler.scheduleRecursiveWithState(0, loopRecursive);
 	    };
-	
+
 	    return RangeSink;
 	  }());
-	
+
 	  /**
 	  *  Generates an observable sequence of integral numbers within a specified range, using the specified scheduler to send out observer messages.
 	  * @param {Number} start The value of the first integer in the sequence.
@@ -2995,7 +2992,7 @@
 	    isScheduler(scheduler) || (scheduler = currentThreadScheduler);
 	    return new RangeObservable(start, count, scheduler);
 	  };
-	
+
 	  var RepeatObservable = (function(__super__) {
 	    inherits(RepeatObservable, __super__);
 	    function RepeatObservable(value, repeatCount, scheduler) {
@@ -3004,20 +3001,20 @@
 	      this.scheduler = scheduler;
 	      __super__.call(this);
 	    }
-	
+
 	    RepeatObservable.prototype.subscribeCore = function (observer) {
 	      var sink = new RepeatSink(observer, this);
 	      return sink.run();
 	    };
-	
+
 	    return RepeatObservable;
 	  }(ObservableBase));
-	
+
 	  function RepeatSink(observer, parent) {
 	    this.observer = observer;
 	    this.parent = parent;
 	  }
-	
+
 	  RepeatSink.prototype.run = function () {
 	    var observer = this.observer, value = this.parent.value;
 	    function loopRecursive(i, recurse) {
@@ -3028,10 +3025,10 @@
 	      if (i === 0) { return observer.onCompleted(); }
 	      recurse(i);
 	    }
-	
+
 	    return this.parent.scheduler.scheduleRecursiveWithState(this.parent.repeatCount, loopRecursive);
 	  };
-	
+
 	  /**
 	   *  Generates an observable sequence that repeats the given element the specified number of times, using the specified scheduler to send out observer messages.
 	   * @param {Mixed} value Element to repeat.
@@ -3043,7 +3040,7 @@
 	    isScheduler(scheduler) || (scheduler = currentThreadScheduler);
 	    return new RepeatObservable(value, repeatCount, scheduler);
 	  };
-	
+
 	  var JustObservable = (function(__super__) {
 	    inherits(JustObservable, __super__);
 	    function JustObservable(value, scheduler) {
@@ -3051,30 +3048,30 @@
 	      this.scheduler = scheduler;
 	      __super__.call(this);
 	    }
-	
+
 	    JustObservable.prototype.subscribeCore = function (observer) {
 	      var sink = new JustSink(observer, this);
 	      return sink.run();
 	    };
-	
+
 	    function JustSink(observer, parent) {
 	      this.observer = observer;
 	      this.parent = parent;
 	    }
-	
+
 	    function scheduleItem(s, state) {
 	      var value = state[0], observer = state[1];
 	      observer.onNext(value);
 	      observer.onCompleted();
 	    }
-	
+
 	    JustSink.prototype.run = function () {
 	      return this.parent.scheduler.scheduleWithState([this.parent.value, this.observer], scheduleItem);
 	    };
-	
+
 	    return JustObservable;
 	  }(ObservableBase));
-	
+
 	  /**
 	   *  Returns an observable sequence that contains a single element, using the specified scheduler to send out observer messages.
 	   *  There is an alias called 'just' or browsers <IE9.
@@ -3086,7 +3083,7 @@
 	    isScheduler(scheduler) || (scheduler = immediateScheduler);
 	    return new JustObservable(value, scheduler);
 	  };
-	
+
 	  var ThrowObservable = (function(__super__) {
 	    inherits(ThrowObservable, __super__);
 	    function ThrowObservable(error, scheduler) {
@@ -3094,29 +3091,29 @@
 	      this.scheduler = scheduler;
 	      __super__.call(this);
 	    }
-	
+
 	    ThrowObservable.prototype.subscribeCore = function (o) {
 	      var sink = new ThrowSink(o, this);
 	      return sink.run();
 	    };
-	
+
 	    function ThrowSink(o, p) {
 	      this.o = o;
 	      this.p = p;
 	    }
-	
+
 	    function scheduleItem(s, state) {
 	      var e = state[0], o = state[1];
 	      o.onError(e);
 	    }
-	
+
 	    ThrowSink.prototype.run = function () {
 	      return this.p.scheduler.scheduleWithState([this.p.error, this.o], scheduleItem);
 	    };
-	
+
 	    return ThrowObservable;
 	  }(ObservableBase));
-	
+
 	  /**
 	   *  Returns an observable sequence that terminates with an exception, using the specified scheduler to send out the single onError message.
 	   *  There is an alias to this method called 'throwError' for browsers <IE9.
@@ -3128,7 +3125,7 @@
 	    isScheduler(scheduler) || (scheduler = immediateScheduler);
 	    return new ThrowObservable(error, scheduler);
 	  };
-	
+
 	  /**
 	   * Constructs an observable sequence that depends on a resource object, whose lifetime is tied to the resulting observable sequence's lifetime.
 	   * @param {Function} resourceFactory Factory function to obtain a resource object.
@@ -3148,7 +3145,7 @@
 	      return new CompositeDisposable(source.subscribe(observer), disposable);
 	    });
 	  };
-	
+
 	  /**
 	   * Propagates the observable sequence or Promise that reacts first.
 	   * @param {Observable} rightSource Second observable sequence or Promise.
@@ -3161,23 +3158,23 @@
 	        leftChoice = 'L', rightChoice = 'R',
 	        leftSubscription = new SingleAssignmentDisposable(),
 	        rightSubscription = new SingleAssignmentDisposable();
-	
+
 	      isPromise(rightSource) && (rightSource = observableFromPromise(rightSource));
-	
+
 	      function choiceL() {
 	        if (!choice) {
 	          choice = leftChoice;
 	          rightSubscription.dispose();
 	        }
 	      }
-	
+
 	      function choiceR() {
 	        if (!choice) {
 	          choice = rightChoice;
 	          leftSubscription.dispose();
 	        }
 	      }
-	
+
 	      leftSubscription.setDisposable(leftSource.subscribe(function (left) {
 	        choiceL();
 	        choice === leftChoice && observer.onNext(left);
@@ -3188,7 +3185,7 @@
 	        choiceL();
 	        choice === leftChoice && observer.onCompleted();
 	      }));
-	
+
 	      rightSubscription.setDisposable(rightSource.subscribe(function (right) {
 	        choiceR();
 	        choice === rightChoice && observer.onNext(right);
@@ -3199,11 +3196,11 @@
 	        choiceR();
 	        choice === rightChoice && observer.onCompleted();
 	      }));
-	
+
 	      return new CompositeDisposable(leftSubscription, rightSubscription);
 	    });
 	  };
-	
+
 	  /**
 	   * Propagates the observable sequence or Promise that reacts first.
 	   *
@@ -3218,7 +3215,7 @@
 	    } else {
 	      for(var i = 0, len = arguments.length; i < len; i++) { items.push(arguments[i]); }
 	    }
-	
+
 	    function func(previous, current) {
 	      return previous.amb(current);
 	    }
@@ -3227,7 +3224,7 @@
 	    }
 	    return acc;
 	  };
-	
+
 	  function observableCatchHandler(source, handler) {
 	    return new AnonymousObservable(function (o) {
 	      var d1 = new SingleAssignmentDisposable(), subscription = new SerialDisposable();
@@ -3239,16 +3236,16 @@
 	          return o.onError(ex);
 	        }
 	        isPromise(result) && (result = observableFromPromise(result));
-	
+
 	        var d = new SingleAssignmentDisposable();
 	        subscription.setDisposable(d);
 	        d.setDisposable(result.subscribe(o));
 	      }, function (x) { o.onCompleted(x); }));
-	
+
 	      return subscription;
 	    }, source);
 	  }
-	
+
 	  /**
 	   * Continues an observable sequence that is terminated by an exception with the next observable sequence.
 	   * @example
@@ -3262,7 +3259,7 @@
 	      observableCatchHandler(this, handlerOrSecond) :
 	      observableCatch([this, handlerOrSecond]);
 	  };
-	
+
 	  /**
 	   * Continues an observable sequence that is terminated by an exception with the next observable sequence.
 	   * @param {Array | Arguments} args Arguments or an array to use as the next sequence if an error occurs.
@@ -3277,7 +3274,7 @@
 	    }
 	    return enumerableOf(items).catchError();
 	  };
-	
+
 	  /**
 	   * Merges the specified observable sequences into one observable sequence by using the selector function whenever any of the observable sequences or Promises produces an element.
 	   * This can be in the form of an argument list of observables or an array.
@@ -3297,7 +3294,7 @@
 	    }
 	    return combineLatest.apply(this, args);
 	  };
-	
+
 	  /**
 	   * Merges the specified observable sequences into one observable sequence by using the selector function whenever any of the observable sequences or Promises produces an element.
 	   *
@@ -3311,7 +3308,7 @@
 	    for(var i = 0; i < len; i++) { args[i] = arguments[i]; }
 	    var resultSelector = args.pop();
 	    Array.isArray(args[0]) && (args = args[0]);
-	
+
 	    return new AnonymousObservable(function (o) {
 	      var n = args.length,
 	        falseFactory = function () { return false; },
@@ -3319,7 +3316,7 @@
 	        hasValueAll = false,
 	        isDone = arrayInitialize(n, falseFactory),
 	        values = new Array(n);
-	
+
 	      function next(i) {
 	        hasValue[i] = true;
 	        if (hasValueAll || (hasValueAll = hasValue.every(identity))) {
@@ -3333,12 +3330,12 @@
 	          o.onCompleted();
 	        }
 	      }
-	
+
 	      function done (i) {
 	        isDone[i] = true;
 	        isDone.every(identity) && o.onCompleted();
 	      }
-	
+
 	      var subscriptions = new Array(n);
 	      for (var idx = 0; idx < n; idx++) {
 	        (function (i) {
@@ -3354,11 +3351,11 @@
 	          subscriptions[i] = sad;
 	        }(idx));
 	      }
-	
+
 	      return new CompositeDisposable(subscriptions);
 	    }, this);
 	  };
-	
+
 	  /**
 	   * Concatenates all the observable sequences.  This takes in either an array or variable arguments to concatenate.
 	   * @returns {Observable} An observable sequence that contains the elements of each given sequence, in sequential order.
@@ -3368,7 +3365,7 @@
 	    args.unshift(this);
 	    return observableConcat.apply(null, args);
 	  };
-	
+
 		var ConcatObservable = (function(__super__) {
 			inherits(ConcatObservable, __super__);
 			function ConcatObservable(sources) {
@@ -3396,7 +3393,7 @@
 	        // Check if promise
 	        var currentValue = sources[i];
 	        isPromise(currentValue) && (currentValue = observableFromPromise(currentValue));
-	
+
 	        var d = new SingleAssignmentDisposable();
 	        subscription.setDisposable(d);
 	        d.setDisposable(currentValue.subscribe(
@@ -3405,7 +3402,7 @@
 	          function () { self(i + 1); }
 	        ));
 	      });
-	
+
 	      return new CompositeDisposable(subscription, cancelable, disposableCreate(function () {
 	        isDisposed = true;
 	      }));
@@ -3430,7 +3427,7 @@
 	    }
 	    return new ConcatObservable(args);
 	  };
-	
+
 	  /**
 	   * Concatenates an observable sequence of observable sequences.
 	   * @returns {Observable} An observable sequence that contains the elements of each observed inner sequence, in sequential order.
@@ -3438,26 +3435,26 @@
 	  observableProto.concatAll = observableProto.concatObservable = function () {
 	    return this.merge(1);
 	  };
-	
+
 	  var MergeObservable = (function (__super__) {
 	    inherits(MergeObservable, __super__);
-	
+
 	    function MergeObservable(source, maxConcurrent) {
 	      this.source = source;
 	      this.maxConcurrent = maxConcurrent;
 	      __super__.call(this);
 	    }
-	
+
 	    MergeObservable.prototype.subscribeCore = function(observer) {
 	      var g = new CompositeDisposable();
 	      g.add(this.source.subscribe(new MergeObserver(observer, this.maxConcurrent, g)));
 	      return g;
 	    };
-	
+
 	    return MergeObservable;
-	
+
 	  }(ObservableBase));
-	
+
 	  var MergeObserver = (function () {
 	    function MergeObserver(o, max, g) {
 	      this.o = o;
@@ -3503,10 +3500,10 @@
 	          this.o.onError(e);
 	          return true;
 	        }
-	
+
 	        return false;
 	      };
-	
+
 	      function InnerObserver(parent, sad) {
 	        this.parent = parent;
 	        this.sad = sad;
@@ -3539,17 +3536,17 @@
 	          this.parent.o.onError(e);
 	          return true;
 	        }
-	
+
 	        return false;
 	      };
-	
+
 	      return MergeObserver;
 	  }());
-	
-	
-	
-	
-	
+
+
+
+
+
 	  /**
 	  * Merges an observable sequence of observable sequences into an observable sequence, limiting the number of concurrent subscriptions to inner sequences.
 	  * Or merges two observable sequences into a single observable sequence.
@@ -3565,7 +3562,7 @@
 	      observableMerge(this, maxConcurrentOrOther) :
 	      new MergeObservable(this, maxConcurrentOrOther);
 	  };
-	
+
 	  /**
 	   * Merges all the observable sequences into a single observable sequence.
 	   * The scheduler is optional and if not specified, the immediate scheduler is used.
@@ -3588,15 +3585,15 @@
 	    }
 	    return observableOf(scheduler, sources).mergeAll();
 	  };
-	
+
 	  var MergeAllObservable = (function (__super__) {
 	    inherits(MergeAllObservable, __super__);
-	
+
 	    function MergeAllObservable(source) {
 	      this.source = source;
 	      __super__.call(this);
 	    }
-	
+
 	    MergeAllObservable.prototype.subscribeCore = function (observer) {
 	      var g = new CompositeDisposable(), m = new SingleAssignmentDisposable();
 	      g.add(m);
@@ -3614,9 +3611,9 @@
 	      if(this.isStopped) { return; }
 	      var sad = new SingleAssignmentDisposable();
 	      this.g.add(sad);
-	
+
 	      isPromise(innerSource) && (innerSource = observableFromPromise(innerSource));
-	
+
 	      sad.setDisposable(innerSource.subscribe(new InnerObserver(this, this.g, sad)));
 	    };
 	    MergeAllObserver.prototype.onError = function (e) {
@@ -3639,10 +3636,10 @@
 	        this.o.onError(e);
 	        return true;
 	      }
-	
+
 	      return false;
 	    };
-	
+
 	    function InnerObserver(parent, g, sad) {
 	      this.parent = parent;
 	      this.g = g;
@@ -3671,13 +3668,13 @@
 	        this.parent.o.onError(e);
 	        return true;
 	      }
-	
+
 	      return false;
 	    };
-	
+
 	    return MergeAllObservable;
 	  }(ObservableBase));
-	
+
 	  /**
 	  * Merges an observable sequence of observable sequences into an observable sequence.
 	  * @returns {Observable} The observable sequence that merges the elements of the inner sequences.
@@ -3685,7 +3682,7 @@
 	  observableProto.mergeAll = observableProto.mergeObservable = function () {
 	    return new MergeAllObservable(this);
 	  };
-	
+
 	  var CompositeError = Rx.CompositeError = function(errors) {
 	    this.name = "NotImplementedError";
 	    this.innerErrors = errors;
@@ -3693,7 +3690,7 @@
 	    Error.call(this);
 	  }
 	  CompositeError.prototype = Error.prototype;
-	
+
 	  /**
 	  * Flattens an Observable that emits Observables into one Observable, in a way that allows an Observer to
 	  * receive all successfully emitted items from all of the source Observables without being interrupted by
@@ -3715,13 +3712,13 @@
 	      for(var i = 0; i < len; i++) { args[i] = arguments[i]; }
 	    }
 	    var source = observableOf(null, args);
-	
+
 	    return new AnonymousObservable(function (o) {
 	      var group = new CompositeDisposable(),
 	        m = new SingleAssignmentDisposable(),
 	        isStopped = false,
 	        errors = [];
-	
+
 	      function setCompletion() {
 	        if (errors.length === 0) {
 	          o.onCompleted();
@@ -3731,17 +3728,17 @@
 	          o.onError(new CompositeError(errors));
 	        }
 	      }
-	
+
 	      group.add(m);
-	
+
 	      m.setDisposable(source.subscribe(
 	        function (innerSource) {
 	          var innerSubscription = new SingleAssignmentDisposable();
 	          group.add(innerSubscription);
-	
+
 	          // Check for promises support
 	          isPromise(innerSource) && (innerSource = observableFromPromise(innerSource));
-	
+
 	          innerSubscription.setDisposable(innerSource.subscribe(
 	            function (x) { o.onNext(x); },
 	            function (e) {
@@ -3766,7 +3763,7 @@
 	      return group;
 	    });
 	  };
-	
+
 	  /**
 	   * Continues an observable sequence that is terminated normally or by an exception with the next observable sequence.
 	   * @param {Observable} second Second observable sequence used to produce results after the first sequence terminates.
@@ -3776,7 +3773,7 @@
 	    if (!second) { throw new Error('Second observable is required'); }
 	    return onErrorResumeNext([this, second]);
 	  };
-	
+
 	  /**
 	   * Continues an observable sequence that is terminated normally or by an exception with the next observable sequence.
 	   *
@@ -3809,7 +3806,7 @@
 	      return new CompositeDisposable(subscription, cancelable);
 	    });
 	  };
-	
+
 	  /**
 	   * Returns the values from the source observable sequence only after the other observable sequence produces a value.
 	   * @param {Observable | Promise} other The observable sequence or Promise that triggers propagation of elements of the source sequence.
@@ -3824,9 +3821,9 @@
 	      }, function (e) { o.onError(e); }, function () {
 	        isOpen && o.onCompleted();
 	      }));
-	
+
 	      isPromise(other) && (other = observableFromPromise(other));
-	
+
 	      var rightSubscription = new SingleAssignmentDisposable();
 	      disposables.add(rightSubscription);
 	      rightSubscription.setDisposable(other.subscribe(function () {
@@ -3835,23 +3832,23 @@
 	      }, function (e) { o.onError(e); }, function () {
 	        rightSubscription.dispose();
 	      }));
-	
+
 	      return disposables;
 	    }, source);
 	  };
-	
+
 	  var SwitchObservable = (function(__super__) {
 	    inherits(SwitchObservable, __super__);
 	    function SwitchObservable(source) {
 	      this.source = source;
 	      __super__.call(this);
 	    }
-	
+
 	    SwitchObservable.prototype.subscribeCore = function (o) {
 	      var inner = new SerialDisposable(), s = this.source.subscribe(new SwitchObserver(o, inner));
 	      return new CompositeDisposable(s, inner);
 	    };
-	
+
 	    function SwitchObserver(o, inner) {
 	      this.o = o;
 	      this.inner = inner;
@@ -3890,7 +3887,7 @@
 	      }
 	      return false;
 	    };
-	
+
 	    function InnerObserver(parent, id) {
 	      this.parent = parent;
 	      this.id = id;
@@ -3924,10 +3921,10 @@
 	      }
 	      return false;
 	    };
-	
+
 	    return SwitchObservable;
 	  }(ObservableBase));
-	
+
 	  /**
 	  * Transforms an observable sequence of observable sequences into an observable sequence producing values only from the most recent observable sequence.
 	  * @returns {Observable} The observable sequence that at any point in time produces the elements of the most recent inner observable sequence that has been received.
@@ -3935,23 +3932,23 @@
 	  observableProto['switch'] = observableProto.switchLatest = function () {
 	    return new SwitchObservable(this);
 	  };
-	
+
 	  var TakeUntilObservable = (function(__super__) {
 	    inherits(TakeUntilObservable, __super__);
-	
+
 	    function TakeUntilObservable(source, other) {
 	      this.source = source;
 	      this.other = isPromise(other) ? observableFromPromise(other) : other;
 	      __super__.call(this);
 	    }
-	
+
 	    TakeUntilObservable.prototype.subscribeCore = function(o) {
 	      return new CompositeDisposable(
 	        this.source.subscribe(o),
 	        this.other.subscribe(new InnerObserver(o))
 	      );
 	    };
-	
+
 	    function InnerObserver(o) {
 	      this.o = o;
 	      this.isStopped = false;
@@ -3978,10 +3975,10 @@
 	      }
 	      return false;
 	    };
-	
+
 	    return TakeUntilObservable;
 	  }(ObservableBase));
-	
+
 	  /**
 	   * Returns the values from the source observable sequence until the other observable sequence produces a value.
 	   * @param {Observable | Promise} other Observable sequence or Promise that terminates propagation of elements of the source sequence.
@@ -3990,9 +3987,9 @@
 	  observableProto.takeUntil = function (other) {
 	    return new TakeUntilObservable(this, other);
 	  };
-	
+
 	  function falseFactory() { return false; }
-	
+
 	  /**
 	   * Merges the specified observable sequences into one observable sequence by using the selector function only when the (first) source observable sequence produces an element.
 	   * @returns {Observable} An observable sequence containing the result of combining elements of the sources using the specified result selector function.
@@ -4002,13 +3999,13 @@
 	    for(var i = 0; i < len; i++) { args[i] = arguments[i]; }
 	    var resultSelector = args.pop(), source = this;
 	    Array.isArray(args[0]) && (args = args[0]);
-	
+
 	    return new AnonymousObservable(function (observer) {
 	      var n = args.length,
 	        hasValue = arrayInitialize(n, falseFactory),
 	        hasValueAll = false,
 	        values = new Array(n);
-	
+
 	      var subscriptions = new Array(n + 1);
 	      for (var idx = 0; idx < n; idx++) {
 	        (function (i) {
@@ -4022,7 +4019,7 @@
 	          subscriptions[i] = sad;
 	        }(idx));
 	      }
-	
+
 	      var sad = new SingleAssignmentDisposable();
 	      sad.setDisposable(source.subscribe(function (x) {
 	        var allValues = [x].concat(values);
@@ -4034,11 +4031,11 @@
 	        observer.onCompleted();
 	      }));
 	      subscriptions[n] = sad;
-	
+
 	      return new CompositeDisposable(subscriptions);
 	    }, this);
 	  };
-	
+
 	  function zipArray(second, resultSelector) {
 	    var first = this;
 	    return new AnonymousObservable(function (o) {
@@ -4054,10 +4051,10 @@
 	      }, function (e) { o.onError(e); }, function () { o.onCompleted(); });
 	    }, first);
 	  }
-	
+
 	  function falseFactory() { return false; }
 	  function emptyArrayFactory() { return []; }
-	
+
 	  /**
 	   * Merges the specified observable sequences into one observable sequence by using the selector function whenever all of the observable sequences or an array have produced an element at a corresponding index.
 	   * The last element in the arguments must be a function to invoke for each series of elements at corresponding indexes in the args.
@@ -4067,14 +4064,14 @@
 	    if (Array.isArray(arguments[0])) { return zipArray.apply(this, arguments); }
 	    var len = arguments.length, args = new Array(len);
 	    for(var i = 0; i < len; i++) { args[i] = arguments[i]; }
-	
+
 	    var parent = this, resultSelector = args.pop();
 	    args.unshift(parent);
 	    return new AnonymousObservable(function (o) {
 	      var n = args.length,
 	        queues = arrayInitialize(n, emptyArrayFactory),
 	        isDone = arrayInitialize(n, falseFactory);
-	
+
 	      var subscriptions = new Array(n);
 	      for (var idx = 0; idx < n; idx++) {
 	        (function (i) {
@@ -4097,11 +4094,11 @@
 	          subscriptions[i] = sad;
 	        })(idx);
 	      }
-	
+
 	      return new CompositeDisposable(subscriptions);
 	    }, parent);
 	  };
-	
+
 	  /**
 	   * Merges the specified observable sequences into one observable sequence by using the selector function whenever all of the observable sequences have produced an element at a corresponding index.
 	   * @param arguments Observable sources.
@@ -4114,10 +4111,10 @@
 	    var first = args.shift();
 	    return first.zip.apply(first, args);
 	  };
-	
+
 	  function falseFactory() { return false; }
 	  function arrayFactory() { return []; }
-	
+
 	  /**
 	   * Merges the specified observable sequences into one observable sequence by emitting a list with the elements of the observable sequences at corresponding indexes.
 	   * @param arguments Observable sources.
@@ -4136,7 +4133,7 @@
 	      var n = sources.length,
 	        queues = arrayInitialize(n, arrayFactory),
 	        isDone = arrayInitialize(n, falseFactory);
-	
+
 	      var subscriptions = new Array(n);
 	      for (var idx = 0; idx < n; idx++) {
 	        (function (i) {
@@ -4155,11 +4152,11 @@
 	          }));
 	        })(idx);
 	      }
-	
+
 	      return new CompositeDisposable(subscriptions);
 	    });
 	  };
-	
+
 	  /**
 	   *  Hides the identity of an observable sequence.
 	   * @returns {Observable} An observable sequence that hides the identity of the source sequence.
@@ -4168,7 +4165,7 @@
 	    var source = this;
 	    return new AnonymousObservable(function (o) { return source.subscribe(o); }, source);
 	  };
-	
+
 	  /**
 	   *  Projects each element of an observable sequence into zero or more buffers which are produced based on element count information.
 	   *
@@ -4189,7 +4186,7 @@
 	      return x.length > 0;
 	    });
 	  };
-	
+
 	  /**
 	   * Dematerializes the explicit notification values of an observable sequence as implicit notifications.
 	   * @returns {Observable} An observable sequence exhibiting the behavior corresponding to the source sequence's notification values.
@@ -4200,7 +4197,7 @@
 	      return source.subscribe(function (x) { return x.accept(o); }, function(e) { o.onError(e); }, function () { o.onCompleted(); });
 	    }, this);
 	  };
-	
+
 	  /**
 	   *  Returns an observable sequence that contains only distinct contiguous elements according to the keySelector and the comparer.
 	   *
@@ -4235,7 +4232,7 @@
 	      }, function (e) { o.onError(e); }, function () { o.onCompleted(); });
 	    }, this);
 	  };
-	
+
 	  var TapObservable = (function(__super__) {
 	    inherits(TapObservable,__super__);
 	    function TapObservable(source, observerOrOnNext, onError, onCompleted) {
@@ -4245,11 +4242,11 @@
 	        observerOrOnNext;
 	      __super__.call(this);
 	    }
-	
+
 	    TapObservable.prototype.subscribeCore = function(o) {
 	      return this.source.subscribe(new InnerObserver(o, this.t));
 	    };
-	
+
 	    function InnerObserver(o, t) {
 	      this.o = o;
 	      this.t = t;
@@ -4286,10 +4283,10 @@
 	      }
 	      return false;
 	    };
-	
+
 	    return TapObservable;
 	  }(ObservableBase));
-	
+
 	  /**
 	  *  Invokes an action for each element in the observable sequence and invokes an action upon graceful or exceptional termination of the observable sequence.
 	  *  This method can be used for debugging, logging, etc. of query behavior by intercepting the message stream to run arbitrary actions for messages on the pipeline.
@@ -4301,7 +4298,7 @@
 	  observableProto['do'] = observableProto.tap = observableProto.doAction = function (observerOrOnNext, onError, onCompleted) {
 	    return new TapObservable(this, observerOrOnNext, onError, onCompleted);
 	  };
-	
+
 	  /**
 	  *  Invokes an action for each element in the observable sequence.
 	  *  This method can be used for debugging, logging, etc. of query behavior by intercepting the message stream to run arbitrary actions for messages on the pipeline.
@@ -4312,7 +4309,7 @@
 	  observableProto.doOnNext = observableProto.tapOnNext = function (onNext, thisArg) {
 	    return this.tap(typeof thisArg !== 'undefined' ? function (x) { onNext.call(thisArg, x); } : onNext);
 	  };
-	
+
 	  /**
 	  *  Invokes an action upon exceptional termination of the observable sequence.
 	  *  This method can be used for debugging, logging, etc. of query behavior by intercepting the message stream to run arbitrary actions for messages on the pipeline.
@@ -4323,7 +4320,7 @@
 	  observableProto.doOnError = observableProto.tapOnError = function (onError, thisArg) {
 	    return this.tap(noop, typeof thisArg !== 'undefined' ? function (e) { onError.call(thisArg, e); } : onError);
 	  };
-	
+
 	  /**
 	  *  Invokes an action upon graceful termination of the observable sequence.
 	  *  This method can be used for debugging, logging, etc. of query behavior by intercepting the message stream to run arbitrary actions for messages on the pipeline.
@@ -4334,7 +4331,7 @@
 	  observableProto.doOnCompleted = observableProto.tapOnCompleted = function (onCompleted, thisArg) {
 	    return this.tap(noop, null, typeof thisArg !== 'undefined' ? function () { onCompleted.call(thisArg); } : onCompleted);
 	  };
-	
+
 	  /**
 	   *  Invokes a specified action after the source observable sequence terminates gracefully or exceptionally.
 	   * @param {Function} finallyAction Action to invoke after the source observable sequence terminates.
@@ -4361,7 +4358,7 @@
 	      });
 	    }, this);
 	  };
-	
+
 	  /**
 	   * @deprecated use #finally or #ensure instead.
 	   */
@@ -4369,19 +4366,19 @@
 	    //deprecate('finallyAction', 'finally or ensure');
 	    return this.ensure(action);
 	  };
-	
+
 	  var IgnoreElementsObservable = (function(__super__) {
 	    inherits(IgnoreElementsObservable, __super__);
-	
+
 	    function IgnoreElementsObservable(source) {
 	      this.source = source;
 	      __super__.call(this);
 	    }
-	
+
 	    IgnoreElementsObservable.prototype.subscribeCore = function (o) {
 	      return this.source.subscribe(new InnerObserver(o));
 	    };
-	
+
 	    function InnerObserver(o) {
 	      this.o = o;
 	      this.isStopped = false;
@@ -4406,13 +4403,13 @@
 	        this.observer.onError(e);
 	        return true;
 	      }
-	
+
 	      return false;
 	    };
-	
+
 	    return IgnoreElementsObservable;
 	  }(ObservableBase));
-	
+
 	  /**
 	   *  Ignores all elements in an observable sequence leaving only the termination messages.
 	   * @returns {Observable} An empty observable sequence that signals termination, successful or exceptional, of the source sequence.
@@ -4420,7 +4417,7 @@
 	  observableProto.ignoreElements = function () {
 	    return new IgnoreElementsObservable(this);
 	  };
-	
+
 	  /**
 	   *  Materializes the implicit notifications of an observable sequence as explicit notification values.
 	   * @returns {Observable} An observable sequence containing the materialized notification values from the source sequence.
@@ -4439,7 +4436,7 @@
 	      });
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Repeats the observable sequence a specified number of times. If the repeat count is not specified, the sequence repeats indefinitely.
 	   * @param {Number} [repeatCount]  Number of times to repeat the sequence. If not provided, repeats the sequence indefinitely.
@@ -4448,7 +4445,7 @@
 	  observableProto.repeat = function (repeatCount) {
 	    return enumerableRepeat(this, repeatCount).concat();
 	  };
-	
+
 	  /**
 	   *  Repeats the source observable sequence the specified number of times or until it successfully terminates. If the retry count is not specified, it retries indefinitely.
 	   *  Note if you encounter an error and want it to retry once, then you must use .retry(2);
@@ -4462,7 +4459,7 @@
 	  observableProto.retry = function (retryCount) {
 	    return enumerableRepeat(this, retryCount).catchError();
 	  };
-	
+
 	  /**
 	   *  Repeats the source observable sequence upon error each time the notifier emits or until it successfully terminates. 
 	   *  if the notifier completes, the observable sequence completes.
@@ -4485,14 +4482,14 @@
 	      this.seed = seed;
 	      __super__.call(this);
 	    }
-	
+
 	    ScanObservable.prototype.subscribeCore = function(observer) {
 	      return this.source.subscribe(new ScanObserver(observer,this));
 	    };
-	
+
 	    return ScanObservable;
 	  }(ObservableBase));
-	
+
 	  function ScanObserver(observer, parent) {
 	    this.observer = observer;
 	    this.accumulator = parent.accumulator;
@@ -4540,7 +4537,7 @@
 	    }
 	    return false;
 	  };
-	
+
 	  /**
 	  *  Applies an accumulator function over an observable sequence and returns each intermediate result. The optional seed value is used as the initial accumulator value.
 	  *  For aggregation behavior with no intermediate results, see Observable.aggregate.
@@ -4559,7 +4556,7 @@
 	    }
 	    return new ScanObservable(this, accumulator, hasSeed, seed);
 	  };
-	
+
 	  /**
 	   *  Bypasses a specified number of elements at the end of an observable sequence.
 	   * @description
@@ -4579,7 +4576,7 @@
 	      }, function (e) { o.onError(e); }, function () { o.onCompleted(); });
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Prepends a sequence of values to an observable sequence with an optional scheduler and an argument list of values to prepend.
 	   *  @example
@@ -4599,7 +4596,7 @@
 	    for(var args = [], i = start, len = arguments.length; i < len; i++) { args.push(arguments[i]); }
 	    return enumerableOf([observableFromArray(args, scheduler), this]).concat();
 	  };
-	
+
 	  /**
 	   *  Returns a specified number of contiguous elements from the end of an observable sequence.
 	   * @description
@@ -4622,7 +4619,7 @@
 	      });
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Returns an array with the specified number of contiguous elements from the end of an observable sequence.
 	   *
@@ -4645,7 +4642,7 @@
 	      });
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Projects each element of an observable sequence into zero or more windows which are produced based on element count information.
 	   *
@@ -4663,22 +4660,22 @@
 	    skip == null && (skip = count);
 	    +skip || (skip = 0);
 	    Math.abs(skip) === Infinity && (skip = 0);
-	
+
 	    if (skip <= 0) { throw new ArgumentOutOfRangeError(); }
 	    return new AnonymousObservable(function (observer) {
 	      var m = new SingleAssignmentDisposable(),
 	        refCountDisposable = new RefCountDisposable(m),
 	        n = 0,
 	        q = [];
-	
+
 	      function createWindow () {
 	        var s = new Subject();
 	        q.push(s);
 	        observer.onNext(addRef(s, refCountDisposable));
 	      }
-	
+
 	      createWindow();
-	
+
 	      m.setDisposable(source.subscribe(
 	        function (x) {
 	          for (var i = 0, len = q.length; i < len; i++) { q[i].onNext(x); }
@@ -4698,7 +4695,7 @@
 	      return refCountDisposable;
 	    }, source);
 	  };
-	
+
 	  function concatMap(source, selector, thisArg) {
 	    var selectorFunc = bindCallback(selector, thisArg, 3);
 	    return source.map(function (x, i) {
@@ -4708,7 +4705,7 @@
 	      return result;
 	    }).concatAll();
 	  }
-	
+
 	  /**
 	   *  One of the Following:
 	   *  Projects each element of an observable sequence to an observable sequence and merges the resulting observable sequences into one observable sequence.
@@ -4734,7 +4731,7 @@
 	        var selectorResult = selector(x, i);
 	        isPromise(selectorResult) && (selectorResult = observableFromPromise(selectorResult));
 	        (isArrayLike(selectorResult) || isIterable(selectorResult)) && (selectorResult = observableFrom(selectorResult));
-	
+
 	        return selectorResult.map(function (y, i2) {
 	          return resultSelector(x, y, i, i2);
 	        });
@@ -4744,7 +4741,7 @@
 	      concatMap(this, selector, thisArg) :
 	      concatMap(this, function () { return selector; });
 	  };
-	
+
 	  /**
 	   * Projects each notification of an observable sequence to an observable sequence and concats the resulting observable sequences into one observable sequence.
 	   * @param {Function} onNext A transform function to apply to each element; the second parameter of the function represents the index of the source element.
@@ -4798,7 +4795,7 @@
 	        });
 	    }, this).concatAll();
 	  };
-	
+
 	    /**
 	     *  Returns the elements of the specified sequence or the specified value in a singleton sequence if the sequence is empty.
 	     *
@@ -4825,7 +4822,7 @@
 	        });
 	      }, source);
 	    };
-	
+
 	  // Swap out for Array.findIndex
 	  function arrayIndexOfComparer(array, item, comparer) {
 	    for (var i = 0, len = array.length; i < len; i++) {
@@ -4833,7 +4830,7 @@
 	    }
 	    return -1;
 	  }
-	
+
 	  function HashSet(comparer) {
 	    this.comparer = comparer;
 	    this.set = [];
@@ -4843,7 +4840,7 @@
 	    retValue && this.set.push(value);
 	    return retValue;
 	  };
-	
+
 	  /**
 	   *  Returns an observable sequence that contains only distinct elements according to the keySelector and the comparer.
 	   *  Usage of this operator should be considered carefully due to the maintenance of an internal lookup structure which can grow large.
@@ -4863,7 +4860,7 @@
 	      var hashSet = new HashSet(comparer);
 	      return source.subscribe(function (x) {
 	        var key = x;
-	
+
 	        if (keySelector) {
 	          try {
 	            key = keySelector(x);
@@ -4877,7 +4874,7 @@
 	      function (e) { o.onError(e); }, function () { o.onCompleted(); });
 	    }, this);
 	  };
-	
+
 	  /**
 	   *  Groups the elements of an observable sequence according to a specified key selector function and comparer and selects the resulting elements by using a specified function.
 	   *
@@ -4893,7 +4890,7 @@
 	  observableProto.groupBy = function (keySelector, elementSelector, comparer) {
 	    return this.groupByUntil(keySelector, elementSelector, observableNever, comparer);
 	  };
-	
+
 	    /**
 	     *  Groups the elements of an observable sequence according to a specified key selector function.
 	     *  A duration selector function is used to control the lifetime of groups. When a group expires, it receives an OnCompleted notification. When a new element with the same
@@ -4920,7 +4917,7 @@
 	        var map = new Dictionary(0, comparer),
 	          groupDisposable = new CompositeDisposable(),
 	          refCountDisposable = new RefCountDisposable(groupDisposable);
-	
+
 	        groupDisposable.add(source.subscribe(function (x) {
 	          var key;
 	          try {
@@ -4930,7 +4927,7 @@
 	            observer.onError(e);
 	            return;
 	          }
-	
+
 	          var fireNewMapEntry = false,
 	            writer = map.tryGetValue(key);
 	          if (!writer) {
@@ -4938,7 +4935,7 @@
 	            map.set(key, writer);
 	            fireNewMapEntry = true;
 	          }
-	
+
 	          if (fireNewMapEntry) {
 	            var group = new GroupedObservable(key, writer, refCountDisposable),
 	              durationGroup = new GroupedObservable(key, writer);
@@ -4949,17 +4946,17 @@
 	              observer.onError(e);
 	              return;
 	            }
-	
+
 	            observer.onNext(group);
-	
+
 	            var md = new SingleAssignmentDisposable();
 	            groupDisposable.add(md);
-	
+
 	            var expire = function () {
 	              map.remove(key) && writer.onCompleted();
 	              groupDisposable.remove(md);
 	            };
-	
+
 	            md.setDisposable(duration.take(1).subscribe(
 	              noop,
 	              function (exn) {
@@ -4969,7 +4966,7 @@
 	              expire)
 	            );
 	          }
-	
+
 	          var element;
 	          try {
 	            element = elementSelector(x);
@@ -4978,7 +4975,7 @@
 	            observer.onError(e);
 	            return;
 	          }
-	
+
 	          writer.onNext(element);
 	      }, function (ex) {
 	        map.getValues().forEach(handleError(ex));
@@ -4987,14 +4984,14 @@
 	        map.getValues().forEach(function (item) { item.onCompleted(); });
 	        observer.onCompleted();
 	      }));
-	
+
 	      return refCountDisposable;
 	    }, source);
 	  };
-	
+
 	  var MapObservable = (function (__super__) {
 	    inherits(MapObservable, __super__);
-	
+
 	    function MapObservable(source, selector, thisArg) {
 	      this.source = source;
 	      this.selector = bindCallback(selector, thisArg, 3);
@@ -5004,11 +5001,11 @@
 	    function innerMap(selector, self) {
 	      return function (x, i, o) { return selector.call(this, self.selector(x, i, o), i, o); }
 	    }
-	
+
 	    MapObservable.prototype.internalMap = function (selector, thisArg) {
 	      return new MapObservable(this.source, innerMap(selector, this), thisArg);
 	    };
-	
+
 	    MapObservable.prototype.subscribeCore = function (o) {
 	      return this.source.subscribe(new InnerObserver(o, this.selector, this));
 	    };
@@ -5045,11 +5042,11 @@
 	  
 	      return false;
 	    };
-	
+
 	    return MapObservable;
-	
+
 	  }(ObservableBase));
-	
+
 	  /**
 	  * Projects each element of an observable sequence into a new form by incorporating the element's index.
 	  * @param {Function} selector A transform function to apply to each source element; the second parameter of the function represents the index of the source element.
@@ -5062,7 +5059,7 @@
 	      this.internalMap(selectorFn, thisArg) :
 	      new MapObservable(this, selectorFn, thisArg);
 	  };
-	
+
 	  /**
 	   * Retrieves the value of a specified nested property from all elements in
 	   * the Observable sequence.
@@ -5085,7 +5082,7 @@
 	      return currentProp;
 	    });
 	  };
-	
+
 	  function flatMap(source, selector, thisArg) {
 	    var selectorFunc = bindCallback(selector, thisArg, 3);
 	    return source.map(function (x, i) {
@@ -5095,7 +5092,7 @@
 	      return result;
 	    }).mergeAll();
 	  }
-	
+
 	  /**
 	   *  One of the Following:
 	   *  Projects each element of an observable sequence to an observable sequence and merges the resulting observable sequences into one observable sequence.
@@ -5121,7 +5118,7 @@
 	        var selectorResult = selector(x, i);
 	        isPromise(selectorResult) && (selectorResult = observableFromPromise(selectorResult));
 	        (isArrayLike(selectorResult) || isIterable(selectorResult)) && (selectorResult = observableFrom(selectorResult));
-	
+
 	        return selectorResult.map(function (y, i2) {
 	          return resultSelector(x, y, i, i2);
 	        });
@@ -5131,7 +5128,7 @@
 	      flatMap(this, selector, thisArg) :
 	      flatMap(this, function () { return selector; });
 	  };
-	
+
 	  /**
 	   * Projects each notification of an observable sequence to an observable sequence and merges the resulting observable sequences into one observable sequence.
 	   * @param {Function} onNext A transform function to apply to each element; the second parameter of the function represents the index of the source element.
@@ -5144,7 +5141,7 @@
 	    var source = this;
 	    return new AnonymousObservable(function (observer) {
 	      var index = 0;
-	
+
 	      return source.subscribe(
 	        function (x) {
 	          var result;
@@ -5183,7 +5180,7 @@
 	        });
 	    }, source).mergeAll();
 	  };
-	
+
 	  /**
 	   *  Projects each element of an observable sequence into a new sequence of observable sequences by incorporating the element's index and then
 	   *  transforms an observable sequence of observable sequences into an observable sequence producing values only from the most recent observable sequence.
@@ -5195,7 +5192,7 @@
 	  observableProto.selectSwitch = observableProto.flatMapLatest = observableProto.switchMap = function (selector, thisArg) {
 	    return this.select(selector, thisArg).switchLatest();
 	  };
-	
+
 	  var SkipObservable = (function(__super__) {
 	    inherits(SkipObservable, __super__);
 	    function SkipObservable(source, count) {
@@ -5278,7 +5275,7 @@
 	      }, function (e) { o.onError(e); }, function () { o.onCompleted(); });
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Returns a specified number of contiguous elements from the start of an observable sequence, using the specified scheduler for the edge case of take(0).
 	   *
@@ -5302,7 +5299,7 @@
 	      }, function (e) { o.onError(e); }, function () { o.onCompleted(); });
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Returns elements from an observable sequence as long as a specified condition is true.
 	   *  The element's index is used in the logic of the predicate function.
@@ -5332,16 +5329,16 @@
 	      }, function (e) { o.onError(e); }, function () { o.onCompleted(); });
 	    }, source);
 	  };
-	
+
 	  var FilterObservable = (function (__super__) {
 	    inherits(FilterObservable, __super__);
-	
+
 	    function FilterObservable(source, predicate, thisArg) {
 	      this.source = source;
 	      this.predicate = bindCallback(predicate, thisArg, 3);
 	      __super__.call(this);
 	    }
-	
+
 	    FilterObservable.prototype.subscribeCore = function (o) {
 	      return this.source.subscribe(new InnerObserver(o, this.predicate, this));
 	    };
@@ -5349,7 +5346,7 @@
 	    function innerPredicate(predicate, self) {
 	      return function(x, i, o) { return self.predicate(x, i, o) && predicate.call(this, x, i, o); }
 	    }
-	
+
 	    FilterObservable.prototype.internalFilter = function(predicate, thisArg) {
 	      return new FilterObservable(this.source, innerPredicate(predicate, this), thisArg);
 	    };
@@ -5385,11 +5382,11 @@
 	      }
 	      return false;
 	    };
-	
+
 	    return FilterObservable;
-	
+
 	  }(ObservableBase));
-	
+
 	  /**
 	  *  Filters the elements of an observable sequence based on a predicate by incorporating the element's index.
 	  * @param {Function} predicate A function to test each source element for a condition; the second parameter of the function represents the index of the source element.
@@ -5400,7 +5397,7 @@
 	    return this instanceof FilterObservable ? this.internalFilter(predicate, thisArg) :
 	      new FilterObservable(this, predicate, thisArg);
 	  };
-	
+
 	  function extremaBy(source, keySelector, comparer) {
 	    return new AnonymousObservable(function (o) {
 	      var hasValue = false, lastKey = null, list = [];
@@ -5435,12 +5432,12 @@
 	      });
 	    }, source);
 	  }
-	
+
 	  function firstOnly(x) {
 	    if (x.length === 0) { throw new EmptyError(); }
 	    return x[0];
 	  }
-	
+
 	  /**
 	   * Applies an accumulator function over an observable sequence, returning the result of the aggregation as a single element in the result sequence. The specified seed value is used as the initial accumulator value.
 	   * For aggregation behavior with incremental intermediate results, see Observable.scan.
@@ -5484,7 +5481,7 @@
 	      );
 	    }, source);
 	  };
-	
+
 	  var ReduceObservable = (function(__super__) {
 	    inherits(ReduceObservable, __super__);
 	    function ReduceObservable(source, acc, hasSeed, seed) {
@@ -5494,11 +5491,11 @@
 	      this.seed = seed;
 	      __super__.call(this);
 	    }
-	
+
 	    ReduceObservable.prototype.subscribeCore = function(observer) {
 	      return this.source.subscribe(new InnerObserver(observer,this));
 	    };
-	
+
 	    function InnerObserver(o, parent) {
 	      this.o = o;
 	      this.acc = parent.acc;
@@ -5541,10 +5538,10 @@
 	      }
 	      return false;
 	    };
-	
+
 	    return ReduceObservable;
 	  }(ObservableBase));
-	
+
 	  /**
 	  * Applies an accumulator function over an observable sequence, returning the result of the aggregation as a single element in the result sequence. The specified seed value is used as the initial accumulator value.
 	  * For aggregation behavior with incremental intermediate results, see Observable.scan.
@@ -5560,7 +5557,7 @@
 	    }
 	    return new ReduceObservable(this, accumulator, hasSeed, seed);
 	  };
-	
+
 	  /**
 	   * Determines whether any element of an observable sequence satisfies a condition if present, else if any items are in the sequence.
 	   * @param {Function} [predicate] A function to test each element for a condition.
@@ -5580,13 +5577,13 @@
 	        });
 	      }, source);
 	  };
-	
+
 	  /** @deprecated use #some instead */
 	  observableProto.any = function () {
 	    //deprecate('any', 'some');
 	    return this.some.apply(this, arguments);
 	  };
-	
+
 	  /**
 	   * Determines whether an observable sequence is empty.
 	   * @returns {Observable} An observable sequence containing a single element determining whether the source sequence is empty.
@@ -5594,7 +5591,7 @@
 	  observableProto.isEmpty = function () {
 	    return this.any().map(not);
 	  };
-	
+
 	  /**
 	   * Determines whether all elements of an observable sequence satisfy a condition.
 	   * @param {Function} [predicate] A function to test each element for a condition.
@@ -5604,13 +5601,13 @@
 	  observableProto.every = function (predicate, thisArg) {
 	    return this.filter(function (v) { return !predicate(v); }, thisArg).some().map(not);
 	  };
-	
+
 	  /** @deprecated use #every instead */
 	  observableProto.all = function () {
 	    //deprecate('all', 'every');
 	    return this.every.apply(this, arguments);
 	  };
-	
+
 	  /**
 	   * Determines whether an observable sequence includes a specified element with an optional equality comparer.
 	   * @param searchElement The value to locate in the source sequence.
@@ -5644,7 +5641,7 @@
 	        });
 	    }, this);
 	  };
-	
+
 	  /**
 	   * @deprecated use #includes instead.
 	   */
@@ -5652,7 +5649,7 @@
 	    //deprecate('contains', 'includes');
 	    observableProto.includes(searchElement, fromIndex);
 	  };
-	
+
 	  /**
 	   * Returns an observable sequence containing a value that represents how many elements in the specified observable sequence satisfy a condition if provided, else the count of items.
 	   * @example
@@ -5667,7 +5664,7 @@
 	      this.filter(predicate, thisArg).count() :
 	      this.reduce(function (count) { return count + 1; }, 0);
 	  };
-	
+
 	  /**
 	   * Returns the first index at which a given element can be found in the observable sequence, or -1 if it is not present.
 	   * @param {Any} searchElement Element to locate in the array.
@@ -5699,7 +5696,7 @@
 	        });
 	    }, source);
 	  };
-	
+
 	  /**
 	   * Computes the sum of a sequence of values that are obtained by invoking an optional transform function on each element of the input sequence, else if not specified computes the sum on each item in the sequence.
 	   * @param {Function} [selector] A transform function to apply to each element.
@@ -5711,7 +5708,7 @@
 	      this.map(keySelector, thisArg).sum() :
 	      this.reduce(function (prev, curr) { return prev + curr; }, 0);
 	  };
-	
+
 	  /**
 	   * Returns the elements in an observable sequence with the minimum key value according to the specified comparer.
 	   * @example
@@ -5725,7 +5722,7 @@
 	    comparer || (comparer = defaultSubComparer);
 	    return extremaBy(this, keySelector, function (x, y) { return comparer(x, y) * -1; });
 	  };
-	
+
 	  /**
 	   * Returns the minimum element in an observable sequence according to the optional comparer else a default greater than less than check.
 	   * @example
@@ -5737,7 +5734,7 @@
 	  observableProto.min = function (comparer) {
 	    return this.minBy(identity, comparer).map(function (x) { return firstOnly(x); });
 	  };
-	
+
 	  /**
 	   * Returns the elements in an observable sequence with the maximum  key value according to the specified comparer.
 	   * @example
@@ -5751,7 +5748,7 @@
 	    comparer || (comparer = defaultSubComparer);
 	    return extremaBy(this, keySelector, comparer);
 	  };
-	
+
 	  /**
 	   * Returns the maximum value in an observable sequence according to the specified comparer.
 	   * @example
@@ -5763,7 +5760,7 @@
 	  observableProto.max = function (comparer) {
 	    return this.maxBy(identity, comparer).map(function (x) { return firstOnly(x); });
 	  };
-	
+
 	  /**
 	   * Computes the average of an observable sequence of values that are in the sequence or obtained by invoking a transform function on each element of the input sequence if present.
 	   * @param {Function} [selector] A transform function to apply to each element.
@@ -5783,7 +5780,7 @@
 	        return s.sum / s.count;
 	      });
 	  };
-	
+
 	  /**
 	   *  Determines whether two sequences are equal by comparing the elements pairwise using a specified equality comparer.
 	   *
@@ -5833,7 +5830,7 @@
 	          }
 	        }
 	      });
-	
+
 	      (isArrayLike(second) || isIterable(second)) && (second = observableFrom(second));
 	      isPromise(second) && (second = observableFromPromise(second));
 	      var subscription2 = second.subscribe(function (x) {
@@ -5871,7 +5868,7 @@
 	      return new CompositeDisposable(subscription1, subscription2);
 	    }, first);
 	  };
-	
+
 	  function elementAtOrDefault(source, index, hasDefault, defaultValue) {
 	    if (index < 0) { throw new ArgumentOutOfRangeError(); }
 	    return new AnonymousObservable(function (o) {
@@ -5891,7 +5888,7 @@
 	      });
 	    }, source);
 	  }
-	
+
 	  /**
 	   * Returns the element at a specified index in a sequence.
 	   * @example
@@ -5902,7 +5899,7 @@
 	  observableProto.elementAt =  function (index) {
 	    return elementAtOrDefault(this, index, false);
 	  };
-	
+
 	  /**
 	   * Returns the element at a specified index in a sequence or a default value if the index is out of range.
 	   * @example
@@ -5915,7 +5912,7 @@
 	  observableProto.elementAtOrDefault = function (index, defaultValue) {
 	    return elementAtOrDefault(this, index, true, defaultValue);
 	  };
-	
+
 	  function singleOrDefaultAsync(source, hasDefault, defaultValue) {
 	    return new AnonymousObservable(function (o) {
 	      var value = defaultValue, seenValue = false;
@@ -5936,7 +5933,7 @@
 	      });
 	    }, source);
 	  }
-	
+
 	  /**
 	   * Returns the only element of an observable sequence that satisfies the condition in the optional predicate, and reports an exception if there is not exactly one element in the observable sequence.
 	   * @param {Function} [predicate] A predicate function to evaluate for elements in the source sequence.
@@ -5948,7 +5945,7 @@
 	      this.where(predicate, thisArg).single() :
 	      singleOrDefaultAsync(this, false);
 	  };
-	
+
 	  /**
 	   * Returns the only element of an observable sequence that matches the predicate, or a default value if no such element exists; this method reports an exception if there is more than one element in the observable sequence.
 	   * @example
@@ -5967,7 +5964,7 @@
 	      this.filter(predicate, thisArg).singleOrDefault(null, defaultValue) :
 	      singleOrDefaultAsync(this, true, defaultValue);
 	  };
-	
+
 	  function firstOrDefaultAsync(source, hasDefault, defaultValue) {
 	    return new AnonymousObservable(function (o) {
 	      return source.subscribe(function (x) {
@@ -5983,7 +5980,7 @@
 	      });
 	    }, source);
 	  }
-	
+
 	  /**
 	   * Returns the first element of an observable sequence that satisfies the condition in the predicate if present else the first item in the sequence.
 	   * @example
@@ -5998,7 +5995,7 @@
 	      this.where(predicate, thisArg).first() :
 	      firstOrDefaultAsync(this, false);
 	  };
-	
+
 	  /**
 	   * Returns the first element of an observable sequence that satisfies the condition in the predicate, or a default value if no such element exists.
 	   * @param {Function} [predicate] A predicate function to evaluate for elements in the source sequence.
@@ -6011,7 +6008,7 @@
 	      this.where(predicate).firstOrDefault(null, defaultValue) :
 	      firstOrDefaultAsync(this, true, defaultValue);
 	  };
-	
+
 	  function lastOrDefaultAsync(source, hasDefault, defaultValue) {
 	    return new AnonymousObservable(function (o) {
 	      var value = defaultValue, seenValue = false;
@@ -6028,7 +6025,7 @@
 	      });
 	    }, source);
 	  }
-	
+
 	  /**
 	   * Returns the last element of an observable sequence that satisfies the condition in the predicate if specified, else the last element.
 	   * @param {Function} [predicate] A predicate function to evaluate for elements in the source sequence.
@@ -6040,7 +6037,7 @@
 	      this.where(predicate, thisArg).last() :
 	      lastOrDefaultAsync(this, false);
 	  };
-	
+
 	  /**
 	   * Returns the last element of an observable sequence that satisfies the condition in the predicate, or a default value if no such element exists.
 	   * @param {Function} [predicate] A predicate function to evaluate for elements in the source sequence.
@@ -6053,7 +6050,7 @@
 	      this.where(predicate, thisArg).lastOrDefault(null, defaultValue) :
 	      lastOrDefaultAsync(this, true, defaultValue);
 	  };
-	
+
 	  function findValue (source, predicate, thisArg, yieldIndex) {
 	    var callback = bindCallback(predicate, thisArg, 3);
 	    return new AnonymousObservable(function (o) {
@@ -6078,7 +6075,7 @@
 	      });
 	    }, source);
 	  }
-	
+
 	  /**
 	   * Searches for an element that matches the conditions defined by the specified predicate, and returns the first occurrence within the entire Observable sequence.
 	   * @param {Function} predicate The predicate that defines the conditions of the element to search for.
@@ -6088,7 +6085,7 @@
 	  observableProto.find = function (predicate, thisArg) {
 	    return findValue(this, predicate, thisArg, false);
 	  };
-	
+
 	  /**
 	   * Searches for an element that matches the conditions defined by the specified predicate, and returns
 	   * an Observable sequence with the zero-based index of the first occurrence within the entire Observable sequence.
@@ -6099,7 +6096,7 @@
 	  observableProto.findIndex = function (predicate, thisArg) {
 	    return findValue(this, predicate, thisArg, true);
 	  };
-	
+
 	  /**
 	   * Converts the observable sequence to a Set if it exists.
 	   * @returns {Observable} An observable sequence with a single value of a Set containing the values from the observable sequence.
@@ -6118,7 +6115,7 @@
 	        });
 	    }, source);
 	  };
-	
+
 	  /**
 	  * Converts the observable sequence to a Map if it exists.
 	  * @param {Function} keySelector A function which produces the key for the Map.
@@ -6139,7 +6136,7 @@
 	            o.onError(e);
 	            return;
 	          }
-	
+
 	          var element = x;
 	          if (elementSelector) {
 	            try {
@@ -6149,7 +6146,7 @@
 	              return;
 	            }
 	          }
-	
+
 	          m.set(key, element);
 	        },
 	        function (e) { o.onError(e); },
@@ -6159,11 +6156,11 @@
 	        });
 	    }, source);
 	  };
-	
+
 	  var fnString = 'function',
 	      throwString = 'throw',
 	      isObject = Rx.internals.isObject;
-	
+
 	  function toThunk(obj, ctx) {
 	    if (Array.isArray(obj)) {  return objectToThunk.call(ctx, obj); }
 	    if (isGeneratorFunction(obj)) { return observableSpawn(obj.call(ctx)); }
@@ -6172,46 +6169,46 @@
 	    if (isPromise(obj)) { return promiseToThunk(obj); }
 	    if (typeof obj === fnString) { return obj; }
 	    if (isObject(obj) || Array.isArray(obj)) { return objectToThunk.call(ctx, obj); }
-	
+
 	    return obj;
 	  }
-	
+
 	  function objectToThunk(obj) {
 	    var ctx = this;
-	
+
 	    return function (done) {
 	      var keys = Object.keys(obj),
 	          pending = keys.length,
 	          results = new obj.constructor(),
 	          finished;
-	
+
 	      if (!pending) {
 	        timeoutScheduler.schedule(function () { done(null, results); });
 	        return;
 	      }
-	
+
 	      for (var i = 0, len = keys.length; i < len; i++) {
 	        run(obj[keys[i]], keys[i]);
 	      }
-	
+
 	      function run(fn, key) {
 	        if (finished) { return; }
 	        try {
 	          fn = toThunk(fn, ctx);
-	
+
 	          if (typeof fn !== fnString) {
 	            results[key] = fn;
 	            return --pending || done(null, results);
 	          }
-	
+
 	          fn.call(ctx, function(err, res) {
 	            if (finished) { return; }
-	
+
 	            if (err) {
 	              finished = true;
 	              return done(err);
 	            }
-	
+
 	            results[key] = res;
 	            --pending || done(null, results);
 	          });
@@ -6222,7 +6219,7 @@
 	      }
 	    }
 	  }
-	
+
 	  function observableToThunk(observable) {
 	    return function (fn) {
 	      var value, hasValue = false;
@@ -6237,7 +6234,7 @@
 	        });
 	    }
 	  }
-	
+
 	  function promiseToThunk(promise) {
 	    return function(fn) {
 	      promise.then(function(res) {
@@ -6245,19 +6242,19 @@
 	      }, fn);
 	    }
 	  }
-	
+
 	  function isObservable(obj) {
 	    return obj && typeof obj.subscribe === fnString;
 	  }
-	
+
 	  function isGeneratorFunction(obj) {
 	    return obj && obj.constructor && obj.constructor.name === 'GeneratorFunction';
 	  }
-	
+
 	  function isGenerator(obj) {
 	    return obj && typeof obj.next === fnString && typeof obj[throwString] === fnString;
 	  }
-	
+
 	  /*
 	   * Spawns a generator function which allows for Promises, Observable sequences, Arrays, Objects, Generators and functions.
 	   * @param {Function} The spawning function.
@@ -6265,36 +6262,36 @@
 	   */
 	  var observableSpawn = Rx.spawn = function (fn) {
 	    var isGenFun = isGeneratorFunction(fn);
-	
+
 	    return function (done) {
 	      var ctx = this,
 	        gen = fn;
-	
+
 	      if (isGenFun) {
 	        for(var args = [], i = 0, len = arguments.length; i < len; i++) { args.push(arguments[i]); }
 	        var len = args.length,
 	          hasCallback = len && typeof args[len - 1] === fnString;
-	
+
 	        done = hasCallback ? args.pop() : handleError;
 	        gen = fn.apply(this, args);
 	      } else {
 	        done = done || handleError;
 	      }
-	
+
 	      next();
-	
+
 	      function exit(err, res) {
 	        timeoutScheduler.schedule(done.bind(ctx, err, res));
 	      }
-	
+
 	      function next(err, res) {
 	        var ret;
-	
+
 	        // multiple args
 	        if (arguments.length > 2) {
 	          for(var res = [], i = 1, len = arguments.length; i < len; i++) { res.push(arguments[i]); }
 	        }
-	
+
 	        if (err) {
 	          try {
 	            ret = gen[throwString](err);
@@ -6302,7 +6299,7 @@
 	            return exit(e);
 	          }
 	        }
-	
+
 	        if (!err) {
 	          try {
 	            ret = gen.next(res);
@@ -6310,13 +6307,13 @@
 	            return exit(e);
 	          }
 	        }
-	
+
 	        if (ret.done)  {
 	          return exit(null, ret.value);
 	        }
-	
+
 	        ret.value = toThunk(ret.value, ctx);
-	
+
 	        if (typeof ret.value === fnString) {
 	          var called = false;
 	          try {
@@ -6324,7 +6321,7 @@
 	              if (called) {
 	                return;
 	              }
-	
+
 	              called = true;
 	              next.apply(ctx, arguments);
 	            });
@@ -6333,27 +6330,27 @@
 	              if (called) {
 	                return;
 	              }
-	
+
 	              called = true;
 	              next.call(ctx, e);
 	            });
 	          }
 	          return;
 	        }
-	
+
 	        // Not supported
 	        next(new TypeError('Rx.spawn only supports a function, Promise, Observable, Object or Array.'));
 	      }
 	    }
 	  };
-	
+
 	  function handleError(err) {
 	    if (!err) { return; }
 	    timeoutScheduler.schedule(function() {
 	      throw err;
 	    });
 	  }
-	
+
 	  /**
 	   * Invokes the specified function asynchronously on the specified scheduler, surfacing the result through an observable sequence.
 	   *
@@ -6374,7 +6371,7 @@
 	  Observable.start = function (func, context, scheduler) {
 	    return observableToAsync(func, context, scheduler)();
 	  };
-	
+
 	  /**
 	   * Converts the function into an asynchronous function. Each invocation of the resulting asynchronous function causes an invocation of the original synchronous function on the specified scheduler.
 	   * @param {Function} function Function to convert to an asynchronous function.
@@ -6387,7 +6384,7 @@
 	    return function () {
 	      var args = arguments,
 	        subject = new AsyncSubject();
-	
+
 	      scheduler.schedule(function () {
 	        var result;
 	        try {
@@ -6402,7 +6399,7 @@
 	      return subject.asObservable();
 	    };
 	  };
-	
+
 	  /**
 	   * Converts a callback function to an observable sequence.
 	   *
@@ -6415,19 +6412,19 @@
 	    return function () {
 	      var len = arguments.length, args = new Array(len)
 	      for(var i = 0; i < len; i++) { args[i] = arguments[i]; }
-	
+
 	      return new AnonymousObservable(function (observer) {
 	        function handler() {
 	          var len = arguments.length, results = new Array(len);
 	          for(var i = 0; i < len; i++) { results[i] = arguments[i]; }
-	
+
 	          if (selector) {
 	            try {
 	              results = selector.apply(context, results);
 	            } catch (e) {
 	              return observer.onError(e);
 	            }
-	
+
 	            observer.onNext(results);
 	          } else {
 	            if (results.length <= 1) {
@@ -6436,16 +6433,16 @@
 	              observer.onNext(results);
 	            }
 	          }
-	
+
 	          observer.onCompleted();
 	        }
-	
+
 	        args.push(handler);
 	        func.apply(context, args);
 	      }).publishLast().refCount();
 	    };
 	  };
-	
+
 	  /**
 	   * Converts a Node.js callback style function to an observable sequence.  This must be in function (err, ...) format.
 	   * @param {Function} func The function to call
@@ -6457,17 +6454,17 @@
 	    return function () {
 	      var len = arguments.length, args = new Array(len);
 	      for(var i = 0; i < len; i++) { args[i] = arguments[i]; }
-	
+
 	      return new AnonymousObservable(function (observer) {
 	        function handler(err) {
 	          if (err) {
 	            observer.onError(err);
 	            return;
 	          }
-	
+
 	          var len = arguments.length, results = [];
 	          for(var i = 1; i < len; i++) { results[i - 1] = arguments[i]; }
-	
+
 	          if (selector) {
 	            try {
 	              results = selector.apply(context, results);
@@ -6482,16 +6479,16 @@
 	              observer.onNext(results);
 	            }
 	          }
-	
+
 	          observer.onCompleted();
 	        }
-	
+
 	        args.push(handler);
 	        func.apply(context, args);
 	      }).publishLast().refCount();
 	    };
 	  };
-	
+
 	  function createListener (element, name, handler) {
 	    if (element.addEventListener) {
 	      element.addEventListener(name, handler, false);
@@ -6501,10 +6498,10 @@
 	    }
 	    throw new Error('No listener found');
 	  }
-	
+
 	  function createEventListener (el, eventName, handler) {
 	    var disposables = new CompositeDisposable();
-	
+
 	    // Asume NodeList or HTMLCollection
 	    var toStr = Object.prototype.toString;
 	    if (toStr.call(el) === '[object NodeList]' || toStr.call(el) === '[object HTMLCollection]') {
@@ -6514,15 +6511,15 @@
 	    } else if (el) {
 	      disposables.add(createListener(el, eventName, handler));
 	    }
-	
+
 	    return disposables;
 	  }
-	
+
 	  /**
 	   * Configuration option to determine whether to use native events only
 	   */
 	  Rx.config.useNativeEvents = false;
-	
+
 	  /**
 	   * Creates an observable sequence by adding an event listener to the matching DOMElement or each item in the NodeList.
 	   *
@@ -6542,7 +6539,7 @@
 	        function (h) { element.removeListener(eventName, h); },
 	        selector);
 	    }
-	
+
 	    // Use only if non-native events are allowed
 	    if (!Rx.config.useNativeEvents) {
 	      // Handles jq, Angular.js, Zepto, Marionette, Ember.js
@@ -6559,7 +6556,7 @@
 	        eventName,
 	        function handler (e) {
 	          var results = e;
-	
+
 	          if (selector) {
 	            try {
 	              results = selector(arguments);
@@ -6567,12 +6564,12 @@
 	              return observer.onError(err);
 	            }
 	          }
-	
+
 	          observer.onNext(results);
 	        });
 	    }).publish().refCount();
 	  };
-	
+
 	  /**
 	   * Creates an observable sequence from an event emitter via an addHandler/removeHandler pair.
 	   * @param {Function} addHandler The function to add a handler to the emitter.
@@ -6593,7 +6590,7 @@
 	        }
 	        observer.onNext(result);
 	      }
-	
+
 	      var returnValue = addHandler(innerHandler);
 	      return disposableCreate(function () {
 	        if (removeHandler) {
@@ -6602,7 +6599,7 @@
 	      });
 	    }).publish().refCount();
 	  };
-	
+
 	  /**
 	   * Invokes the asynchronous function, surfacing the result through an observable sequence.
 	   * @param {Function} functionAsync Asynchronous function which returns a Promise to run.
@@ -6617,16 +6614,16 @@
 	    }
 	    return observableFromPromise(promise);
 	  }
-	
+
 	  var PausableObservable = (function (__super__) {
-	
+
 	    inherits(PausableObservable, __super__);
-	
+
 	    function subscribe(observer) {
 	      var conn = this.source.publish(),
 	        subscription = conn.subscribe(observer),
 	        connection = disposableEmpty;
-	
+
 	      var pausable = this.pauser.distinctUntilChanged().subscribe(function (b) {
 	        if (b) {
 	          connection = conn.connect();
@@ -6635,35 +6632,35 @@
 	          connection = disposableEmpty;
 	        }
 	      });
-	
+
 	      return new CompositeDisposable(subscription, connection, pausable);
 	    }
-	
+
 	    function PausableObservable(source, pauser) {
 	      this.source = source;
 	      this.controller = new Subject();
-	
+
 	      if (pauser && pauser.subscribe) {
 	        this.pauser = this.controller.merge(pauser);
 	      } else {
 	        this.pauser = this.controller;
 	      }
-	
+
 	      __super__.call(this, subscribe, source);
 	    }
-	
+
 	    PausableObservable.prototype.pause = function () {
 	      this.controller.onNext(false);
 	    };
-	
+
 	    PausableObservable.prototype.resume = function () {
 	      this.controller.onNext(true);
 	    };
-	
+
 	    return PausableObservable;
-	
+
 	  }(Observable));
-	
+
 	  /**
 	   * Pauses the underlying observable sequence based upon the observable sequence which yields true/false.
 	   * @example
@@ -6675,7 +6672,7 @@
 	  observableProto.pausable = function (pauser) {
 	    return new PausableObservable(this, pauser);
 	  };
-	
+
 	  function combineLatestSource(source, subject, resultSelector) {
 	    return new AnonymousObservable(function (o) {
 	      var hasValue = [false, false],
@@ -6683,7 +6680,7 @@
 	        isDone = false,
 	        values = new Array(2),
 	        err;
-	
+
 	      function next(x, i) {
 	        values[i] = x
 	        hasValue[i] = true;
@@ -6695,7 +6692,7 @@
 	        }
 	        isDone && values[1] && o.onCompleted();
 	      }
-	
+
 	      return new CompositeDisposable(
 	        source.subscribe(
 	          function (x) {
@@ -6724,16 +6721,16 @@
 	        );
 	    }, source);
 	  }
-	
+
 	  var PausableBufferedObservable = (function (__super__) {
-	
+
 	    inherits(PausableBufferedObservable, __super__);
-	
+
 	    function subscribe(o) {
 	      var q = [], previousShouldFire;
-	
+
 	      function drainQueue() { while (q.length > 0) { o.onNext(q.shift()); } }
-	
+
 	      var subscription =
 	        combineLatestSource(
 	          this.source,
@@ -6768,32 +6765,32 @@
 	          );
 	      return subscription;
 	    }
-	
+
 	    function PausableBufferedObservable(source, pauser) {
 	      this.source = source;
 	      this.controller = new Subject();
-	
+
 	      if (pauser && pauser.subscribe) {
 	        this.pauser = this.controller.merge(pauser);
 	      } else {
 	        this.pauser = this.controller;
 	      }
-	
+
 	      __super__.call(this, subscribe, source);
 	    }
-	
+
 	    PausableBufferedObservable.prototype.pause = function () {
 	      this.controller.onNext(false);
 	    };
-	
+
 	    PausableBufferedObservable.prototype.resume = function () {
 	      this.controller.onNext(true);
 	    };
-	
+
 	    return PausableBufferedObservable;
-	
+
 	  }(Observable));
-	
+
 	  /**
 	   * Pauses the underlying observable sequence based upon the observable sequence which yields true/false,
 	   * and yields the values that were buffered while paused.
@@ -6806,40 +6803,40 @@
 	  observableProto.pausableBuffered = function (subject) {
 	    return new PausableBufferedObservable(this, subject);
 	  };
-	
+
 	  var ControlledObservable = (function (__super__) {
-	
+
 	    inherits(ControlledObservable, __super__);
-	
+
 	    function subscribe (observer) {
 	      return this.source.subscribe(observer);
 	    }
-	
+
 	    function ControlledObservable (source, enableQueue, scheduler) {
 	      __super__.call(this, subscribe, source);
 	      this.subject = new ControlledSubject(enableQueue, scheduler);
 	      this.source = source.multicast(this.subject).refCount();
 	    }
-	
+
 	    ControlledObservable.prototype.request = function (numberOfItems) {
 	      return this.subject.request(numberOfItems == null ? -1 : numberOfItems);
 	    };
-	
+
 	    return ControlledObservable;
-	
+
 	  }(Observable));
-	
+
 	  var ControlledSubject = (function (__super__) {
-	
+
 	    function subscribe (observer) {
 	      return this.subject.subscribe(observer);
 	    }
-	
+
 	    inherits(ControlledSubject, __super__);
-	
+
 	    function ControlledSubject(enableQueue, scheduler) {
 	      enableQueue == null && (enableQueue = true);
-	
+
 	      __super__.call(this, subscribe);
 	      this.subject = new Subject();
 	      this.enableQueue = enableQueue;
@@ -6851,7 +6848,7 @@
 	      this.hasCompleted = false;
 	      this.scheduler = scheduler || currentThreadScheduler;
 	    }
-	
+
 	    addProperties(ControlledSubject.prototype, Observer, {
 	      onCompleted: function () {
 	        this.hasCompleted = true;
@@ -6872,7 +6869,7 @@
 	      },
 	      onNext: function (value) {
 	        var hasRequested = false;
-	
+
 	        if (this.requestedCount === 0) {
 	          this.enableQueue && this.queue.push(Notification.createOnNext(value));
 	        } else {
@@ -6894,16 +6891,16 @@
 	              this.queue = [];
 	            }
 	          }
-	
+
 	          return { numberOfItems : numberOfItems, returnValue: this.queue.length !== 0};
 	        }
-	
+
 	        return { numberOfItems: numberOfItems, returnValue: false };
 	      },
 	      request: function (number) {
 	        this.disposeCurrentRequest();
 	        var self = this;
-	
+
 	        this.requestedDisposable = this.scheduler.scheduleWithState(number,
 	        function(s, i) {
 	          var r = self._processRequest(i), remaining = r.numberOfItems;
@@ -6914,7 +6911,7 @@
 	            });
 	          }
 	        });
-	
+
 	        return this.requestedDisposable;
 	      },
 	      disposeCurrentRequest: function () {
@@ -6922,10 +6919,10 @@
 	        this.requestedDisposable = disposableEmpty;
 	      }
 	    });
-	
+
 	    return ControlledSubject;
 	  }(Observable));
-	
+
 	  /**
 	   * Attaches a controller to the observable sequence with the ability to queue.
 	   * @example
@@ -6936,66 +6933,66 @@
 	   * @returns {Observable} The observable sequence which only propagates values on request.
 	   */
 	  observableProto.controlled = function (enableQueue, scheduler) {
-	
+
 	    if (enableQueue && isScheduler(enableQueue)) {
 	        scheduler = enableQueue;
 	        enableQueue = true;
 	    }
-	
+
 	    if (enableQueue == null) {  enableQueue = true; }
 	    return new ControlledObservable(this, enableQueue, scheduler);
 	  };
-	
+
 	  var StopAndWaitObservable = (function (__super__) {
-	
+
 	    function subscribe (observer) {
 	      this.subscription = this.source.subscribe(new StopAndWaitObserver(observer, this, this.subscription));
-	
+
 	      var self = this;
 	      timeoutScheduler.schedule(function () { self.source.request(1); });
-	
+
 	      return this.subscription;
 	    }
-	
+
 	    inherits(StopAndWaitObservable, __super__);
-	
+
 	    function StopAndWaitObservable (source) {
 	      __super__.call(this, subscribe, source);
 	      this.source = source;
 	    }
-	
+
 	    var StopAndWaitObserver = (function (__sub__) {
-	
+
 	      inherits(StopAndWaitObserver, __sub__);
-	
+
 	      function StopAndWaitObserver (observer, observable, cancel) {
 	        __sub__.call(this);
 	        this.observer = observer;
 	        this.observable = observable;
 	        this.cancel = cancel;
 	      }
-	
+
 	      var stopAndWaitObserverProto = StopAndWaitObserver.prototype;
-	
+
 	      stopAndWaitObserverProto.completed = function () {
 	        this.observer.onCompleted();
 	        this.dispose();
 	      };
-	
+
 	      stopAndWaitObserverProto.error = function (error) {
 	        this.observer.onError(error);
 	        this.dispose();
 	      }
-	
+
 	      stopAndWaitObserverProto.next = function (value) {
 	        this.observer.onNext(value);
-	
+
 	        var self = this;
 	        timeoutScheduler.schedule(function () {
 	          self.observable.source.request(1);
 	        });
 	      };
-	
+
 	      stopAndWaitObserverProto.dispose = function () {
 	        this.observer = null;
 	        if (this.cancel) {
@@ -7004,14 +7001,14 @@
 	        }
 	        __sub__.prototype.dispose.call(this);
 	      };
-	
+
 	      return StopAndWaitObserver;
 	    }(AbstractObserver));
-	
+
 	    return StopAndWaitObservable;
 	  }(Observable));
-	
-	
+
+
 	  /**
 	   * Attaches a stop and wait observable to the current observable.
 	   * @returns {Observable} A stop and wait observable.
@@ -7019,54 +7016,54 @@
 	  ControlledObservable.prototype.stopAndWait = function () {
 	    return new StopAndWaitObservable(this);
 	  };
-	
+
 	  var WindowedObservable = (function (__super__) {
-	
+
 	    function subscribe (observer) {
 	      this.subscription = this.source.subscribe(new WindowedObserver(observer, this, this.subscription));
-	
+
 	      var self = this;
 	      timeoutScheduler.schedule(function () {
 	        self.source.request(self.windowSize);
 	      });
-	
+
 	      return this.subscription;
 	    }
-	
+
 	    inherits(WindowedObservable, __super__);
-	
+
 	    function WindowedObservable(source, windowSize) {
 	      __super__.call(this, subscribe, source);
 	      this.source = source;
 	      this.windowSize = windowSize;
 	    }
-	
+
 	    var WindowedObserver = (function (__sub__) {
-	
+
 	      inherits(WindowedObserver, __sub__);
-	
+
 	      function WindowedObserver(observer, observable, cancel) {
 	        this.observer = observer;
 	        this.observable = observable;
 	        this.cancel = cancel;
 	        this.received = 0;
 	      }
-	
+
 	      var windowedObserverPrototype = WindowedObserver.prototype;
-	
+
 	      windowedObserverPrototype.completed = function () {
 	        this.observer.onCompleted();
 	        this.dispose();
 	      };
-	
+
 	      windowedObserverPrototype.error = function (error) {
 	        this.observer.onError(error);
 	        this.dispose();
 	      };
-	
+
 	      windowedObserverPrototype.next = function (value) {
 	        this.observer.onNext(value);
-	
+
 	        this.received = ++this.received % this.observable.windowSize;
 	        if (this.received === 0) {
 	          var self = this;
@@ -7075,7 +7072,7 @@
 	          });
 	        }
 	      };
-	
+
 	      windowedObserverPrototype.dispose = function () {
 	        this.observer = null;
 	        if (this.cancel) {
@@ -7084,13 +7081,13 @@
 	        }
 	        __sub__.prototype.dispose.call(this);
 	      };
-	
+
 	      return WindowedObserver;
 	    }(AbstractObserver));
-	
+
 	    return WindowedObservable;
 	  }(Observable));
-	
+
 	  /**
 	   * Creates a sliding windowed observable based upon the window size.
 	   * @param {Number} windowSize The number of items in the window
@@ -7099,7 +7096,7 @@
 	  ControlledObservable.prototype.windowed = function (windowSize) {
 	    return new WindowedObservable(this, windowSize);
 	  };
-	
+
 	  /**
 	   * Pipes the existing Observable sequence into a Node.js Stream.
 	   * @param {Stream} dest The destination Node.js stream.
@@ -7107,13 +7104,13 @@
 	   */
 	  observableProto.pipe = function (dest) {
 	    var source = this.pausableBuffered();
-	
+
 	    function onDrain() {
 	      source.resume();
 	    }
-	
+
 	    dest.addListener('drain', onDrain);
-	
+
 	    source.subscribe(
 	      function (x) {
 	        !dest.write(String(x)) && source.pause();
@@ -7126,12 +7123,12 @@
 	        !dest._isStdio && dest.end();
 	        dest.removeListener('drain', onDrain);
 	      });
-	
+
 	    source.resume();
-	
+
 	    return dest;
 	  };
-	
+
 	  /**
 	   * Multicasts the source sequence notifications through an instantiated subject into all uses of the sequence within a selector function. Each
 	   * subscription to the resulting sequence causes a separate multicast invocation, exposing the sequence resulting from the selector function's
@@ -7158,7 +7155,7 @@
 	      }, source) :
 	      new ConnectableObservable(source, subjectOrSubjectSelector);
 	  };
-	
+
 	  /**
 	   * Returns an observable sequence that is the result of invoking the selector on a connectable observable sequence that shares a single subscription to the underlying sequence.
 	   * This operator is a specialization of Multicast using a regular Subject.
@@ -7175,7 +7172,7 @@
 	      this.multicast(function () { return new Subject(); }, selector) :
 	      this.multicast(new Subject());
 	  };
-	
+
 	  /**
 	   * Returns an observable sequence that shares a single subscription to the underlying sequence.
 	   * This operator is a specialization of publish which creates a subscription when the number of observers goes from zero to one, then shares that subscription with all subsequent observers until the number of observers returns to zero, at which point the subscription is disposed.
@@ -7184,7 +7181,7 @@
 	  observableProto.share = function () {
 	    return this.publish().refCount();
 	  };
-	
+
 	  /**
 	   * Returns an observable sequence that is the result of invoking the selector on a connectable observable sequence that shares a single subscription to the underlying sequence containing only the last notification.
 	   * This operator is a specialization of Multicast using a AsyncSubject.
@@ -7201,7 +7198,7 @@
 	      this.multicast(function () { return new AsyncSubject(); }, selector) :
 	      this.multicast(new AsyncSubject());
 	  };
-	
+
 	  /**
 	   * Returns an observable sequence that is the result of invoking the selector on a connectable observable sequence that shares a single subscription to the underlying sequence and starts with initialValue.
 	   * This operator is a specialization of Multicast using a BehaviorSubject.
@@ -7221,7 +7218,7 @@
 	      }, initialValueOrSelector) :
 	      this.multicast(new BehaviorSubject(initialValueOrSelector));
 	  };
-	
+
 	  /**
 	   * Returns an observable sequence that shares a single subscription to the underlying sequence and starts with an initialValue.
 	   * This operator is a specialization of publishValue which creates a subscription when the number of observers goes from zero to one, then shares that subscription with all subsequent observers until the number of observers returns to zero, at which point the subscription is disposed.
@@ -7231,7 +7228,7 @@
 	  observableProto.shareValue = function (initialValue) {
 	    return this.publishValue(initialValue).refCount();
 	  };
-	
+
 	  /**
 	   * Returns an observable sequence that is the result of invoking the selector on a connectable observable sequence that shares a single subscription to the underlying sequence replaying notifications subject to a maximum time length for the replay buffer.
 	   * This operator is a specialization of Multicast using a ReplaySubject.
@@ -7253,7 +7250,7 @@
 	      this.multicast(function () { return new ReplaySubject(bufferSize, windowSize, scheduler); }, selector) :
 	      this.multicast(new ReplaySubject(bufferSize, windowSize, scheduler));
 	  };
-	
+
 	  /**
 	   * Returns an observable sequence that shares a single subscription to the underlying sequence replaying notifications subject to a maximum time length for the replay buffer.
 	   * This operator is a specialization of replay which creates a subscription when the number of observers goes from zero to one, then shares that subscription with all subsequent observers until the number of observers returns to zero, at which point the subscription is disposed.
@@ -7263,7 +7260,7 @@
 	   * var res = source.shareReplay(3, 500);
 	   * var res = source.shareReplay(3, 500, scheduler);
 	   *
-	
+
 	   * @param bufferSize [Optional] Maximum element count of the replay buffer.
 	   * @param window [Optional] Maximum time length of the replay buffer.
 	   * @param scheduler [Optional] Scheduler where connected observers within the selector function will be invoked on.
@@ -7272,12 +7269,12 @@
 	  observableProto.shareReplay = function (bufferSize, windowSize, scheduler) {
 	    return this.replay(null, bufferSize, windowSize, scheduler).refCount();
 	  };
-	
+
 	  var InnerSubscription = function (subject, observer) {
 	    this.subject = subject;
 	    this.observer = observer;
 	  };
-	
+
 	  InnerSubscription.prototype.dispose = function () {
 	    if (!this.subject.isDisposed && this.observer !== null) {
 	      var idx = this.subject.observers.indexOf(this.observer);
@@ -7285,7 +7282,7 @@
 	      this.observer = null;
 	    }
 	  };
-	
+
 	  /**
 	   *  Represents a value that changes over time.
 	   *  Observers can subscribe to the subject to receive the last (or initial) value and all subsequent notifications.
@@ -7305,9 +7302,9 @@
 	      }
 	      return disposableEmpty;
 	    }
-	
+
 	    inherits(BehaviorSubject, __super__);
-	
+
 	    /**
 	     *  Initializes a new instance of the BehaviorSubject class which creates a subject that caches its last value and starts with the specified value.
 	     *  @param {Mixed} value Initial value sent to observers when no other value has been received by the subject yet.
@@ -7320,7 +7317,7 @@
 	      this.isStopped = false,
 	      this.hasError = false;
 	    }
-	
+
 	    addProperties(BehaviorSubject.prototype, Observer, {
 	      /**
 	       * Gets the current value or throws an exception.
@@ -7351,7 +7348,7 @@
 	        for (var i = 0, os = cloneArray(this.observers), len = os.length; i < len; i++) {
 	          os[i].onCompleted();
 	        }
-	
+
 	        this.observers.length = 0;
 	      },
 	      /**
@@ -7364,11 +7361,11 @@
 	        this.isStopped = true;
 	        this.hasError = true;
 	        this.error = error;
-	
+
 	        for (var i = 0, os = cloneArray(this.observers), len = os.length; i < len; i++) {
 	          os[i].onError(error);
 	        }
-	
+
 	        this.observers.length = 0;
 	      },
 	      /**
@@ -7393,48 +7390,48 @@
 	        this.exception = null;
 	      }
 	    });
-	
+
 	    return BehaviorSubject;
 	  }(Observable));
-	
+
 	  /**
 	   * Represents an object that is both an observable sequence as well as an observer.
 	   * Each notification is broadcasted to all subscribed and future observers, subject to buffer trimming policies.
 	   */
 	  var ReplaySubject = Rx.ReplaySubject = (function (__super__) {
-	
+
 	    var maxSafeInteger = Math.pow(2, 53) - 1;
-	
+
 	    function createRemovableDisposable(subject, observer) {
 	      return disposableCreate(function () {
 	        observer.dispose();
 	        !subject.isDisposed && subject.observers.splice(subject.observers.indexOf(observer), 1);
 	      });
 	    }
-	
+
 	    function subscribe(observer) {
 	      var so = new ScheduledObserver(this.scheduler, observer),
 	        subscription = createRemovableDisposable(this, so);
 	      checkDisposed(this);
 	      this._trim(this.scheduler.now());
 	      this.observers.push(so);
-	
+
 	      for (var i = 0, len = this.q.length; i < len; i++) {
 	        so.onNext(this.q[i].value);
 	      }
-	
+
 	      if (this.hasError) {
 	        so.onError(this.error);
 	      } else if (this.isStopped) {
 	        so.onCompleted();
 	      }
-	
+
 	      so.ensureActive();
 	      return subscription;
 	    }
-	
+
 	    inherits(ReplaySubject, __super__);
-	
+
 	    /**
 	     *  Initializes a new instance of the ReplaySubject class with the specified buffer size, window size and scheduler.
 	     *  @param {Number} [bufferSize] Maximum element count of the replay buffer.
@@ -7453,7 +7450,7 @@
 	      this.error = null;
 	      __super__.call(this, subscribe);
 	    }
-	
+
 	    addProperties(ReplaySubject.prototype, Observer.prototype, {
 	      /**
 	       * Indicates whether the subject has observers subscribed to it.
@@ -7480,7 +7477,7 @@
 	        var now = this.scheduler.now();
 	        this.q.push({ interval: now, value: value });
 	        this._trim(now);
-	
+
 	        for (var i = 0, os = cloneArray(this.observers), len = os.length; i < len; i++) {
 	          var observer = os[i];
 	          observer.onNext(value);
@@ -7530,18 +7527,18 @@
 	        this.observers = null;
 	      }
 	    });
-	
+
 	    return ReplaySubject;
 	  }(Observable));
-	
+
 	  var ConnectableObservable = Rx.ConnectableObservable = (function (__super__) {
 	    inherits(ConnectableObservable, __super__);
-	
+
 	    function ConnectableObservable(source, subject) {
 	      var hasSubscription = false,
 	        subscription,
 	        sourceObservable = source.asObservable();
-	
+
 	      this.connect = function () {
 	        if (!hasSubscription) {
 	          hasSubscription = true;
@@ -7551,10 +7548,10 @@
 	        }
 	        return subscription;
 	      };
-	
+
 	      __super__.call(this, function (o) { return subject.subscribe(o); });
 	    }
-	
+
 	    ConnectableObservable.prototype.refCount = function () {
 	      var connectableSubscription, count = 0, source = this;
 	      return new AnonymousObservable(function (observer) {
@@ -7567,10 +7564,10 @@
 	          };
 	      });
 	    };
-	
+
 	    return ConnectableObservable;
 	  }(Observable));
-	
+
 	  /**
 	   * Returns an observable sequence that shares a single subscription to the underlying sequence. This observable sequence
 	   * can be resubscribed to, even if all prior subscriptions have ended. (unlike `.publish().refCount()`)
@@ -7578,7 +7575,7 @@
 	   */
 	  observableProto.singleInstance = function() {
 	    var source = this, hasObservable = false, observable;
-	
+
 	    function getObservable() {
 	      if (!hasObservable) {
 	        hasObservable = true;
@@ -7586,18 +7583,18 @@
 	      }
 	      return observable;
 	    };
-	
+
 	    return new AnonymousObservable(function(o) {
 	      return getObservable().subscribe(o);
 	    });
 	  };
-	
+
 	  var Dictionary = (function () {
-	
+
 	    var primes = [1, 3, 7, 13, 31, 61, 127, 251, 509, 1021, 2039, 4093, 8191, 16381, 32749, 65521, 131071, 262139, 524287, 1048573, 2097143, 4194301, 8388593, 16777213, 33554393, 67108859, 134217689, 268435399, 536870909, 1073741789, 2147483647],
 	      noSuchkey = "no such key",
 	      duplicatekey = "duplicate key";
-	
+
 	    function isPrime(candidate) {
 	      if ((candidate & 1) === 0) { return candidate === 2; }
 	      var num1 = Math.sqrt(candidate),
@@ -7608,7 +7605,7 @@
 	      }
 	      return true;
 	    }
-	
+
 	    function getPrime(min) {
 	      var index, num, candidate;
 	      for (index = 0; index < primes.length; ++index) {
@@ -7622,7 +7619,7 @@
 	      }
 	      return min;
 	    }
-	
+
 	    function stringHashFn(str) {
 	      var hash = 757602046;
 	      if (!str.length) { return hash; }
@@ -7633,7 +7630,7 @@
 	      }
 	      return hash;
 	    }
-	
+
 	    function numberHashFn(key) {
 	      var c2 = 0x27d4eb2d;
 	      key = (key ^ 61) ^ (key >>> 16);
@@ -7643,13 +7640,13 @@
 	      key = key ^ (key >>> 15);
 	      return key;
 	    }
-	
+
 	    var getHashCode = (function () {
 	      var uniqueIdCounter = 0;
-	
+
 	      return function (obj) {
 	        if (obj == null) { throw new Error(noSuchkey); }
-	
+
 	        // Check for built-ins before tacking on our own for any object
 	        if (typeof obj === 'string') { return stringHashFn(obj); }
 	        if (typeof obj === 'number') { return numberHashFn(obj); }
@@ -7663,29 +7660,29 @@
 	          if (typeof valueOf === 'string') { return stringHashFn(valueOf); }
 	        }
 	        if (obj.hashCode) { return obj.hashCode(); }
-	
+
 	        var id = 17 * uniqueIdCounter++;
 	        obj.hashCode = function () { return id; };
 	        return id;
 	      };
 	    }());
-	
+
 	    function newEntry() {
 	      return { key: null, value: null, next: 0, hashCode: 0 };
 	    }
-	
+
 	    function Dictionary(capacity, comparer) {
 	      if (capacity < 0) { throw new ArgumentOutOfRangeError(); }
 	      if (capacity > 0) { this._initialize(capacity); }
-	
+
 	      this.comparer = comparer || defaultComparer;
 	      this.freeCount = 0;
 	      this.size = 0;
 	      this.freeList = -1;
 	    }
-	
+
 	    var dictionaryProto = Dictionary.prototype;
-	
+
 	    dictionaryProto._initialize = function (capacity) {
 	      var prime = getPrime(capacity), i;
 	      this.buckets = new Array(prime);
@@ -7696,11 +7693,11 @@
 	      }
 	      this.freeList = -1;
 	    };
-	
+
 	    dictionaryProto.add = function (key, value) {
 	      this._insert(key, value, true);
 	    };
-	
+
 	    dictionaryProto._insert = function (key, value, add) {
 	      if (!this.buckets) { this._initialize(0); }
 	      var index3,
@@ -7731,7 +7728,7 @@
 	      this.entries[index3].value = value;
 	      this.buckets[index1] = index3;
 	    };
-	
+
 	    dictionaryProto._resize = function () {
 	      var prime = getPrime(this.size * 2),
 	        numArray = new Array(prime);
@@ -7747,7 +7744,7 @@
 	      this.buckets = numArray;
 	      this.entries = entryArray;
 	    };
-	
+
 	    dictionaryProto.remove = function (key) {
 	      if (this.buckets) {
 	        var num = getHashCode(key) & 2147483647,
@@ -7774,7 +7771,7 @@
 	      }
 	      return false;
 	    };
-	
+
 	    dictionaryProto.clear = function () {
 	      var index, len;
 	      if (this.size <= 0) { return; }
@@ -7787,7 +7784,7 @@
 	      this.freeList = -1;
 	      this.size = 0;
 	    };
-	
+
 	    dictionaryProto._findEntry = function (key) {
 	      if (this.buckets) {
 	        var num = getHashCode(key) & 2147483647;
@@ -7799,18 +7796,18 @@
 	      }
 	      return -1;
 	    };
-	
+
 	    dictionaryProto.count = function () {
 	      return this.size - this.freeCount;
 	    };
-	
+
 	    dictionaryProto.tryGetValue = function (key) {
 	      var entry = this._findEntry(key);
 	      return entry >= 0 ?
 	        this.entries[entry].value :
 	        undefined;
 	    };
-	
+
 	    dictionaryProto.getValues = function () {
 	      var index = 0, results = [];
 	      if (this.entries) {
@@ -7822,24 +7819,24 @@
 	      }
 	      return results;
 	    };
-	
+
 	    dictionaryProto.get = function (key) {
 	      var entry = this._findEntry(key);
 	      if (entry >= 0) { return this.entries[entry].value; }
 	      throw new Error(noSuchkey);
 	    };
-	
+
 	    dictionaryProto.set = function (key, value) {
 	      this._insert(key, value, false);
 	    };
-	
+
 	    dictionaryProto.containskey = function (key) {
 	      return this._findEntry(key) >= 0;
 	    };
-	
+
 	    return Dictionary;
 	  }());
-	
+
 	  /**
 	   *  Correlates the elements of two sequences based on overlapping durations.
 	   *
@@ -7856,20 +7853,20 @@
 	      var leftDone = false, rightDone = false;
 	      var leftId = 0, rightId = 0;
 	      var leftMap = new Dictionary(), rightMap = new Dictionary();
-	
+
 	      group.add(left.subscribe(
 	        function (value) {
 	          var id = leftId++;
 	          var md = new SingleAssignmentDisposable();
-	
+
 	          leftMap.add(id, value);
 	          group.add(md);
-	
+
 	          var expire = function () {
 	            leftMap.remove(id) && leftMap.count() === 0 && leftDone && observer.onCompleted();
 	            group.remove(md);
 	          };
-	
+
 	          var duration;
 	          try {
 	            duration = leftDurationSelector(value);
@@ -7877,9 +7874,9 @@
 	            observer.onError(e);
 	            return;
 	          }
-	
+
 	          md.setDisposable(duration.take(1).subscribe(noop, observer.onError.bind(observer), expire));
-	
+
 	          rightMap.getValues().forEach(function (v) {
 	            var result;
 	            try {
@@ -7888,7 +7885,7 @@
 	              observer.onError(exn);
 	              return;
 	            }
-	
+
 	            observer.onNext(result);
 	          });
 	        },
@@ -7898,20 +7895,20 @@
 	          (rightDone || leftMap.count() === 0) && observer.onCompleted();
 	        })
 	      );
-	
+
 	      group.add(right.subscribe(
 	        function (value) {
 	          var id = rightId++;
 	          var md = new SingleAssignmentDisposable();
-	
+
 	          rightMap.add(id, value);
 	          group.add(md);
-	
+
 	          var expire = function () {
 	            rightMap.remove(id) && rightMap.count() === 0 && rightDone && observer.onCompleted();
 	            group.remove(md);
 	          };
-	
+
 	          var duration;
 	          try {
 	            duration = rightDurationSelector(value);
@@ -7919,9 +7916,9 @@
 	            observer.onError(e);
 	            return;
 	          }
-	
+
 	          md.setDisposable(duration.take(1).subscribe(noop, observer.onError.bind(observer), expire));
-	
+
 	          leftMap.getValues().forEach(function (v) {
 	            var result;
 	            try {
@@ -7930,7 +7927,7 @@
 	              observer.onError(exn);
 	              return;
 	            }
-	
+
 	            observer.onNext(result);
 	          });
 	        },
@@ -7943,7 +7940,7 @@
 	      return group;
 	    }, left);
 	  };
-	
+
 	  /**
 	   *  Correlates the elements of two sequences based on overlapping durations, and groups the results.
 	   *
@@ -7960,15 +7957,15 @@
 	      var r = new RefCountDisposable(group);
 	      var leftMap = new Dictionary(), rightMap = new Dictionary();
 	      var leftId = 0, rightId = 0;
-	
+
 	      function handleError(e) { return function (v) { v.onError(e); }; };
-	
+
 	      group.add(left.subscribe(
 	        function (value) {
 	          var s = new Subject();
 	          var id = leftId++;
 	          leftMap.add(id, s);
-	
+
 	          var result;
 	          try {
 	            result = resultSelector(value, addRef(s, r));
@@ -7978,17 +7975,17 @@
 	            return;
 	          }
 	          observer.onNext(result);
-	
+
 	          rightMap.getValues().forEach(function (v) { s.onNext(v); });
-	
+
 	          var md = new SingleAssignmentDisposable();
 	          group.add(md);
-	
+
 	          var expire = function () {
 	            leftMap.remove(id) && s.onCompleted();
 	            group.remove(md);
 	          };
-	
+
 	          var duration;
 	          try {
 	            duration = leftDurationSelector(value);
@@ -7997,7 +7994,7 @@
 	            observer.onError(e);
 	            return;
 	          }
-	
+
 	          md.setDisposable(duration.take(1).subscribe(
 	            noop,
 	            function (e) {
@@ -8013,20 +8010,20 @@
 	        },
 	        observer.onCompleted.bind(observer))
 	      );
-	
+
 	      group.add(right.subscribe(
 	        function (value) {
 	          var id = rightId++;
 	          rightMap.add(id, value);
-	
+
 	          var md = new SingleAssignmentDisposable();
 	          group.add(md);
-	
+
 	          var expire = function () {
 	            rightMap.remove(id);
 	            group.remove(md);
 	          };
-	
+
 	          var duration;
 	          try {
 	            duration = rightDurationSelector(value);
@@ -8043,7 +8040,7 @@
 	            },
 	            expire)
 	          );
-	
+
 	          leftMap.getValues().forEach(function (v) { v.onNext(value); });
 	        },
 	        function (e) {
@@ -8051,11 +8048,11 @@
 	          observer.onError(e);
 	        })
 	      );
-	
+
 	      return r;
 	    }, left);
 	  };
-	
+
 	    /**
 	     *  Projects each element of an observable sequence into zero or more buffers.
 	     *
@@ -8066,7 +8063,7 @@
 	    observableProto.buffer = function (bufferOpeningsOrClosingSelector, bufferClosingSelector) {
 	        return this.window.apply(this, arguments).selectMany(function (x) { return x.toArray(); });
 	    };
-	
+
 	  /**
 	   *  Projects each element of an observable sequence into zero or more windows.
 	   *
@@ -8082,22 +8079,22 @@
 	      observableWindowWithClosingSelector.call(this, windowOpeningsOrClosingSelector) :
 	      observableWindowWithOpenings.call(this, windowOpeningsOrClosingSelector, windowClosingSelector);
 	  };
-	
+
 	  function observableWindowWithOpenings(windowOpenings, windowClosingSelector) {
 	    return windowOpenings.groupJoin(this, windowClosingSelector, observableEmpty, function (_, win) {
 	      return win;
 	    });
 	  }
-	
+
 	  function observableWindowWithBoundaries(windowBoundaries) {
 	    var source = this;
 	    return new AnonymousObservable(function (observer) {
 	      var win = new Subject(),
 	        d = new CompositeDisposable(),
 	        r = new RefCountDisposable(d);
-	
+
 	      observer.onNext(addRef(win, r));
-	
+
 	      d.add(source.subscribe(function (x) {
 	        win.onNext(x);
 	      }, function (err) {
@@ -8107,9 +8104,9 @@
 	        win.onCompleted();
 	        observer.onCompleted();
 	      }));
-	
+
 	      isPromise(windowBoundaries) && (windowBoundaries = observableFromPromise(windowBoundaries));
-	
+
 	      d.add(windowBoundaries.subscribe(function (w) {
 	        win.onCompleted();
 	        win = new Subject();
@@ -8121,11 +8118,11 @@
 	        win.onCompleted();
 	        observer.onCompleted();
 	      }));
-	
+
 	      return r;
 	    }, source);
 	  }
-	
+
 	  function observableWindowWithClosingSelector(windowClosingSelector) {
 	    var source = this;
 	    return new AnonymousObservable(function (observer) {
@@ -8143,7 +8140,7 @@
 	          win.onCompleted();
 	          observer.onCompleted();
 	      }));
-	
+
 	      function createWindowClose () {
 	        var windowClose;
 	        try {
@@ -8152,9 +8149,9 @@
 	          observer.onError(e);
 	          return;
 	        }
-	
+
 	        isPromise(windowClose) && (windowClose = observableFromPromise(windowClose));
-	
+
 	        var m1 = new SingleAssignmentDisposable();
 	        m.setDisposable(m1);
 	        m1.setDisposable(windowClose.take(1).subscribe(noop, function (err) {
@@ -8167,12 +8164,12 @@
 	          createWindowClose();
 	        }));
 	      }
-	
+
 	      createWindowClose();
 	      return r;
 	    }, source);
 	  }
-	
+
 	  /**
 	   * Returns a new observable that triggers on the second and subsequent triggerings of the input observable.
 	   * The Nth triggering of the input observable passes the arguments from the N-1th and Nth triggering as a pair.
@@ -8196,7 +8193,7 @@
 	        observer.onCompleted.bind(observer));
 	    }, source);
 	  };
-	
+
 	  /**
 	   * Returns two observables which partition the observations of the source by the given function.
 	   * The first will trigger observations for those values for which the predicate returns true.
@@ -8216,7 +8213,7 @@
 	      this.filter(function (x, i, o) { return !predicate.call(thisArg, x, i, o); })
 	    ];
 	  };
-	
+
 	  var WhileEnumerable = (function(__super__) {
 	    inherits(WhileEnumerable, __super__);
 	    function WhileEnumerable(c, s) {
@@ -8239,7 +8236,7 @@
 	  function enumerableWhile(condition, source) {
 	    return new WhileEnumerable(condition, source);
 	  }  
-	
+
 	   /**
 	   *  Returns an observable sequence that is the result of invoking the selector on the source sequence, without sharing subscriptions.
 	   *  This operator allows for a fluent style of writing queries that use the same sequence multiple times.
@@ -8250,7 +8247,7 @@
 	  observableProto.letBind = observableProto['let'] = function (func) {
 	    return func(this);
 	  };
-	
+
 	   /**
 	   *  Determines whether an observable collection contains values. There is an alias for this method called 'ifThen' for browsers <IE9
 	   *
@@ -8266,16 +8263,16 @@
 	  Observable['if'] = Observable.ifThen = function (condition, thenSource, elseSourceOrScheduler) {
 	    return observableDefer(function () {
 	      elseSourceOrScheduler || (elseSourceOrScheduler = observableEmpty());
-	
+
 	      isPromise(thenSource) && (thenSource = observableFromPromise(thenSource));
 	      isPromise(elseSourceOrScheduler) && (elseSourceOrScheduler = observableFromPromise(elseSourceOrScheduler));
-	
+
 	      // Assume a scheduler for empty only
 	      typeof elseSourceOrScheduler.now === 'function' && (elseSourceOrScheduler = observableEmpty(elseSourceOrScheduler));
 	      return condition() ? thenSource : elseSourceOrScheduler;
 	    });
 	  };
-	
+
 	   /**
 	   *  Concatenates the observable sequences obtained by running the specified result selector for each element in source.
 	   * There is an alias for this method called 'forIn' for browsers <IE9
@@ -8286,7 +8283,7 @@
 	  Observable['for'] = Observable.forIn = function (sources, resultSelector, thisArg) {
 	    return enumerableOf(sources, resultSelector, thisArg).concat();
 	  };
-	
+
 	   /**
 	   *  Repeats source as long as condition holds emulating a while loop.
 	   * There is an alias for this method called 'whileDo' for browsers <IE9
@@ -8299,7 +8296,7 @@
 	    isPromise(source) && (source = observableFromPromise(source));
 	    return enumerableWhile(condition, source).concat();
 	  };
-	
+
 	   /**
 	   *  Repeats source as long as condition holds emulating a do while loop.
 	   *
@@ -8310,7 +8307,7 @@
 	  observableProto.doWhile = function (condition) {
 	    return observableConcat([this, observableWhileDo(condition, this)]);
 	  };
-	
+
 	   /**
 	   *  Uses selector to determine which source in sources to use.
 	   *  There is an alias 'switchCase' for browsers <IE9.
@@ -8330,16 +8327,16 @@
 	    return observableDefer(function () {
 	      isPromise(defaultSourceOrScheduler) && (defaultSourceOrScheduler = observableFromPromise(defaultSourceOrScheduler));
 	      defaultSourceOrScheduler || (defaultSourceOrScheduler = observableEmpty());
-	
+
 	      typeof defaultSourceOrScheduler.now === 'function' && (defaultSourceOrScheduler = observableEmpty(defaultSourceOrScheduler));
-	
+
 	      var result = sources[selector()];
 	      isPromise(result) && (result = observableFromPromise(result));
-	
+
 	      return result || defaultSourceOrScheduler;
 	    });
 	  };
-	
+
 	   /**
 	   *  Expands an observable sequence by recursively invoking selector.
 	   *
@@ -8356,7 +8353,7 @@
 	        d = new CompositeDisposable(m),
 	        activeCount = 0,
 	        isAcquired = false;
-	
+
 	      var ensureActive = function () {
 	        var isOwner = false;
 	        if (q.length > 0) {
@@ -8396,14 +8393,14 @@
 	          }));
 	        }
 	      };
-	
+
 	      q.push(source);
 	      activeCount++;
 	      ensureActive();
 	      return d;
 	    }, this);
 	  };
-	
+
 	   /**
 	   *  Runs all observable sequences in parallel and collect their last elements.
 	   *
@@ -8430,7 +8427,7 @@
 	        hasResults = new Array(count),
 	        hasCompleted = new Array(count),
 	        results = new Array(count);
-	
+
 	      for (var idx = 0; idx < count; idx++) {
 	        (function (i) {
 	          var source = allSources[i];
@@ -8465,11 +8462,11 @@
 	            }));
 	        })(idx);
 	      }
-	
+
 	      return group;
 	    });
 	  };
-	
+
 	   /**
 	   *  Runs two observable sequences in parallel and combines their last elemenets.
 	   *
@@ -8484,9 +8481,9 @@
 	        hasLeft = false, hasRight = false,
 	        lastLeft, lastRight,
 	        leftSubscription = new SingleAssignmentDisposable(), rightSubscription = new SingleAssignmentDisposable();
-	
+
 	      isPromise(second) && (second = observableFromPromise(second));
-	
+
 	      leftSubscription.setDisposable(
 	          first.subscribe(function (left) {
 	            hasLeft = true;
@@ -8515,7 +8512,7 @@
 	            }
 	          })
 	      );
-	
+
 	      rightSubscription.setDisposable(
 	        second.subscribe(function (right) {
 	          hasRight = true;
@@ -8544,11 +8541,11 @@
 	          }
 	        })
 	      );
-	
+
 	      return new CompositeDisposable(leftSubscription, rightSubscription);
 	    }, first);
 	  };
-	
+
 	  /**
 	   * Comonadic bind operator.
 	   * @param {Function} selector A transform function to apply to each element.
@@ -8560,14 +8557,14 @@
 	    var source = this;
 	    return observableDefer(function () {
 	      var chain;
-	
+
 	      return source
 	        .map(function (x) {
 	          var curr = new ChainObservable(x);
-	
+
 	          chain && chain.onNext(x);
 	          chain = curr;
-	
+
 	          return curr;
 	        })
 	        .tap(
@@ -8579,27 +8576,27 @@
 	        .map(selector);
 	    }, source);
 	  };
-	
+
 	  var ChainObservable = (function (__super__) {
-	
+
 	    function subscribe (observer) {
 	      var self = this, g = new CompositeDisposable();
 	      g.add(currentThreadScheduler.schedule(function () {
 	        observer.onNext(self.head);
 	        g.add(self.tail.mergeAll().subscribe(observer));
 	      }));
-	
+
 	      return g;
 	    }
-	
+
 	    inherits(ChainObservable, __super__);
-	
+
 	    function ChainObservable(head) {
 	      __super__.call(this, subscribe);
 	      this.head = head;
 	      this.tail = new AsyncSubject();
 	    }
-	
+
 	    addProperties(ChainObservable.prototype, Observer, {
 	      onCompleted: function () {
 	        this.onNext(Observable.empty());
@@ -8612,39 +8609,39 @@
 	        this.tail.onCompleted();
 	      }
 	    });
-	
+
 	    return ChainObservable;
-	
+
 	  }(Observable));
-	
+
 	  /** @private */
 	  var Map = root.Map || (function () {
-	
+
 	    function Map() {
 	      this._keys = [];
 	      this._values = [];
 	    }
-	
+
 	    Map.prototype.get = function (key) {
 	      var i = this._keys.indexOf(key);
 	      return i !== -1 ? this._values[i] : undefined;
 	    };
-	
+
 	    Map.prototype.set = function (key, value) {
 	      var i = this._keys.indexOf(key);
 	      i !== -1 && (this._values[i] = value);
 	      this._values[this._keys.push(key) - 1] = value;
 	    };
-	
+
 	    Map.prototype.forEach = function (callback, thisArg) {
 	      for (var i = 0, len = this._keys.length; i < len; i++) {
 	        callback.call(thisArg, this._values[i], this._keys[i]);
 	      }
 	    };
-	
+
 	    return Map;
 	  }());
-	
+
 	  /**
 	   * @constructor
 	   * Represents a join pattern over observable sequences.
@@ -8652,7 +8649,7 @@
 	  function Pattern(patterns) {
 	    this.patterns = patterns;
 	  }
-	
+
 	  /**
 	   *  Creates a pattern that matches the current plan matches and when the specified observable sequences has an available value.
 	   *  @param other Observable sequence to match in addition to the current pattern.
@@ -8661,7 +8658,7 @@
 	  Pattern.prototype.and = function (other) {
 	    return new Pattern(this.patterns.concat(other));
 	  };
-	
+
 	  /**
 	   *  Matches when all observable sequences in the pattern (specified using a chain of and operators) have an available value and projects the values.
 	   *  @param {Function} selector Selector that will be invoked with available values from the source sequences, in the same order of the sequences in the pattern.
@@ -8670,12 +8667,12 @@
 	  Pattern.prototype.thenDo = function (selector) {
 	    return new Plan(this, selector);
 	  };
-	
+
 	  function Plan(expression, selector) {
 	      this.expression = expression;
 	      this.selector = selector;
 	  }
-	
+
 	  Plan.prototype.activate = function (externalSubscriptions, observer, deactivate) {
 	    var self = this;
 	    var joinObservers = [];
@@ -8702,7 +8699,7 @@
 	    }
 	    return activePlan;
 	  };
-	
+
 	  function planCreateObserver(externalSubscriptions, observable, onError) {
 	    var entry = externalSubscriptions.get(observable);
 	    if (!entry) {
@@ -8712,7 +8709,7 @@
 	    }
 	    return entry;
 	  }
-	
+
 	  function ActivePlan(joinObserverArray, onNext, onCompleted) {
 	    this.joinObserverArray = joinObserverArray;
 	    this.onNext = onNext;
@@ -8723,11 +8720,11 @@
 	      this.joinObservers.set(joinObserver, joinObserver);
 	    }
 	  }
-	
+
 	  ActivePlan.prototype.dequeue = function () {
 	    this.joinObservers.forEach(function (v) { v.queue.shift(); });
 	  };
-	
+
 	  ActivePlan.prototype.match = function () {
 	    var i, len, hasValues = true;
 	    for (i = 0, len = this.joinObserverArray.length; i < len; i++) {
@@ -8755,10 +8752,10 @@
 	      }
 	    }
 	  };
-	
+
 	  var JoinObserver = (function (__super__) {
 	    inherits(JoinObserver, __super__);
-	
+
 	    function JoinObserver(source, onError) {
 	      __super__.call(this);
 	      this.source = source;
@@ -8768,9 +8765,9 @@
 	      this.subscription = new SingleAssignmentDisposable();
 	      this.isDisposed = false;
 	    }
-	
+
 	    var JoinObserverPrototype = JoinObserver.prototype;
-	
+
 	    JoinObserverPrototype.next = function (notification) {
 	      if (!this.isDisposed) {
 	        if (notification.kind === 'E') {
@@ -8783,23 +8780,23 @@
 	        }
 	      }
 	    };
-	
+
 	    JoinObserverPrototype.error = noop;
 	    JoinObserverPrototype.completed = noop;
-	
+
 	    JoinObserverPrototype.addActivePlan = function (activePlan) {
 	      this.activePlans.push(activePlan);
 	    };
-	
+
 	    JoinObserverPrototype.subscribe = function () {
 	      this.subscription.setDisposable(this.source.materialize().subscribe(this));
 	    };
-	
+
 	    JoinObserverPrototype.removeActivePlan = function (activePlan) {
 	      this.activePlans.splice(this.activePlans.indexOf(activePlan), 1);
 	      this.activePlans.length === 0 && this.dispose();
 	    };
-	
+
 	    JoinObserverPrototype.dispose = function () {
 	      __super__.prototype.dispose.call(this);
 	      if (!this.isDisposed) {
@@ -8807,10 +8804,10 @@
 	        this.subscription.dispose();
 	      }
 	    };
-	
+
 	    return JoinObserver;
 	  } (AbstractObserver));
-	
+
 	  /**
 	   *  Creates a pattern that matches when both observable sequences have an available value.
 	   *
@@ -8820,7 +8817,7 @@
 	  observableProto.and = function (right) {
 	    return new Pattern([this, right]);
 	  };
-	
+
 	  /**
 	   *  Matches when the observable sequence has an available value and projects the value.
 	   *
@@ -8830,7 +8827,7 @@
 	  observableProto.thenDo = function (selector) {
 	    return new Pattern([this]).thenDo(selector);
 	  };
-	
+
 	  /**
 	   *  Joins together the results from several patterns.
 	   *
@@ -8872,11 +8869,11 @@
 	        joinObserver.subscribe();
 	        group.add(joinObserver);
 	      });
-	
+
 	      return group;
 	    });
 	  };
-	
+
 	  function observableTimerDate(dueTime, scheduler) {
 	    return new AnonymousObservable(function (observer) {
 	      return scheduler.scheduleWithAbsolute(dueTime, function () {
@@ -8885,7 +8882,7 @@
 	      });
 	    });
 	  }
-	
+
 	  function observableTimerDateAndPeriod(dueTime, period, scheduler) {
 	    return new AnonymousObservable(function (observer) {
 	      var d = dueTime, p = normalizeTime(period);
@@ -8900,7 +8897,7 @@
 	      });
 	    });
 	  }
-	
+
 	  function observableTimerTimeSpan(dueTime, scheduler) {
 	    return new AnonymousObservable(function (observer) {
 	      return scheduler.scheduleWithRelative(normalizeTime(dueTime), function () {
@@ -8909,7 +8906,7 @@
 	      });
 	    });
 	  }
-	
+
 	  function observableTimerTimeSpanAndPeriod(dueTime, period, scheduler) {
 	    return dueTime === period ?
 	      new AnonymousObservable(function (observer) {
@@ -8922,7 +8919,7 @@
 	        return observableTimerDateAndPeriod(scheduler.now() + dueTime, period, scheduler);
 	      });
 	  }
-	
+
 	  /**
 	   *  Returns an observable sequence that produces a value after each period.
 	   *
@@ -8937,7 +8934,7 @@
 	  var observableinterval = Observable.interval = function (period, scheduler) {
 	    return observableTimerTimeSpanAndPeriod(period, period, isScheduler(scheduler) ? scheduler : timeoutScheduler);
 	  };
-	
+
 	  /**
 	   *  Returns an observable sequence that produces a value after dueTime has elapsed and then after each period.
 	   * @param {Number} dueTime Absolute (specified as a Date object) or relative time (specified as an integer denoting milliseconds) at which to produce the first value.
@@ -8964,7 +8961,7 @@
 	      observableTimerTimeSpan(dueTime, scheduler) :
 	      observableTimerTimeSpanAndPeriod(dueTime, period, scheduler);
 	  };
-	
+
 	  function observableDelayTimeSpan(source, dueTime, scheduler) {
 	    return new AnonymousObservable(function (observer) {
 	      var active = false,
@@ -9028,13 +9025,13 @@
 	      return new CompositeDisposable(subscription, cancelable);
 	    }, source);
 	  }
-	
+
 	  function observableDelayDate(source, dueTime, scheduler) {
 	    return observableDefer(function () {
 	      return observableDelayTimeSpan(source, dueTime - scheduler.now(), scheduler);
 	    });
 	  }
-	
+
 	  /**
 	   *  Time shifts the observable sequence by dueTime. The relative time intervals between the values are preserved.
 	   *
@@ -9055,7 +9052,7 @@
 	      observableDelayDate(this, dueTime.getTime(), scheduler) :
 	      observableDelayTimeSpan(this, dueTime, scheduler);
 	  };
-	
+
 	  /**
 	   *  Ignores values from an observable sequence which are followed by another value before dueTime.
 	   * @param {Number} dueTime Duration of the debounce period for each value (specified as an integer denoting milliseconds).
@@ -9096,7 +9093,7 @@
 	      return new CompositeDisposable(subscription, cancelable);
 	    }, this);
 	  };
-	
+
 	  /**
 	   * @deprecated use #debounce or #throttleWithTimeout instead.
 	   */
@@ -9104,7 +9101,7 @@
 	    //deprecate('throttle', 'debounce or throttleWithTimeout');
 	    return this.debounce(dueTime, scheduler);
 	  };
-	
+
 	  /**
 	   *  Projects each element of an observable sequence into zero or more windows which are produced based on timing information.
 	   * @param {Number} timeSpan Length of each window (specified as an integer denoting milliseconds).
@@ -9132,7 +9129,7 @@
 	        totalTime = 0;
 	        groupDisposable = new CompositeDisposable(timerD),
 	        refCountDisposable = new RefCountDisposable(groupDisposable);
-	
+
 	       function createTimer () {
 	        var m = new SingleAssignmentDisposable(),
 	          isSpan = false,
@@ -9184,7 +9181,7 @@
 	      return refCountDisposable;
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Projects each element of an observable sequence into a window that is completed when either it's full or a given amount of time has elapsed.
 	   * @param {Number} timeSpan Maximum time length of a window.
@@ -9202,7 +9199,7 @@
 	          n = 0,
 	          windowId = 0,
 	          s = new Subject();
-	
+
 	      function createTimer(id) {
 	        var m = new SingleAssignmentDisposable();
 	        timerD.setDisposable(m);
@@ -9216,10 +9213,10 @@
 	          createTimer(newId);
 	        }));
 	      }
-	
+
 	      observer.onNext(addRef(s, refCountDisposable));
 	      createTimer(0);
-	
+
 	      groupDisposable.add(source.subscribe(
 	        function (x) {
 	          var newId = 0, newWindow = false;
@@ -9245,7 +9242,7 @@
 	      return refCountDisposable;
 	    }, source);
 	  };
-	
+
 	    /**
 	     *  Projects each element of an observable sequence into zero or more buffers which are produced based on timing information.
 	     *
@@ -9261,7 +9258,7 @@
 	    observableProto.bufferWithTime = function (timeSpan, timeShiftOrScheduler, scheduler) {
 	        return this.windowWithTime.apply(this, arguments).selectMany(function (x) { return x.toArray(); });
 	    };
-	
+
 	    /**
 	     *  Projects each element of an observable sequence into a buffer that is completed when either it's full or a given amount of time has elapsed.
 	     *
@@ -9279,7 +9276,7 @@
 	            return x.toArray();
 	        });
 	    };
-	
+
 	  /**
 	   *  Records the time interval between consecutive values in an observable sequence.
 	   *
@@ -9302,7 +9299,7 @@
 	      });
 	    });
 	  };
-	
+
 	  /**
 	   *  Records the timestamp for each value in an observable sequence.
 	   *
@@ -9319,11 +9316,11 @@
 	      return { value: x, timestamp: scheduler.now() };
 	    });
 	  };
-	
+
 	  function sampleObservable(source, sampler) {
 	    return new AnonymousObservable(function (o) {
 	      var atEnd = false, value, hasValue = false;
-	
+
 	      function sampleSubscribe() {
 	        if (hasValue) {
 	          hasValue = false;
@@ -9331,7 +9328,7 @@
 	        }
 	        atEnd && o.onCompleted();
 	      }
-	
+
 	      var sourceSubscription = new SingleAssignmentDisposable();
 	      sourceSubscription.setDisposable(source.subscribe(
 	        function (newValue) {
@@ -9344,14 +9341,14 @@
 	          sourceSubscription.dispose(); 
 	        }
 	      ));
-	
+
 	      return new CompositeDisposable(
 	        sourceSubscription,
 	        sampler.subscribe(sampleSubscribe, function (e) { o.onError(e); }, sampleSubscribe)
 	      );
 	    }, source);
 	  }
-	
+
 	  /**
 	   *  Samples the observable sequence at each interval.
 	   *
@@ -9370,7 +9367,7 @@
 	      sampleObservable(this, observableinterval(intervalOrSampler, scheduler)) :
 	      sampleObservable(this, intervalOrSampler);
 	  };
-	
+
 	  /**
 	   *  Returns the source observable sequence or the other observable sequence if dueTime elapses.
 	   * @param {Number} dueTime Absolute (specified as a Date object) or relative time (specified as an integer denoting milliseconds) when a timeout occurs.
@@ -9381,20 +9378,20 @@
 	  observableProto.timeout = function (dueTime, other, scheduler) {
 	    (other == null || typeof other === 'string') && (other = observableThrow(new Error(other || 'Timeout')));
 	    isScheduler(scheduler) || (scheduler = timeoutScheduler);
-	
+
 	    var source = this, schedulerMethod = dueTime instanceof Date ?
 	      'scheduleWithAbsolute' :
 	      'scheduleWithRelative';
-	
+
 	    return new AnonymousObservable(function (observer) {
 	      var id = 0,
 	        original = new SingleAssignmentDisposable(),
 	        subscription = new SerialDisposable(),
 	        switched = false,
 	        timer = new SerialDisposable();
-	
+
 	      subscription.setDisposable(original);
-	
+
 	      function createTimer() {
 	        var myId = id;
 	        timer.setDisposable(scheduler[schedulerMethod](dueTime, function () {
@@ -9404,9 +9401,9 @@
 	          }
 	        }));
 	      }
-	
+
 	      createTimer();
-	
+
 	      original.setDisposable(source.subscribe(function (x) {
 	        if (!switched) {
 	          id++;
@@ -9427,7 +9424,7 @@
 	      return new CompositeDisposable(subscription, timer);
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Generates an observable sequence by iterating a state from an initial state until the condition fails.
 	   *
@@ -9454,7 +9451,7 @@
 	        hasResult = false;
 	      return scheduler.scheduleRecursiveWithAbsoluteAndState(initialState, scheduler.now(), function (state, self) {
 	        hasResult && observer.onNext(state);
-	
+
 	        try {
 	          if (first) {
 	            first = false;
@@ -9478,7 +9475,7 @@
 	      });
 	    });
 	  };
-	
+
 	  /**
 	   *  Generates an observable sequence by iterating a state from an initial state until the condition fails.
 	   *
@@ -9505,7 +9502,7 @@
 	        hasResult = false;
 	      return scheduler.scheduleRecursiveWithRelativeAndState(initialState, 0, function (state, self) {
 	        hasResult && observer.onNext(state);
-	
+
 	        try {
 	          if (first) {
 	            first = false;
@@ -9529,7 +9526,7 @@
 	      });
 	    });
 	  };
-	
+
 	  /**
 	   *  Time shifts the observable sequence by delaying the subscription with the specified relative time duration, using the specified scheduler to run timers.
 	   *
@@ -9547,15 +9544,15 @@
 	    isScheduler(scheduler) || (scheduler = timeoutScheduler);
 	    return new AnonymousObservable(function (o) {
 	      var d = new SerialDisposable();
-	
+
 	      d.setDisposable(scheduler[scheduleMethod](dueTime, function() {
 	        d.setDisposable(source.subscribe(o));
 	      }));
-	
+
 	      return d;
 	    }, this);
 	  };
-	
+
 	  /**
 	   *  Time shifts the observable sequence based on a subscription delay and a delay selector function for each element.
 	   *
@@ -9577,7 +9574,7 @@
 	    }
 	    return new AnonymousObservable(function (observer) {
 	      var delays = new CompositeDisposable(), atEnd = false, subscription = new SerialDisposable();
-	
+
 	      function start() {
 	        subscription.setDisposable(source.subscribe(
 	          function (x) {
@@ -9607,21 +9604,21 @@
 	          }
 	        ))
 	      }
-	
+
 	      function done () {
 	        atEnd && delays.length === 0 && observer.onCompleted();
 	      }
-	
+
 	      if (!subDelay) {
 	        start();
 	      } else {
 	        subscription.setDisposable(subDelay.subscribe(start, function (e) { observer.onError(e); }, start));
 	      }
-	
+
 	      return new CompositeDisposable(subscription, delays);
 	    }, this);
 	  };
-	
+
 	    /**
 	     *  Returns the source observable sequence, switching to the other observable sequence if a timeout is signaled.
 	     * @param {Observable} [firstTimeout]  Observable sequence that represents the timeout for the first element. If not provided, this defaults to Observable.never().
@@ -9638,18 +9635,18 @@
 	      var source = this;
 	      return new AnonymousObservable(function (observer) {
 	        var subscription = new SerialDisposable(), timer = new SerialDisposable(), original = new SingleAssignmentDisposable();
-	
+
 	        subscription.setDisposable(original);
-	
+
 	        var id = 0, switched = false;
-	
+
 	        function setTimer(timeout) {
 	          var myId = id;
-	
+
 	          function timerWins () {
 	            return id === myId;
 	          }
-	
+
 	          var d = new SingleAssignmentDisposable();
 	          timer.setDisposable(d);
 	          d.setDisposable(timeout.subscribe(function () {
@@ -9661,15 +9658,15 @@
 	            timerWins() && subscription.setDisposable(other.subscribe(observer));
 	          }));
 	        };
-	
+
 	        setTimer(firstTimeout);
-	
+
 	        function observerWins() {
 	          var res = !switched;
 	          if (res) { id++; }
 	          return res;
 	        }
-	
+
 	        original.setDisposable(source.subscribe(function (x) {
 	          if (observerWins()) {
 	            observer.onNext(x);
@@ -9690,7 +9687,7 @@
 	        return new CompositeDisposable(subscription, timer);
 	      }, source);
 	    };
-	
+
 	  /**
 	   * Ignores values from an observable sequence which are followed by another value within a computed throttle duration.
 	   * @param {Function} durationSelector Selector function to retrieve a sequence indicating the throttle duration for each given element.
@@ -9708,9 +9705,9 @@
 	          observer.onError(e);
 	          return;
 	        }
-	
+
 	        isPromise(throttle) && (throttle = observableFromPromise(throttle));
-	
+
 	        hasValue = true;
 	        value = x;
 	        id++;
@@ -9740,7 +9737,7 @@
 	      return new CompositeDisposable(subscription, cancelable);
 	    }, source);
 	  };
-	
+
 	  /**
 	   * @deprecated use #debounceWithSelector instead.
 	   */
@@ -9748,7 +9745,7 @@
 	    //deprecate('throttleWithSelector', 'debounceWithSelector');
 	    return this.debounceWithSelector(durationSelector);
 	  };
-	
+
 	  /**
 	   *  Skips elements for the specified duration from the end of the observable source sequence, using the specified scheduler to run timers.
 	   *
@@ -9783,7 +9780,7 @@
 	      });
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Returns elements within the specified duration from the end of the observable source sequence, using the specified schedulers to run timers and to drain the collected elements.
 	   * @description
@@ -9815,7 +9812,7 @@
 	      });
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Returns an array with the elements within the specified duration from the end of the observable source sequence, using the specified scheduler to run timers.
 	   * @description
@@ -9848,7 +9845,7 @@
 	      });
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Takes elements for the specified duration from the start of the observable source sequence, using the specified scheduler to run timers.
 	   *
@@ -9869,7 +9866,7 @@
 	      return new CompositeDisposable(scheduler.scheduleWithRelative(duration, function () { o.onCompleted(); }), source.subscribe(o));
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Skips elements for the specified duration from the start of the observable source sequence, using the specified scheduler to run timers.
 	   *
@@ -9896,7 +9893,7 @@
 	        source.subscribe(function (x) { open && observer.onNext(x); }, observer.onError.bind(observer), observer.onCompleted.bind(observer)));
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Skips elements from the observable source sequence until the specified start time, using the specified scheduler to run timers.
 	   *  Errors produced by the source sequence are always forwarded to the result sequence, even if the error occurs before the start time.
@@ -9915,7 +9912,7 @@
 	      'scheduleWithRelative';
 	    return new AnonymousObservable(function (o) {
 	      var open = false;
-	
+
 	      return new CompositeDisposable(
 	        scheduler[schedulerMethod](startTime, function () { open = true; }),
 	        source.subscribe(
@@ -9923,7 +9920,7 @@
 	          function (e) { o.onError(e); }, function () { o.onCompleted(); }));
 	    }, source);
 	  };
-	
+
 	  /**
 	   *  Takes elements for the specified duration until the specified end time, using the specified scheduler to run timers.
 	   * @param {Number | Date} endTime Time to stop taking elements from the source sequence. If this value is less than or equal to new Date(), the result stream will complete immediately.
@@ -9941,7 +9938,7 @@
 	        source.subscribe(o));
 	    }, source);
 	  };
-	
+
 	  /**
 	   * Returns an Observable that emits only the first item emitted by the source Observable during sequential time windows of a specified duration.
 	   * @param {Number} windowDuration time to wait before emitting another item after emitting the last item
@@ -9966,7 +9963,7 @@
 	      );
 	    }, source);
 	  };
-	
+
 	  /**
 	   * Executes a transducer to transform the observable sequence
 	   * @param {Transducer} transducer A transducer to execute
@@ -9974,7 +9971,7 @@
 	   */
 	  observableProto.transduce = function(transducer) {
 	    var source = this;
-	
+
 	    function transformForObserver(o) {
 	      return {
 	        '@@transducer/init': function() {
@@ -9988,7 +9985,7 @@
 	        }
 	      };
 	    }
-	
+
 	    return new AnonymousObservable(function(o) {
 	      var xform = transducer(transformForObserver(o));
 	      return source.subscribe(
@@ -10004,7 +10001,7 @@
 	      );
 	    }, source);
 	  };
-	
+
 	  /*
 	   * Performs a exclusive waiting for the first to finish before subscribing to another observable.
 	   * Observables that come in between subscriptions will be dropped on the floor.
@@ -10017,19 +10014,19 @@
 	        isStopped = false,
 	        m = new SingleAssignmentDisposable(),
 	        g = new CompositeDisposable();
-	
+
 	      g.add(m);
-	
+
 	      m.setDisposable(sources.subscribe(
 	        function (innerSource) {
 	          if (!hasCurrent) {
 	            hasCurrent = true;
-	
+
 	            isPromise(innerSource) && (innerSource = observableFromPromise(innerSource));
-	
+
 	            var innerSubscription = new SingleAssignmentDisposable();
 	            g.add(innerSubscription);
-	
+
 	            innerSubscription.setDisposable(innerSource.subscribe(
 	              observer.onNext.bind(observer),
 	              observer.onError.bind(observer),
@@ -10049,11 +10046,11 @@
 	            observer.onCompleted();
 	          }
 	        }));
-	
+
 	      return g;
 	    }, this);
 	  };
-	
+
 	  /*
 	   * Performs a exclusive map waiting for the first to finish before subscribing to another observable.
 	   * Observables that come in between subscriptions will be dropped on the floor.
@@ -10070,20 +10067,20 @@
 	        isStopped = true,
 	        m = new SingleAssignmentDisposable(),
 	        g = new CompositeDisposable();
-	
+
 	      g.add(m);
-	
+
 	      m.setDisposable(sources.subscribe(
 	        function (innerSource) {
-	
+
 	          if (!hasCurrent) {
 	            hasCurrent = true;
-	
+
 	            innerSubscription = new SingleAssignmentDisposable();
 	            g.add(innerSubscription);
-	
+
 	            isPromise(innerSource) && (innerSource = observableFromPromise(innerSource));
-	
+
 	            innerSubscription.setDisposable(innerSource.subscribe(
 	              function (x) {
 	                var result;
@@ -10093,14 +10090,14 @@
 	                  observer.onError(e);
 	                  return;
 	                }
-	
+
 	                observer.onNext(result);
 	              },
 	              function (e) { observer.onError(e); },
 	              function () {
 	                g.remove(innerSubscription);
 	                hasCurrent = false;
-	
+
 	                if (isStopped && g.length === 1) {
 	                  observer.onCompleted();
 	                }
@@ -10117,33 +10114,33 @@
 	      return g;
 	    }, this);
 	  };
-	
+
 	  /** Provides a set of extension methods for virtual time scheduling. */
 	  Rx.VirtualTimeScheduler = (function (__super__) {
-	
+
 	    function localNow() {
 	      return this.toDateTimeOffset(this.clock);
 	    }
-	
+
 	    function scheduleNow(state, action) {
 	      return this.scheduleAbsoluteWithState(state, this.clock, action);
 	    }
-	
+
 	    function scheduleRelative(state, dueTime, action) {
 	      return this.scheduleRelativeWithState(state, this.toRelative(dueTime), action);
 	    }
-	
+
 	    function scheduleAbsolute(state, dueTime, action) {
 	      return this.scheduleRelativeWithState(state, this.toRelative(dueTime - this.now()), action);
 	    }
-	
+
 	    function invokeAction(scheduler, action) {
 	      action();
 	      return disposableEmpty;
 	    }
-	
+
 	    inherits(VirtualTimeScheduler, __super__);
-	
+
 	    /**
 	     * Creates a new virtual time scheduler with the specified initial clock value and absolute time comparer.
 	     *
@@ -10158,9 +10155,9 @@
 	      this.queue = new PriorityQueue(1024);
 	      __super__.call(this, localNow, scheduleNow, scheduleRelative, scheduleAbsolute);
 	    }
-	
+
 	    var VirtualTimeSchedulerPrototype = VirtualTimeScheduler.prototype;
-	
+
 	    /**
 	     * Adds a relative time value to an absolute time value.
 	     * @param {Number} absolute Absolute virtual time value.
@@ -10168,21 +10165,21 @@
 	     * @return {Number} Resulting absolute virtual time sum value.
 	     */
 	    VirtualTimeSchedulerPrototype.add = notImplemented;
-	
+
 	    /**
 	     * Converts an absolute time to a number
 	     * @param {Any} The absolute time.
 	     * @returns {Number} The absolute time in ms
 	     */
 	    VirtualTimeSchedulerPrototype.toDateTimeOffset = notImplemented;
-	
+
 	    /**
 	     * Converts the TimeSpan value to a relative virtual time value.
 	     * @param {Number} timeSpan TimeSpan value to convert.
 	     * @return {Number} Corresponding relative virtual time value.
 	     */
 	    VirtualTimeSchedulerPrototype.toRelative = notImplemented;
-	
+
 	    /**
 	     * Schedules a periodic piece of work by dynamically discovering the scheduler's capabilities. The periodic task will be emulated using recursive scheduling.
 	     * @param {Mixed} state Initial state passed to the action upon the first iteration.
@@ -10194,7 +10191,7 @@
 	      var s = new SchedulePeriodicRecursive(this, state, period, action);
 	      return s.start();
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed after dueTime.
 	     * @param {Mixed} state State passed to the action to be executed.
@@ -10206,7 +10203,7 @@
 	      var runAt = this.add(this.clock, dueTime);
 	      return this.scheduleAbsoluteWithState(state, runAt, action);
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed at dueTime.
 	     * @param {Number} dueTime Relative time after which to execute the action.
@@ -10216,7 +10213,7 @@
 	    VirtualTimeSchedulerPrototype.scheduleRelative = function (dueTime, action) {
 	      return this.scheduleRelativeWithState(action, dueTime, invokeAction);
 	    };
-	
+
 	    /**
 	     * Starts the virtual time scheduler.
 	     */
@@ -10234,14 +10231,14 @@
 	        } while (this.isEnabled);
 	      }
 	    };
-	
+
 	    /**
 	     * Stops the virtual time scheduler.
 	     */
 	    VirtualTimeSchedulerPrototype.stop = function () {
 	      this.isEnabled = false;
 	    };
-	
+
 	    /**
 	     * Advances the scheduler's clock to the specified time, running all work till that point.
 	     * @param {Number} time Absolute time to advance the scheduler's clock to.
@@ -10264,7 +10261,7 @@
 	        this.clock = time;
 	      }
 	    };
-	
+
 	    /**
 	     * Advances the scheduler's clock by the specified relative time, running all work scheduled for that timespan.
 	     * @param {Number} time Relative time to advance the scheduler's clock by.
@@ -10274,10 +10271,10 @@
 	          dueToClock = this.comparer(this.clock, dt);
 	      if (dueToClock > 0) { throw new ArgumentOutOfRangeError(); }
 	      if (dueToClock === 0) {  return; }
-	
+
 	      this.advanceTo(dt);
 	    };
-	
+
 	    /**
 	     * Advances the scheduler's clock by the specified relative time.
 	     * @param {Number} time Relative time to advance the scheduler's clock by.
@@ -10285,10 +10282,10 @@
 	    VirtualTimeSchedulerPrototype.sleep = function (time) {
 	      var dt = this.add(this.clock, time);
 	      if (this.comparer(this.clock, dt) >= 0) { throw new ArgumentOutOfRangeError(); }
-	
+
 	      this.clock = dt;
 	    };
-	
+
 	    /**
 	     * Gets the next scheduled item to be executed.
 	     * @returns {ScheduledItem} The next scheduled item.
@@ -10304,7 +10301,7 @@
 	      }
 	      return null;
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed at dueTime.
 	     * @param {Scheduler} scheduler Scheduler to execute the action on.
@@ -10315,7 +10312,7 @@
 	    VirtualTimeSchedulerPrototype.scheduleAbsolute = function (dueTime, action) {
 	      return this.scheduleAbsoluteWithState(action, dueTime, invokeAction);
 	    };
-	
+
 	    /**
 	     * Schedules an action to be executed at dueTime.
 	     * @param {Mixed} state State passed to the action to be executed.
@@ -10325,25 +10322,25 @@
 	     */
 	    VirtualTimeSchedulerPrototype.scheduleAbsoluteWithState = function (state, dueTime, action) {
 	      var self = this;
-	
+
 	      function run(scheduler, state1) {
 	        self.queue.remove(si);
 	        return action(scheduler, state1);
 	      }
-	
+
 	      var si = new ScheduledItem(this, state, run, dueTime, this.comparer);
 	      this.queue.enqueue(si);
-	
+
 	      return si.disposable;
 	    };
-	
+
 	    return VirtualTimeScheduler;
 	  }(Scheduler));
-	
+
 	  /** Provides a virtual time scheduler that uses Date for absolute time and number for relative time. */
 	  Rx.HistoricalScheduler = (function (__super__) {
 	    inherits(HistoricalScheduler, __super__);
-	
+
 	    /**
 	     * Creates a new historical scheduler with the specified initial clock value.
 	     * @constructor
@@ -10355,9 +10352,9 @@
 	      var cmp = comparer || defaultSubComparer;
 	      __super__.call(this, clock, cmp);
 	    }
-	
+
 	    var HistoricalSchedulerProto = HistoricalScheduler.prototype;
-	
+
 	    /**
 	     * Adds a relative time value to an absolute time value.
 	     * @param {Number} absolute Absolute virtual time value.
@@ -10367,11 +10364,11 @@
 	    HistoricalSchedulerProto.add = function (absolute, relative) {
 	      return absolute + relative;
 	    };
-	
+
 	    HistoricalSchedulerProto.toDateTimeOffset = function (absolute) {
 	      return new Date(absolute).getTime();
 	    };
-	
+
 	    /**
 	     * Converts the TimeSpan value to a relative virtual time value.
 	     * @memberOf HistoricalScheduler
@@ -10381,35 +10378,35 @@
 	    HistoricalSchedulerProto.toRelative = function (timeSpan) {
 	      return timeSpan;
 	    };
-	
+
 	    return HistoricalScheduler;
 	  }(Rx.VirtualTimeScheduler));
-	
+
 	  var AnonymousObservable = Rx.AnonymousObservable = (function (__super__) {
 	    inherits(AnonymousObservable, __super__);
-	
+
 	    // Fix subscriber to check for undefined or function returned to decorate as Disposable
 	    function fixSubscriber(subscriber) {
 	      return subscriber && isFunction(subscriber.dispose) ? subscriber :
 	        isFunction(subscriber) ? disposableCreate(subscriber) : disposableEmpty;
 	    }
-	
+
 	    function setDisposable(s, state) {
 	      var ado = state[0], subscribe = state[1];
 	      var sub = tryCatch(subscribe)(ado);
-	
+
 	      if (sub === errorObj) {
 	        if(!ado.fail(errorObj.e)) { return thrower(errorObj.e); }
 	      }
 	      ado.setDisposable(fixSubscriber(sub));
 	    }
-	
+
 	    function AnonymousObservable(subscribe, parent) {
 	      this.source = parent;
-	
+
 	      function s(observer) {
 	        var ado = new AutoDetachObserver(observer), state = [ado, subscribe];
-	
+
 	        if (currentThreadScheduler.scheduleRequired()) {
 	          currentThreadScheduler.scheduleWithState(state, setDisposable);
 	        } else {
@@ -10417,25 +10414,25 @@
 	        }
 	        return ado;
 	      }
-	
+
 	      __super__.call(this, s);
 	    }
-	
+
 	    return AnonymousObservable;
-	
+
 	  }(Observable));
-	
+
 	  var AutoDetachObserver = (function (__super__) {
 	    inherits(AutoDetachObserver, __super__);
-	
+
 	    function AutoDetachObserver(observer) {
 	      __super__.call(this);
 	      this.observer = observer;
 	      this.m = new SingleAssignmentDisposable();
 	    }
-	
+
 	    var AutoDetachObserverPrototype = AutoDetachObserver.prototype;
-	
+
 	    AutoDetachObserverPrototype.next = function (value) {
 	      var result = tryCatch(this.observer.onNext).call(this.observer, value);
 	      if (result === errorObj) {
@@ -10443,37 +10440,37 @@
 	        thrower(result.e);
 	      }
 	    };
-	
+
 	    AutoDetachObserverPrototype.error = function (err) {
 	      var result = tryCatch(this.observer.onError).call(this.observer, err);
 	      this.dispose();
 	      result === errorObj && thrower(result.e);
 	    };
-	
+
 	    AutoDetachObserverPrototype.completed = function () {
 	      var result = tryCatch(this.observer.onCompleted).call(this.observer);
 	      this.dispose();
 	      result === errorObj && thrower(result.e);
 	    };
-	
+
 	    AutoDetachObserverPrototype.setDisposable = function (value) { this.m.setDisposable(value); };
 	    AutoDetachObserverPrototype.getDisposable = function () { return this.m.getDisposable(); };
-	
+
 	    AutoDetachObserverPrototype.dispose = function () {
 	      __super__.prototype.dispose.call(this);
 	      this.m.dispose();
 	    };
-	
+
 	    return AutoDetachObserver;
 	  }(AbstractObserver));
-	
+
 	  var GroupedObservable = (function (__super__) {
 	    inherits(GroupedObservable, __super__);
-	
+
 	    function subscribe(observer) {
 	      return this.underlyingObservable.subscribe(observer);
 	    }
-	
+
 	    function GroupedObservable(key, underlyingObservable, mergedDisposable) {
 	      __super__.call(this, subscribe);
 	      this.key = key;
@@ -10483,10 +10480,10 @@
 	          return new CompositeDisposable(mergedDisposable.getDisposable(), underlyingObservable.subscribe(observer));
 	        });
 	    }
-	
+
 	    return GroupedObservable;
 	  }(Observable));
-	
+
 	  /**
 	   *  Represents an object that is both an observable sequence as well as an observer.
 	   *  Each notification is broadcasted to all subscribed observers.
@@ -10505,9 +10502,9 @@
 	      observer.onCompleted();
 	      return disposableEmpty;
 	    }
-	
+
 	    inherits(Subject, __super__);
-	
+
 	    /**
 	     * Creates a subject.
 	     */
@@ -10518,7 +10515,7 @@
 	      this.observers = [];
 	      this.hasError = false;
 	    }
-	
+
 	    addProperties(Subject.prototype, Observer.prototype, {
 	      /**
 	       * Indicates whether the subject has observers subscribed to it.
@@ -10535,7 +10532,7 @@
 	          for (var i = 0, os = cloneArray(this.observers), len = os.length; i < len; i++) {
 	            os[i].onCompleted();
 	          }
-	
+
 	          this.observers.length = 0;
 	        }
 	      },
@@ -10552,7 +10549,7 @@
 	          for (var i = 0, os = cloneArray(this.observers), len = os.length; i < len; i++) {
 	            os[i].onError(error);
 	          }
-	
+
 	          this.observers.length = 0;
 	        }
 	      },
@@ -10576,7 +10573,7 @@
 	        this.observers = null;
 	      }
 	    });
-	
+
 	    /**
 	     * Creates a subject from the specified observer and observable.
 	     * @param {Observer} observer The observer used to send messages to the subject.
@@ -10586,24 +10583,24 @@
 	    Subject.create = function (observer, observable) {
 	      return new AnonymousSubject(observer, observable);
 	    };
-	
+
 	    return Subject;
 	  }(Observable));
-	
+
 	  /**
 	   *  Represents the result of an asynchronous operation.
 	   *  The last value before the OnCompleted notification, or the error received through OnError, is sent to all subscribed observers.
 	   */
 	  var AsyncSubject = Rx.AsyncSubject = (function (__super__) {
-	
+
 	    function subscribe(observer) {
 	      checkDisposed(this);
-	
+
 	      if (!this.isStopped) {
 	        this.observers.push(observer);
 	        return new InnerSubscription(this, observer);
 	      }
-	
+
 	      if (this.hasError) {
 	        observer.onError(this.error);
 	      } else if (this.hasValue) {
@@ -10612,26 +10609,26 @@
 	      } else {
 	        observer.onCompleted();
 	      }
-	
+
 	      return disposableEmpty;
 	    }
-	
+
 	    inherits(AsyncSubject, __super__);
-	
+
 	    /**
 	     * Creates a subject that can only receive one value and that value is cached for all future observations.
 	     * @constructor
 	     */
 	    function AsyncSubject() {
 	      __super__.call(this, subscribe);
-	
+
 	      this.isDisposed = false;
 	      this.isStopped = false;
 	      this.hasValue = false;
 	      this.observers = [];
 	      this.hasError = false;
 	    }
-	
+
 	    addProperties(AsyncSubject.prototype, Observer, {
 	      /**
 	       * Indicates whether the subject has observers subscribed to it.
@@ -10650,7 +10647,7 @@
 	        if (!this.isStopped) {
 	          this.isStopped = true;
 	          var os = cloneArray(this.observers), len = os.length;
-	
+
 	          if (this.hasValue) {
 	            for (i = 0; i < len; i++) {
 	              var o = os[i];
@@ -10662,7 +10659,7 @@
 	              os[i].onCompleted();
 	            }
 	          }
-	
+
 	          this.observers.length = 0;
 	        }
 	      },
@@ -10676,11 +10673,11 @@
 	          this.isStopped = true;
 	          this.hasError = true;
 	          this.error = error;
-	
+
 	          for (var i = 0, os = cloneArray(this.observers), len = os.length; i < len; i++) {
 	            os[i].onError(error);
 	          }
-	
+
 	          this.observers.length = 0;
 	        }
 	      },
@@ -10704,23 +10701,23 @@
 	        this.value = null;
 	      }
 	    });
-	
+
 	    return AsyncSubject;
 	  }(Observable));
-	
+
 	  var AnonymousSubject = Rx.AnonymousSubject = (function (__super__) {
 	    inherits(AnonymousSubject, __super__);
-	
+
 	    function subscribe(observer) {
 	      return this.observable.subscribe(observer);
 	    }
-	
+
 	    function AnonymousSubject(observer, observable) {
 	      this.observer = observer;
 	      this.observable = observable;
 	      __super__.call(this, subscribe);
 	    }
-	
+
 	    addProperties(AnonymousSubject.prototype, Observer.prototype, {
 	      onCompleted: function () {
 	        this.observer.onCompleted();
@@ -10732,36 +10729,36 @@
 	        this.observer.onNext(value);
 	      }
 	    });
-	
+
 	    return AnonymousSubject;
 	  }(Observable));
-	
+
 	  /**
 	  * Used to pause and resume streams.
 	  */
 	  Rx.Pauser = (function (__super__) {
 	    inherits(Pauser, __super__);
-	
+
 	    function Pauser() {
 	      __super__.call(this);
 	    }
-	
+
 	    /**
 	     * Pauses the underlying sequence.
 	     */
 	    Pauser.prototype.pause = function () { this.onNext(false); };
-	
+
 	    /**
 	    * Resumes the underlying sequence.
 	    */
 	    Pauser.prototype.resume = function () { this.onNext(true); };
-	
+
 	    return Pauser;
 	  }(Subject));
-	
+
 	  if (true) {
 	    root.Rx = Rx;
-	
+
 	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function() {
 	      return Rx;
 	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -10776,12 +10773,12 @@
 	    // in a browser or Rhino
 	    root.Rx = Rx;
 	  }
-	
+
 	  // All code before this point will be filtered from stack traces.
 	  var rEndingLine = captureLine();
-	
+
 	}.call(this));
-	
+
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)(module), (function() { return this; }()), __webpack_require__(3)))
 
 /***/ },
@@ -10805,13 +10802,13 @@
 /***/ function(module, exports) {
 
 	// shim for using process in browser
-	
+
 	var process = module.exports = {};
 	var queue = [];
 	var draining = false;
 	var currentQueue;
 	var queueIndex = -1;
-	
+
 	function cleanUpNextTick() {
 	    draining = false;
 	    if (currentQueue.length) {
@@ -10823,14 +10820,14 @@
 	        drainQueue();
 	    }
 	}
-	
+
 	function drainQueue() {
 	    if (draining) {
 	        return;
 	    }
 	    var timeout = setTimeout(cleanUpNextTick);
 	    draining = true;
-	
+
 	    var len = queue.length;
 	    while(len) {
 	        currentQueue = queue;
@@ -10847,7 +10844,7 @@
 	    draining = false;
 	    clearTimeout(timeout);
 	}
-	
+
 	process.nextTick = function (fun) {
 	    var args = new Array(arguments.length - 1);
 	    if (arguments.length > 1) {
@@ -10860,7 +10857,7 @@
 	        setTimeout(drainQueue, 0);
 	    }
 	};
-	
+
 	// v8 likes predictible objects
 	function Item(fun, array) {
 	    this.fun = fun;
@@ -10875,9 +10872,9 @@
 	process.argv = [];
 	process.version = ''; // empty string to avoid regexp issues
 	process.versions = {};
-	
+
 	function noop() {}
-	
+
 	process.on = noop;
 	process.addListener = noop;
 	process.once = noop;
@@ -10885,11 +10882,11 @@
 	process.removeListener = noop;
 	process.removeAllListeners = noop;
 	process.emit = noop;
-	
+
 	process.binding = function (name) {
 	    throw new Error('process.binding is not supported');
 	};
-	
+
 	process.cwd = function () { return '/' };
 	process.chdir = function (dir) {
 	    throw new Error('process.chdir is not supported');
@@ -10903,20 +10900,20 @@
 
 	//this file is used if I wanted to route to different controllers from a central point
 	"use strict";
-	
+
 	Rx = __webpack_require__(1);
 	var routeMatcher = __webpack_require__(5).routeMatcher;
-	
+
 	//here can we have an observable that connects a url to a controller?
 	module.exports = function (requestStream, route) {
-	
+
 			var outputStream = requestStream.filter(function (req) {
 					matcher = routeMatcher(route);
 					return matcher.parse(req.url) != null;
 			});
 			//this is the component that will register everything
 			outputStream["from"] = "router";
-	
+
 			return outputStream;
 			//urlStream = requestStream.filter(function(req){
 			//	return req.url == '/';
@@ -10930,14 +10927,14 @@
 	/* JavaScript Route Matcher - v0.1.0 - 10/19/2011
 	 * http://github.com/cowboy/javascript-route-matcher
 	 * Copyright (c) 2011 "Cowboy" Ben Alman; Licensed MIT, GPL */
-	
+
 	(function(exports) {
 	  // Characters to be escaped with \. RegExp borrowed from the Backbone router
 	  // but escaped (note: unnecessarily) to keep JSHint from complaining.
 	  var reEscape = /[\-\[\]{}()+?.,\\\^$|#\s]/g;
 	  // Match named :param or *splat placeholders.
 	  var reParam = /([:*])(\w+)/g;
-	
+
 	  // Test to see if a value matches the corresponding rule.
 	  function validateRule(rule, value) {
 	    // For a given rule, get the first letter of the string name of its
@@ -10952,7 +10949,7 @@
 	    // string, but `rule` might not.
 	    return type === "R" ? rule.test(value) : type === "F" ? rule(value) : rule == value;
 	  }
-	
+
 	  // Pass in a route string (or RegExp) plus an optional map of rules, and get
 	  // back an object with .parse and .stringify methods.
 	  exports.routeMatcher = function(route, rules) {
@@ -10962,7 +10959,7 @@
 	    var names = [];
 	    // Route matching RegExp.
 	    var re = route;
-	
+
 	    // Build route RegExp from passed string.
 	    if (typeof route === "string") {
 	      // Escape special chars.
@@ -10976,7 +10973,7 @@
 	      });
 	      // Add ^/$ anchors and create the actual RegExp.
 	      re = new RegExp("^" + re + "$");
-	
+
 	      // Match the passed url against the route, returning an object of params
 	      // and values.
 	      self.parse = function(url) {
@@ -10996,7 +10993,7 @@
 	        }
 	        return params;
 	      };
-	
+
 	      // Build path by inserting the given params into the route.
 	      self.stringify = function(params) {
 	        var param, re;
@@ -11023,7 +11020,7 @@
 	    }
 	    return self;
 	  };
-	
+
 	}(typeof exports === "object" && exports || this));
 
 
@@ -11031,345 +11028,25 @@
 /* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
-	// load the styles
-	var content = __webpack_require__(7);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(15)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!./../../css-loader/index.js!./font-awesome.min.css", function() {
-				var newContent = require("!!./../../css-loader/index.js!./font-awesome.min.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ },
-/* 7 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(8)();
-	exports.push([module.id, "/*!\n *  Font Awesome 4.4.0 by @davegandy - http://fontawesome.io - @fontawesome\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\n */@font-face{font-family:'FontAwesome';src:url("+__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../fonts/fontawesome-webfont.eot?v=4.4.0\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))+");src:url("+__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../fonts/fontawesome-webfont.eot\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))+"?#iefix&v=4.4.0) format('embedded-opentype'),url("+__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../fonts/fontawesome-webfont.woff2?v=4.4.0\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))+") format('woff2'),url("+__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../fonts/fontawesome-webfont.woff?v=4.4.0\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))+") format('woff'),url("+__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../fonts/fontawesome-webfont.ttf?v=4.4.0\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))+") format('truetype'),url("+__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../fonts/fontawesome-webfont.svg?v=4.4.0\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()))+"#fontawesomeregular) format('svg');font-weight:normal;font-style:normal}.fa{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.fa-lg{font-size:1.33333333em;line-height:.75em;vertical-align:-15%}.fa-2x{font-size:2em}.fa-3x{font-size:3em}.fa-4x{font-size:4em}.fa-5x{font-size:5em}.fa-fw{width:1.28571429em;text-align:center}.fa-ul{padding-left:0;margin-left:2.14285714em;list-style-type:none}.fa-ul>li{position:relative}.fa-li{position:absolute;left:-2.14285714em;width:2.14285714em;top:.14285714em;text-align:center}.fa-li.fa-lg{left:-1.85714286em}.fa-border{padding:.2em .25em .15em;border:solid .08em #eee;border-radius:.1em}.fa-pull-left{float:left}.fa-pull-right{float:right}.fa.fa-pull-left{margin-right:.3em}.fa.fa-pull-right{margin-left:.3em}.pull-right{float:right}.pull-left{float:left}.fa.pull-left{margin-right:.3em}.fa.pull-right{margin-left:.3em}.fa-spin{-webkit-animation:fa-spin 2s infinite linear;animation:fa-spin 2s infinite linear}.fa-pulse{-webkit-animation:fa-spin 1s infinite steps(8);animation:fa-spin 1s infinite steps(8)}@-webkit-keyframes fa-spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg);transform:rotate(359deg)}}@keyframes fa-spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg);transform:rotate(359deg)}}.fa-rotate-90{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg)}.fa-rotate-180{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);-webkit-transform:rotate(180deg);-ms-transform:rotate(180deg);transform:rotate(180deg)}.fa-rotate-270{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);-webkit-transform:rotate(270deg);-ms-transform:rotate(270deg);transform:rotate(270deg)}.fa-flip-horizontal{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);-webkit-transform:scale(-1, 1);-ms-transform:scale(-1, 1);transform:scale(-1, 1)}.fa-flip-vertical{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);-webkit-transform:scale(1, -1);-ms-transform:scale(1, -1);transform:scale(1, -1)}:root .fa-rotate-90,:root .fa-rotate-180,:root .fa-rotate-270,:root .fa-flip-horizontal,:root .fa-flip-vertical{filter:none}.fa-stack{position:relative;display:inline-block;width:2em;height:2em;line-height:2em;vertical-align:middle}.fa-stack-1x,.fa-stack-2x{position:absolute;left:0;width:100%;text-align:center}.fa-stack-1x{line-height:inherit}.fa-stack-2x{font-size:2em}.fa-inverse{color:#fff}.fa-glass:before{content:\"\\f000\"}.fa-music:before{content:\"\\f001\"}.fa-search:before{content:\"\\f002\"}.fa-envelope-o:before{content:\"\\f003\"}.fa-heart:before{content:\"\\f004\"}.fa-star:before{content:\"\\f005\"}.fa-star-o:before{content:\"\\f006\"}.fa-user:before{content:\"\\f007\"}.fa-film:before{content:\"\\f008\"}.fa-th-large:before{content:\"\\f009\"}.fa-th:before{content:\"\\f00a\"}.fa-th-list:before{content:\"\\f00b\"}.fa-check:before{content:\"\\f00c\"}.fa-remove:before,.fa-close:before,.fa-times:before{content:\"\\f00d\"}.fa-search-plus:before{content:\"\\f00e\"}.fa-search-minus:before{content:\"\\f010\"}.fa-power-off:before{content:\"\\f011\"}.fa-signal:before{content:\"\\f012\"}.fa-gear:before,.fa-cog:before{content:\"\\f013\"}.fa-trash-o:before{content:\"\\f014\"}.fa-home:before{content:\"\\f015\"}.fa-file-o:before{content:\"\\f016\"}.fa-clock-o:before{content:\"\\f017\"}.fa-road:before{content:\"\\f018\"}.fa-download:before{content:\"\\f019\"}.fa-arrow-circle-o-down:before{content:\"\\f01a\"}.fa-arrow-circle-o-up:before{content:\"\\f01b\"}.fa-inbox:before{content:\"\\f01c\"}.fa-play-circle-o:before{content:\"\\f01d\"}.fa-rotate-right:before,.fa-repeat:before{content:\"\\f01e\"}.fa-refresh:before{content:\"\\f021\"}.fa-list-alt:before{content:\"\\f022\"}.fa-lock:before{content:\"\\f023\"}.fa-flag:before{content:\"\\f024\"}.fa-headphones:before{content:\"\\f025\"}.fa-volume-off:before{content:\"\\f026\"}.fa-volume-down:before{content:\"\\f027\"}.fa-volume-up:before{content:\"\\f028\"}.fa-qrcode:before{content:\"\\f029\"}.fa-barcode:before{content:\"\\f02a\"}.fa-tag:before{content:\"\\f02b\"}.fa-tags:before{content:\"\\f02c\"}.fa-book:before{content:\"\\f02d\"}.fa-bookmark:before{content:\"\\f02e\"}.fa-print:before{content:\"\\f02f\"}.fa-camera:before{content:\"\\f030\"}.fa-font:before{content:\"\\f031\"}.fa-bold:before{content:\"\\f032\"}.fa-italic:before{content:\"\\f033\"}.fa-text-height:before{content:\"\\f034\"}.fa-text-width:before{content:\"\\f035\"}.fa-align-left:before{content:\"\\f036\"}.fa-align-center:before{content:\"\\f037\"}.fa-align-right:before{content:\"\\f038\"}.fa-align-justify:before{content:\"\\f039\"}.fa-list:before{content:\"\\f03a\"}.fa-dedent:before,.fa-outdent:before{content:\"\\f03b\"}.fa-indent:before{content:\"\\f03c\"}.fa-video-camera:before{content:\"\\f03d\"}.fa-photo:before,.fa-image:before,.fa-picture-o:before{content:\"\\f03e\"}.fa-pencil:before{content:\"\\f040\"}.fa-map-marker:before{content:\"\\f041\"}.fa-adjust:before{content:\"\\f042\"}.fa-tint:before{content:\"\\f043\"}.fa-edit:before,.fa-pencil-square-o:before{content:\"\\f044\"}.fa-share-square-o:before{content:\"\\f045\"}.fa-check-square-o:before{content:\"\\f046\"}.fa-arrows:before{content:\"\\f047\"}.fa-step-backward:before{content:\"\\f048\"}.fa-fast-backward:before{content:\"\\f049\"}.fa-backward:before{content:\"\\f04a\"}.fa-play:before{content:\"\\f04b\"}.fa-pause:before{content:\"\\f04c\"}.fa-stop:before{content:\"\\f04d\"}.fa-forward:before{content:\"\\f04e\"}.fa-fast-forward:before{content:\"\\f050\"}.fa-step-forward:before{content:\"\\f051\"}.fa-eject:before{content:\"\\f052\"}.fa-chevron-left:before{content:\"\\f053\"}.fa-chevron-right:before{content:\"\\f054\"}.fa-plus-circle:before{content:\"\\f055\"}.fa-minus-circle:before{content:\"\\f056\"}.fa-times-circle:before{content:\"\\f057\"}.fa-check-circle:before{content:\"\\f058\"}.fa-question-circle:before{content:\"\\f059\"}.fa-info-circle:before{content:\"\\f05a\"}.fa-crosshairs:before{content:\"\\f05b\"}.fa-times-circle-o:before{content:\"\\f05c\"}.fa-check-circle-o:before{content:\"\\f05d\"}.fa-ban:before{content:\"\\f05e\"}.fa-arrow-left:before{content:\"\\f060\"}.fa-arrow-right:before{content:\"\\f061\"}.fa-arrow-up:before{content:\"\\f062\"}.fa-arrow-down:before{content:\"\\f063\"}.fa-mail-forward:before,.fa-share:before{content:\"\\f064\"}.fa-expand:before{content:\"\\f065\"}.fa-compress:before{content:\"\\f066\"}.fa-plus:before{content:\"\\f067\"}.fa-minus:before{content:\"\\f068\"}.fa-asterisk:before{content:\"\\f069\"}.fa-exclamation-circle:before{content:\"\\f06a\"}.fa-gift:before{content:\"\\f06b\"}.fa-leaf:before{content:\"\\f06c\"}.fa-fire:before{content:\"\\f06d\"}.fa-eye:before{content:\"\\f06e\"}.fa-eye-slash:before{content:\"\\f070\"}.fa-warning:before,.fa-exclamation-triangle:before{content:\"\\f071\"}.fa-plane:before{content:\"\\f072\"}.fa-calendar:before{content:\"\\f073\"}.fa-random:before{content:\"\\f074\"}.fa-comment:before{content:\"\\f075\"}.fa-magnet:before{content:\"\\f076\"}.fa-chevron-up:before{content:\"\\f077\"}.fa-chevron-down:before{content:\"\\f078\"}.fa-retweet:before{content:\"\\f079\"}.fa-shopping-cart:before{content:\"\\f07a\"}.fa-folder:before{content:\"\\f07b\"}.fa-folder-open:before{content:\"\\f07c\"}.fa-arrows-v:before{content:\"\\f07d\"}.fa-arrows-h:before{content:\"\\f07e\"}.fa-bar-chart-o:before,.fa-bar-chart:before{content:\"\\f080\"}.fa-twitter-square:before{content:\"\\f081\"}.fa-facebook-square:before{content:\"\\f082\"}.fa-camera-retro:before{content:\"\\f083\"}.fa-key:before{content:\"\\f084\"}.fa-gears:before,.fa-cogs:before{content:\"\\f085\"}.fa-comments:before{content:\"\\f086\"}.fa-thumbs-o-up:before{content:\"\\f087\"}.fa-thumbs-o-down:before{content:\"\\f088\"}.fa-star-half:before{content:\"\\f089\"}.fa-heart-o:before{content:\"\\f08a\"}.fa-sign-out:before{content:\"\\f08b\"}.fa-linkedin-square:before{content:\"\\f08c\"}.fa-thumb-tack:before{content:\"\\f08d\"}.fa-external-link:before{content:\"\\f08e\"}.fa-sign-in:before{content:\"\\f090\"}.fa-trophy:before{content:\"\\f091\"}.fa-github-square:before{content:\"\\f092\"}.fa-upload:before{content:\"\\f093\"}.fa-lemon-o:before{content:\"\\f094\"}.fa-phone:before{content:\"\\f095\"}.fa-square-o:before{content:\"\\f096\"}.fa-bookmark-o:before{content:\"\\f097\"}.fa-phone-square:before{content:\"\\f098\"}.fa-twitter:before{content:\"\\f099\"}.fa-facebook-f:before,.fa-facebook:before{content:\"\\f09a\"}.fa-github:before{content:\"\\f09b\"}.fa-unlock:before{content:\"\\f09c\"}.fa-credit-card:before{content:\"\\f09d\"}.fa-feed:before,.fa-rss:before{content:\"\\f09e\"}.fa-hdd-o:before{content:\"\\f0a0\"}.fa-bullhorn:before{content:\"\\f0a1\"}.fa-bell:before{content:\"\\f0f3\"}.fa-certificate:before{content:\"\\f0a3\"}.fa-hand-o-right:before{content:\"\\f0a4\"}.fa-hand-o-left:before{content:\"\\f0a5\"}.fa-hand-o-up:before{content:\"\\f0a6\"}.fa-hand-o-down:before{content:\"\\f0a7\"}.fa-arrow-circle-left:before{content:\"\\f0a8\"}.fa-arrow-circle-right:before{content:\"\\f0a9\"}.fa-arrow-circle-up:before{content:\"\\f0aa\"}.fa-arrow-circle-down:before{content:\"\\f0ab\"}.fa-globe:before{content:\"\\f0ac\"}.fa-wrench:before{content:\"\\f0ad\"}.fa-tasks:before{content:\"\\f0ae\"}.fa-filter:before{content:\"\\f0b0\"}.fa-briefcase:before{content:\"\\f0b1\"}.fa-arrows-alt:before{content:\"\\f0b2\"}.fa-group:before,.fa-users:before{content:\"\\f0c0\"}.fa-chain:before,.fa-link:before{content:\"\\f0c1\"}.fa-cloud:before{content:\"\\f0c2\"}.fa-flask:before{content:\"\\f0c3\"}.fa-cut:before,.fa-scissors:before{content:\"\\f0c4\"}.fa-copy:before,.fa-files-o:before{content:\"\\f0c5\"}.fa-paperclip:before{content:\"\\f0c6\"}.fa-save:before,.fa-floppy-o:before{content:\"\\f0c7\"}.fa-square:before{content:\"\\f0c8\"}.fa-navicon:before,.fa-reorder:before,.fa-bars:before{content:\"\\f0c9\"}.fa-list-ul:before{content:\"\\f0ca\"}.fa-list-ol:before{content:\"\\f0cb\"}.fa-strikethrough:before{content:\"\\f0cc\"}.fa-underline:before{content:\"\\f0cd\"}.fa-table:before{content:\"\\f0ce\"}.fa-magic:before{content:\"\\f0d0\"}.fa-truck:before{content:\"\\f0d1\"}.fa-pinterest:before{content:\"\\f0d2\"}.fa-pinterest-square:before{content:\"\\f0d3\"}.fa-google-plus-square:before{content:\"\\f0d4\"}.fa-google-plus:before{content:\"\\f0d5\"}.fa-money:before{content:\"\\f0d6\"}.fa-caret-down:before{content:\"\\f0d7\"}.fa-caret-up:before{content:\"\\f0d8\"}.fa-caret-left:before{content:\"\\f0d9\"}.fa-caret-right:before{content:\"\\f0da\"}.fa-columns:before{content:\"\\f0db\"}.fa-unsorted:before,.fa-sort:before{content:\"\\f0dc\"}.fa-sort-down:before,.fa-sort-desc:before{content:\"\\f0dd\"}.fa-sort-up:before,.fa-sort-asc:before{content:\"\\f0de\"}.fa-envelope:before{content:\"\\f0e0\"}.fa-linkedin:before{content:\"\\f0e1\"}.fa-rotate-left:before,.fa-undo:before{content:\"\\f0e2\"}.fa-legal:before,.fa-gavel:before{content:\"\\f0e3\"}.fa-dashboard:before,.fa-tachometer:before{content:\"\\f0e4\"}.fa-comment-o:before{content:\"\\f0e5\"}.fa-comments-o:before{content:\"\\f0e6\"}.fa-flash:before,.fa-bolt:before{content:\"\\f0e7\"}.fa-sitemap:before{content:\"\\f0e8\"}.fa-umbrella:before{content:\"\\f0e9\"}.fa-paste:before,.fa-clipboard:before{content:\"\\f0ea\"}.fa-lightbulb-o:before{content:\"\\f0eb\"}.fa-exchange:before{content:\"\\f0ec\"}.fa-cloud-download:before{content:\"\\f0ed\"}.fa-cloud-upload:before{content:\"\\f0ee\"}.fa-user-md:before{content:\"\\f0f0\"}.fa-stethoscope:before{content:\"\\f0f1\"}.fa-suitcase:before{content:\"\\f0f2\"}.fa-bell-o:before{content:\"\\f0a2\"}.fa-coffee:before{content:\"\\f0f4\"}.fa-cutlery:before{content:\"\\f0f5\"}.fa-file-text-o:before{content:\"\\f0f6\"}.fa-building-o:before{content:\"\\f0f7\"}.fa-hospital-o:before{content:\"\\f0f8\"}.fa-ambulance:before{content:\"\\f0f9\"}.fa-medkit:before{content:\"\\f0fa\"}.fa-fighter-jet:before{content:\"\\f0fb\"}.fa-beer:before{content:\"\\f0fc\"}.fa-h-square:before{content:\"\\f0fd\"}.fa-plus-square:before{content:\"\\f0fe\"}.fa-angle-double-left:before{content:\"\\f100\"}.fa-angle-double-right:before{content:\"\\f101\"}.fa-angle-double-up:before{content:\"\\f102\"}.fa-angle-double-down:before{content:\"\\f103\"}.fa-angle-left:before{content:\"\\f104\"}.fa-angle-right:before{content:\"\\f105\"}.fa-angle-up:before{content:\"\\f106\"}.fa-angle-down:before{content:\"\\f107\"}.fa-desktop:before{content:\"\\f108\"}.fa-laptop:before{content:\"\\f109\"}.fa-tablet:before{content:\"\\f10a\"}.fa-mobile-phone:before,.fa-mobile:before{content:\"\\f10b\"}.fa-circle-o:before{content:\"\\f10c\"}.fa-quote-left:before{content:\"\\f10d\"}.fa-quote-right:before{content:\"\\f10e\"}.fa-spinner:before{content:\"\\f110\"}.fa-circle:before{content:\"\\f111\"}.fa-mail-reply:before,.fa-reply:before{content:\"\\f112\"}.fa-github-alt:before{content:\"\\f113\"}.fa-folder-o:before{content:\"\\f114\"}.fa-folder-open-o:before{content:\"\\f115\"}.fa-smile-o:before{content:\"\\f118\"}.fa-frown-o:before{content:\"\\f119\"}.fa-meh-o:before{content:\"\\f11a\"}.fa-gamepad:before{content:\"\\f11b\"}.fa-keyboard-o:before{content:\"\\f11c\"}.fa-flag-o:before{content:\"\\f11d\"}.fa-flag-checkered:before{content:\"\\f11e\"}.fa-terminal:before{content:\"\\f120\"}.fa-code:before{content:\"\\f121\"}.fa-mail-reply-all:before,.fa-reply-all:before{content:\"\\f122\"}.fa-star-half-empty:before,.fa-star-half-full:before,.fa-star-half-o:before{content:\"\\f123\"}.fa-location-arrow:before{content:\"\\f124\"}.fa-crop:before{content:\"\\f125\"}.fa-code-fork:before{content:\"\\f126\"}.fa-unlink:before,.fa-chain-broken:before{content:\"\\f127\"}.fa-question:before{content:\"\\f128\"}.fa-info:before{content:\"\\f129\"}.fa-exclamation:before{content:\"\\f12a\"}.fa-superscript:before{content:\"\\f12b\"}.fa-subscript:before{content:\"\\f12c\"}.fa-eraser:before{content:\"\\f12d\"}.fa-puzzle-piece:before{content:\"\\f12e\"}.fa-microphone:before{content:\"\\f130\"}.fa-microphone-slash:before{content:\"\\f131\"}.fa-shield:before{content:\"\\f132\"}.fa-calendar-o:before{content:\"\\f133\"}.fa-fire-extinguisher:before{content:\"\\f134\"}.fa-rocket:before{content:\"\\f135\"}.fa-maxcdn:before{content:\"\\f136\"}.fa-chevron-circle-left:before{content:\"\\f137\"}.fa-chevron-circle-right:before{content:\"\\f138\"}.fa-chevron-circle-up:before{content:\"\\f139\"}.fa-chevron-circle-down:before{content:\"\\f13a\"}.fa-html5:before{content:\"\\f13b\"}.fa-css3:before{content:\"\\f13c\"}.fa-anchor:before{content:\"\\f13d\"}.fa-unlock-alt:before{content:\"\\f13e\"}.fa-bullseye:before{content:\"\\f140\"}.fa-ellipsis-h:before{content:\"\\f141\"}.fa-ellipsis-v:before{content:\"\\f142\"}.fa-rss-square:before{content:\"\\f143\"}.fa-play-circle:before{content:\"\\f144\"}.fa-ticket:before{content:\"\\f145\"}.fa-minus-square:before{content:\"\\f146\"}.fa-minus-square-o:before{content:\"\\f147\"}.fa-level-up:before{content:\"\\f148\"}.fa-level-down:before{content:\"\\f149\"}.fa-check-square:before{content:\"\\f14a\"}.fa-pencil-square:before{content:\"\\f14b\"}.fa-external-link-square:before{content:\"\\f14c\"}.fa-share-square:before{content:\"\\f14d\"}.fa-compass:before{content:\"\\f14e\"}.fa-toggle-down:before,.fa-caret-square-o-down:before{content:\"\\f150\"}.fa-toggle-up:before,.fa-caret-square-o-up:before{content:\"\\f151\"}.fa-toggle-right:before,.fa-caret-square-o-right:before{content:\"\\f152\"}.fa-euro:before,.fa-eur:before{content:\"\\f153\"}.fa-gbp:before{content:\"\\f154\"}.fa-dollar:before,.fa-usd:before{content:\"\\f155\"}.fa-rupee:before,.fa-inr:before{content:\"\\f156\"}.fa-cny:before,.fa-rmb:before,.fa-yen:before,.fa-jpy:before{content:\"\\f157\"}.fa-ruble:before,.fa-rouble:before,.fa-rub:before{content:\"\\f158\"}.fa-won:before,.fa-krw:before{content:\"\\f159\"}.fa-bitcoin:before,.fa-btc:before{content:\"\\f15a\"}.fa-file:before{content:\"\\f15b\"}.fa-file-text:before{content:\"\\f15c\"}.fa-sort-alpha-asc:before{content:\"\\f15d\"}.fa-sort-alpha-desc:before{content:\"\\f15e\"}.fa-sort-amount-asc:before{content:\"\\f160\"}.fa-sort-amount-desc:before{content:\"\\f161\"}.fa-sort-numeric-asc:before{content:\"\\f162\"}.fa-sort-numeric-desc:before{content:\"\\f163\"}.fa-thumbs-up:before{content:\"\\f164\"}.fa-thumbs-down:before{content:\"\\f165\"}.fa-youtube-square:before{content:\"\\f166\"}.fa-youtube:before{content:\"\\f167\"}.fa-xing:before{content:\"\\f168\"}.fa-xing-square:before{content:\"\\f169\"}.fa-youtube-play:before{content:\"\\f16a\"}.fa-dropbox:before{content:\"\\f16b\"}.fa-stack-overflow:before{content:\"\\f16c\"}.fa-instagram:before{content:\"\\f16d\"}.fa-flickr:before{content:\"\\f16e\"}.fa-adn:before{content:\"\\f170\"}.fa-bitbucket:before{content:\"\\f171\"}.fa-bitbucket-square:before{content:\"\\f172\"}.fa-tumblr:before{content:\"\\f173\"}.fa-tumblr-square:before{content:\"\\f174\"}.fa-long-arrow-down:before{content:\"\\f175\"}.fa-long-arrow-up:before{content:\"\\f176\"}.fa-long-arrow-left:before{content:\"\\f177\"}.fa-long-arrow-right:before{content:\"\\f178\"}.fa-apple:before{content:\"\\f179\"}.fa-windows:before{content:\"\\f17a\"}.fa-android:before{content:\"\\f17b\"}.fa-linux:before{content:\"\\f17c\"}.fa-dribbble:before{content:\"\\f17d\"}.fa-skype:before{content:\"\\f17e\"}.fa-foursquare:before{content:\"\\f180\"}.fa-trello:before{content:\"\\f181\"}.fa-female:before{content:\"\\f182\"}.fa-male:before{content:\"\\f183\"}.fa-gittip:before,.fa-gratipay:before{content:\"\\f184\"}.fa-sun-o:before{content:\"\\f185\"}.fa-moon-o:before{content:\"\\f186\"}.fa-archive:before{content:\"\\f187\"}.fa-bug:before{content:\"\\f188\"}.fa-vk:before{content:\"\\f189\"}.fa-weibo:before{content:\"\\f18a\"}.fa-renren:before{content:\"\\f18b\"}.fa-pagelines:before{content:\"\\f18c\"}.fa-stack-exchange:before{content:\"\\f18d\"}.fa-arrow-circle-o-right:before{content:\"\\f18e\"}.fa-arrow-circle-o-left:before{content:\"\\f190\"}.fa-toggle-left:before,.fa-caret-square-o-left:before{content:\"\\f191\"}.fa-dot-circle-o:before{content:\"\\f192\"}.fa-wheelchair:before{content:\"\\f193\"}.fa-vimeo-square:before{content:\"\\f194\"}.fa-turkish-lira:before,.fa-try:before{content:\"\\f195\"}.fa-plus-square-o:before{content:\"\\f196\"}.fa-space-shuttle:before{content:\"\\f197\"}.fa-slack:before{content:\"\\f198\"}.fa-envelope-square:before{content:\"\\f199\"}.fa-wordpress:before{content:\"\\f19a\"}.fa-openid:before{content:\"\\f19b\"}.fa-institution:before,.fa-bank:before,.fa-university:before{content:\"\\f19c\"}.fa-mortar-board:before,.fa-graduation-cap:before{content:\"\\f19d\"}.fa-yahoo:before{content:\"\\f19e\"}.fa-google:before{content:\"\\f1a0\"}.fa-reddit:before{content:\"\\f1a1\"}.fa-reddit-square:before{content:\"\\f1a2\"}.fa-stumbleupon-circle:before{content:\"\\f1a3\"}.fa-stumbleupon:before{content:\"\\f1a4\"}.fa-delicious:before{content:\"\\f1a5\"}.fa-digg:before{content:\"\\f1a6\"}.fa-pied-piper:before{content:\"\\f1a7\"}.fa-pied-piper-alt:before{content:\"\\f1a8\"}.fa-drupal:before{content:\"\\f1a9\"}.fa-joomla:before{content:\"\\f1aa\"}.fa-language:before{content:\"\\f1ab\"}.fa-fax:before{content:\"\\f1ac\"}.fa-building:before{content:\"\\f1ad\"}.fa-child:before{content:\"\\f1ae\"}.fa-paw:before{content:\"\\f1b0\"}.fa-spoon:before{content:\"\\f1b1\"}.fa-cube:before{content:\"\\f1b2\"}.fa-cubes:before{content:\"\\f1b3\"}.fa-behance:before{content:\"\\f1b4\"}.fa-behance-square:before{content:\"\\f1b5\"}.fa-steam:before{content:\"\\f1b6\"}.fa-steam-square:before{content:\"\\f1b7\"}.fa-recycle:before{content:\"\\f1b8\"}.fa-automobile:before,.fa-car:before{content:\"\\f1b9\"}.fa-cab:before,.fa-taxi:before{content:\"\\f1ba\"}.fa-tree:before{content:\"\\f1bb\"}.fa-spotify:before{content:\"\\f1bc\"}.fa-deviantart:before{content:\"\\f1bd\"}.fa-soundcloud:before{content:\"\\f1be\"}.fa-database:before{content:\"\\f1c0\"}.fa-file-pdf-o:before{content:\"\\f1c1\"}.fa-file-word-o:before{content:\"\\f1c2\"}.fa-file-excel-o:before{content:\"\\f1c3\"}.fa-file-powerpoint-o:before{content:\"\\f1c4\"}.fa-file-photo-o:before,.fa-file-picture-o:before,.fa-file-image-o:before{content:\"\\f1c5\"}.fa-file-zip-o:before,.fa-file-archive-o:before{content:\"\\f1c6\"}.fa-file-sound-o:before,.fa-file-audio-o:before{content:\"\\f1c7\"}.fa-file-movie-o:before,.fa-file-video-o:before{content:\"\\f1c8\"}.fa-file-code-o:before{content:\"\\f1c9\"}.fa-vine:before{content:\"\\f1ca\"}.fa-codepen:before{content:\"\\f1cb\"}.fa-jsfiddle:before{content:\"\\f1cc\"}.fa-life-bouy:before,.fa-life-buoy:before,.fa-life-saver:before,.fa-support:before,.fa-life-ring:before{content:\"\\f1cd\"}.fa-circle-o-notch:before{content:\"\\f1ce\"}.fa-ra:before,.fa-rebel:before{content:\"\\f1d0\"}.fa-ge:before,.fa-empire:before{content:\"\\f1d1\"}.fa-git-square:before{content:\"\\f1d2\"}.fa-git:before{content:\"\\f1d3\"}.fa-y-combinator-square:before,.fa-yc-square:before,.fa-hacker-news:before{content:\"\\f1d4\"}.fa-tencent-weibo:before{content:\"\\f1d5\"}.fa-qq:before{content:\"\\f1d6\"}.fa-wechat:before,.fa-weixin:before{content:\"\\f1d7\"}.fa-send:before,.fa-paper-plane:before{content:\"\\f1d8\"}.fa-send-o:before,.fa-paper-plane-o:before{content:\"\\f1d9\"}.fa-history:before{content:\"\\f1da\"}.fa-circle-thin:before{content:\"\\f1db\"}.fa-header:before{content:\"\\f1dc\"}.fa-paragraph:before{content:\"\\f1dd\"}.fa-sliders:before{content:\"\\f1de\"}.fa-share-alt:before{content:\"\\f1e0\"}.fa-share-alt-square:before{content:\"\\f1e1\"}.fa-bomb:before{content:\"\\f1e2\"}.fa-soccer-ball-o:before,.fa-futbol-o:before{content:\"\\f1e3\"}.fa-tty:before{content:\"\\f1e4\"}.fa-binoculars:before{content:\"\\f1e5\"}.fa-plug:before{content:\"\\f1e6\"}.fa-slideshare:before{content:\"\\f1e7\"}.fa-twitch:before{content:\"\\f1e8\"}.fa-yelp:before{content:\"\\f1e9\"}.fa-newspaper-o:before{content:\"\\f1ea\"}.fa-wifi:before{content:\"\\f1eb\"}.fa-calculator:before{content:\"\\f1ec\"}.fa-paypal:before{content:\"\\f1ed\"}.fa-google-wallet:before{content:\"\\f1ee\"}.fa-cc-visa:before{content:\"\\f1f0\"}.fa-cc-mastercard:before{content:\"\\f1f1\"}.fa-cc-discover:before{content:\"\\f1f2\"}.fa-cc-amex:before{content:\"\\f1f3\"}.fa-cc-paypal:before{content:\"\\f1f4\"}.fa-cc-stripe:before{content:\"\\f1f5\"}.fa-bell-slash:before{content:\"\\f1f6\"}.fa-bell-slash-o:before{content:\"\\f1f7\"}.fa-trash:before{content:\"\\f1f8\"}.fa-copyright:before{content:\"\\f1f9\"}.fa-at:before{content:\"\\f1fa\"}.fa-eyedropper:before{content:\"\\f1fb\"}.fa-paint-brush:before{content:\"\\f1fc\"}.fa-birthday-cake:before{content:\"\\f1fd\"}.fa-area-chart:before{content:\"\\f1fe\"}.fa-pie-chart:before{content:\"\\f200\"}.fa-line-chart:before{content:\"\\f201\"}.fa-lastfm:before{content:\"\\f202\"}.fa-lastfm-square:before{content:\"\\f203\"}.fa-toggle-off:before{content:\"\\f204\"}.fa-toggle-on:before{content:\"\\f205\"}.fa-bicycle:before{content:\"\\f206\"}.fa-bus:before{content:\"\\f207\"}.fa-ioxhost:before{content:\"\\f208\"}.fa-angellist:before{content:\"\\f209\"}.fa-cc:before{content:\"\\f20a\"}.fa-shekel:before,.fa-sheqel:before,.fa-ils:before{content:\"\\f20b\"}.fa-meanpath:before{content:\"\\f20c\"}.fa-buysellads:before{content:\"\\f20d\"}.fa-connectdevelop:before{content:\"\\f20e\"}.fa-dashcube:before{content:\"\\f210\"}.fa-forumbee:before{content:\"\\f211\"}.fa-leanpub:before{content:\"\\f212\"}.fa-sellsy:before{content:\"\\f213\"}.fa-shirtsinbulk:before{content:\"\\f214\"}.fa-simplybuilt:before{content:\"\\f215\"}.fa-skyatlas:before{content:\"\\f216\"}.fa-cart-plus:before{content:\"\\f217\"}.fa-cart-arrow-down:before{content:\"\\f218\"}.fa-diamond:before{content:\"\\f219\"}.fa-ship:before{content:\"\\f21a\"}.fa-user-secret:before{content:\"\\f21b\"}.fa-motorcycle:before{content:\"\\f21c\"}.fa-street-view:before{content:\"\\f21d\"}.fa-heartbeat:before{content:\"\\f21e\"}.fa-venus:before{content:\"\\f221\"}.fa-mars:before{content:\"\\f222\"}.fa-mercury:before{content:\"\\f223\"}.fa-intersex:before,.fa-transgender:before{content:\"\\f224\"}.fa-transgender-alt:before{content:\"\\f225\"}.fa-venus-double:before{content:\"\\f226\"}.fa-mars-double:before{content:\"\\f227\"}.fa-venus-mars:before{content:\"\\f228\"}.fa-mars-stroke:before{content:\"\\f229\"}.fa-mars-stroke-v:before{content:\"\\f22a\"}.fa-mars-stroke-h:before{content:\"\\f22b\"}.fa-neuter:before{content:\"\\f22c\"}.fa-genderless:before{content:\"\\f22d\"}.fa-facebook-official:before{content:\"\\f230\"}.fa-pinterest-p:before{content:\"\\f231\"}.fa-whatsapp:before{content:\"\\f232\"}.fa-server:before{content:\"\\f233\"}.fa-user-plus:before{content:\"\\f234\"}.fa-user-times:before{content:\"\\f235\"}.fa-hotel:before,.fa-bed:before{content:\"\\f236\"}.fa-viacoin:before{content:\"\\f237\"}.fa-train:before{content:\"\\f238\"}.fa-subway:before{content:\"\\f239\"}.fa-medium:before{content:\"\\f23a\"}.fa-yc:before,.fa-y-combinator:before{content:\"\\f23b\"}.fa-optin-monster:before{content:\"\\f23c\"}.fa-opencart:before{content:\"\\f23d\"}.fa-expeditedssl:before{content:\"\\f23e\"}.fa-battery-4:before,.fa-battery-full:before{content:\"\\f240\"}.fa-battery-3:before,.fa-battery-three-quarters:before{content:\"\\f241\"}.fa-battery-2:before,.fa-battery-half:before{content:\"\\f242\"}.fa-battery-1:before,.fa-battery-quarter:before{content:\"\\f243\"}.fa-battery-0:before,.fa-battery-empty:before{content:\"\\f244\"}.fa-mouse-pointer:before{content:\"\\f245\"}.fa-i-cursor:before{content:\"\\f246\"}.fa-object-group:before{content:\"\\f247\"}.fa-object-ungroup:before{content:\"\\f248\"}.fa-sticky-note:before{content:\"\\f249\"}.fa-sticky-note-o:before{content:\"\\f24a\"}.fa-cc-jcb:before{content:\"\\f24b\"}.fa-cc-diners-club:before{content:\"\\f24c\"}.fa-clone:before{content:\"\\f24d\"}.fa-balance-scale:before{content:\"\\f24e\"}.fa-hourglass-o:before{content:\"\\f250\"}.fa-hourglass-1:before,.fa-hourglass-start:before{content:\"\\f251\"}.fa-hourglass-2:before,.fa-hourglass-half:before{content:\"\\f252\"}.fa-hourglass-3:before,.fa-hourglass-end:before{content:\"\\f253\"}.fa-hourglass:before{content:\"\\f254\"}.fa-hand-grab-o:before,.fa-hand-rock-o:before{content:\"\\f255\"}.fa-hand-stop-o:before,.fa-hand-paper-o:before{content:\"\\f256\"}.fa-hand-scissors-o:before{content:\"\\f257\"}.fa-hand-lizard-o:before{content:\"\\f258\"}.fa-hand-spock-o:before{content:\"\\f259\"}.fa-hand-pointer-o:before{content:\"\\f25a\"}.fa-hand-peace-o:before{content:\"\\f25b\"}.fa-trademark:before{content:\"\\f25c\"}.fa-registered:before{content:\"\\f25d\"}.fa-creative-commons:before{content:\"\\f25e\"}.fa-gg:before{content:\"\\f260\"}.fa-gg-circle:before{content:\"\\f261\"}.fa-tripadvisor:before{content:\"\\f262\"}.fa-odnoklassniki:before{content:\"\\f263\"}.fa-odnoklassniki-square:before{content:\"\\f264\"}.fa-get-pocket:before{content:\"\\f265\"}.fa-wikipedia-w:before{content:\"\\f266\"}.fa-safari:before{content:\"\\f267\"}.fa-chrome:before{content:\"\\f268\"}.fa-firefox:before{content:\"\\f269\"}.fa-opera:before{content:\"\\f26a\"}.fa-internet-explorer:before{content:\"\\f26b\"}.fa-tv:before,.fa-television:before{content:\"\\f26c\"}.fa-contao:before{content:\"\\f26d\"}.fa-500px:before{content:\"\\f26e\"}.fa-amazon:before{content:\"\\f270\"}.fa-calendar-plus-o:before{content:\"\\f271\"}.fa-calendar-minus-o:before{content:\"\\f272\"}.fa-calendar-times-o:before{content:\"\\f273\"}.fa-calendar-check-o:before{content:\"\\f274\"}.fa-industry:before{content:\"\\f275\"}.fa-map-pin:before{content:\"\\f276\"}.fa-map-signs:before{content:\"\\f277\"}.fa-map-o:before{content:\"\\f278\"}.fa-map:before{content:\"\\f279\"}.fa-commenting:before{content:\"\\f27a\"}.fa-commenting-o:before{content:\"\\f27b\"}.fa-houzz:before{content:\"\\f27c\"}.fa-vimeo:before{content:\"\\f27d\"}.fa-black-tie:before{content:\"\\f27e\"}.fa-fonticons:before{content:\"\\f280\"}\n", ""]);
-
-/***/ },
-/* 8 */
-/***/ function(module, exports) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	// css base code, injected by the css-loader
-	module.exports = function() {
-		var list = [];
-	
-		// return the list of modules as css string
-		list.toString = function toString() {
-			var result = [];
-			for(var i = 0; i < this.length; i++) {
-				var item = this[i];
-				if(item[2]) {
-					result.push("@media " + item[2] + "{" + item[1] + "}");
-				} else {
-					result.push(item[1]);
-				}
-			}
-			return result.join("");
-		};
-	
-		// import a list of modules into the list
-		list.i = function(modules, mediaQuery) {
-			if(typeof modules === "string")
-				modules = [[null, modules, ""]];
-			var alreadyImportedModules = {};
-			for(var i = 0; i < this.length; i++) {
-				var id = this[i][0];
-				if(typeof id === "number")
-					alreadyImportedModules[id] = true;
-			}
-			for(i = 0; i < modules.length; i++) {
-				var item = modules[i];
-				// skip already imported module
-				// this implementation is not 100% perfect for weird media query combinations
-				//  when a module is imported multiple times with different media queries.
-				//  I hope this will never occur (Hey this way we have smaller bundles)
-				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-					if(mediaQuery && !item[2]) {
-						item[2] = mediaQuery;
-					} else if(mediaQuery) {
-						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-					}
-					list.push(item);
-				}
-			}
-		};
-		return list;
-	};
-
-
-/***/ },
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */,
-/* 15 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-		MIT License http://www.opensource.org/licenses/mit-license.php
-		Author Tobias Koppers @sokra
-	*/
-	var stylesInDom = {},
-		memoize = function(fn) {
-			var memo;
-			return function () {
-				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-				return memo;
-			};
-		},
-		isOldIE = memoize(function() {
-			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
-		}),
-		getHeadElement = memoize(function () {
-			return document.head || document.getElementsByTagName("head")[0];
-		}),
-		singletonElement = null,
-		singletonCounter = 0;
-	
-	module.exports = function(list, options) {
-		if(false) {
-			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-		}
-	
-		options = options || {};
-		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-		// tags it will allow on a page
-		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-	
-		var styles = listToStyles(list);
-		addStylesToDom(styles, options);
-	
-		return function update(newList) {
-			var mayRemove = [];
-			for(var i = 0; i < styles.length; i++) {
-				var item = styles[i];
-				var domStyle = stylesInDom[item.id];
-				domStyle.refs--;
-				mayRemove.push(domStyle);
-			}
-			if(newList) {
-				var newStyles = listToStyles(newList);
-				addStylesToDom(newStyles, options);
-			}
-			for(var i = 0; i < mayRemove.length; i++) {
-				var domStyle = mayRemove[i];
-				if(domStyle.refs === 0) {
-					for(var j = 0; j < domStyle.parts.length; j++)
-						domStyle.parts[j]();
-					delete stylesInDom[domStyle.id];
-				}
-			}
-		};
-	}
-	
-	function addStylesToDom(styles, options) {
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			if(domStyle) {
-				domStyle.refs++;
-				for(var j = 0; j < domStyle.parts.length; j++) {
-					domStyle.parts[j](item.parts[j]);
-				}
-				for(; j < item.parts.length; j++) {
-					domStyle.parts.push(addStyle(item.parts[j], options));
-				}
-			} else {
-				var parts = [];
-				for(var j = 0; j < item.parts.length; j++) {
-					parts.push(addStyle(item.parts[j], options));
-				}
-				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-			}
-		}
-	}
-	
-	function listToStyles(list) {
-		var styles = [];
-		var newStyles = {};
-		for(var i = 0; i < list.length; i++) {
-			var item = list[i];
-			var id = item[0];
-			var css = item[1];
-			var media = item[2];
-			var sourceMap = item[3];
-			var part = {css: css, media: media, sourceMap: sourceMap};
-			if(!newStyles[id])
-				styles.push(newStyles[id] = {id: id, parts: [part]});
-			else
-				newStyles[id].parts.push(part);
-		}
-		return styles;
-	}
-	
-	function createStyleElement() {
-		var styleElement = document.createElement("style");
-		var head = getHeadElement();
-		styleElement.type = "text/css";
-		head.appendChild(styleElement);
-		return styleElement;
-	}
-	
-	function createLinkElement() {
-		var linkElement = document.createElement("link");
-		var head = getHeadElement();
-		linkElement.rel = "stylesheet";
-		head.appendChild(linkElement);
-		return linkElement;
-	}
-	
-	function addStyle(obj, options) {
-		var styleElement, update, remove;
-	
-		if (options.singleton) {
-			var styleIndex = singletonCounter++;
-			styleElement = singletonElement || (singletonElement = createStyleElement());
-			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-		} else if(obj.sourceMap &&
-			typeof URL === "function" &&
-			typeof URL.createObjectURL === "function" &&
-			typeof URL.revokeObjectURL === "function" &&
-			typeof Blob === "function" &&
-			typeof btoa === "function") {
-			styleElement = createLinkElement();
-			update = updateLink.bind(null, styleElement);
-			remove = function() {
-				styleElement.parentNode.removeChild(styleElement);
-				if(styleElement.href)
-					URL.revokeObjectURL(styleElement.href);
-			};
-		} else {
-			styleElement = createStyleElement();
-			update = applyToTag.bind(null, styleElement);
-			remove = function() {
-				styleElement.parentNode.removeChild(styleElement);
-			};
-		}
-	
-		update(obj);
-	
-		return function updateStyle(newObj) {
-			if(newObj) {
-				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-					return;
-				update(obj = newObj);
-			} else {
-				remove();
-			}
-		};
-	}
-	
-	var replaceText = (function () {
-		var textStore = [];
-	
-		return function (index, replacement) {
-			textStore[index] = replacement;
-			return textStore.filter(Boolean).join('\n');
-		};
-	})();
-	
-	function applyToSingletonTag(styleElement, index, remove, obj) {
-		var css = remove ? "" : obj.css;
-	
-		if (styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = replaceText(index, css);
-		} else {
-			var cssNode = document.createTextNode(css);
-			var childNodes = styleElement.childNodes;
-			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-			if (childNodes.length) {
-				styleElement.insertBefore(cssNode, childNodes[index]);
-			} else {
-				styleElement.appendChild(cssNode);
-			}
-		}
-	}
-	
-	function applyToTag(styleElement, obj) {
-		var css = obj.css;
-		var media = obj.media;
-		var sourceMap = obj.sourceMap;
-	
-		if(media) {
-			styleElement.setAttribute("media", media)
-		}
-	
-		if(styleElement.styleSheet) {
-			styleElement.styleSheet.cssText = css;
-		} else {
-			while(styleElement.firstChild) {
-				styleElement.removeChild(styleElement.firstChild);
-			}
-			styleElement.appendChild(document.createTextNode(css));
-		}
-	}
-	
-	function updateLink(linkElement, obj) {
-		var css = obj.css;
-		var media = obj.media;
-		var sourceMap = obj.sourceMap;
-	
-		if(sourceMap) {
-			// http://stackoverflow.com/a/26603875
-			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-		}
-	
-		var blob = new Blob([css], { type: "text/css" });
-	
-		var oldSrc = linkElement.href;
-	
-		linkElement.href = URL.createObjectURL(blob);
-	
-		if(oldSrc)
-			URL.revokeObjectURL(oldSrc);
-	}
-
-
-/***/ },
-/* 16 */
-/***/ function(module, exports, __webpack_require__) {
-
 	//this is the main todo file
 	'use strict';
-	
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	var $ = __webpack_require__(17);
+
+	var $ = __webpack_require__(7);
 	var Rx = __webpack_require__(1);
 	var fromEvent = Rx.Observable.fromEvent;
-	
+
 	var actionMain = function actionMain() {
 		_classCallCheck(this, actionMain);
-	
+
 		//All the default actions for this app
 		return {
-	
+
 			changeRoute$: Rx.Observable.fromEvent(window, 'hashchange').map(function (ev) {
 				return ev.newURL.match(/\#[^\#]*$/)[0].replace('#', '');
 			}).startWith(window.location.hash.replace('#', '')),
-	
+
 			insertTodo$: fromEvent($('#new-todo').on('keyup')).filter(function (ev) {
 				var trimmedVal = String(ev.target.value).trim();
 				return ev.keyCode === ENTER_KEY && trimmedVal;
@@ -11378,11 +11055,11 @@
 			})
 		};
 	};
-	
+
 	module.exports = new actionMain();
 
 /***/ },
-/* 17 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -11398,9 +11075,9 @@
 	 *
 	 * Date: 2015-04-28T16:01Z
 	 */
-	
+
 	(function( global, factory ) {
-	
+
 		if ( typeof module === "object" && typeof module.exports === "object" ) {
 			// For CommonJS and CommonJS-like environments where a proper `window`
 			// is present, execute the factory and get jQuery.
@@ -11420,174 +11097,174 @@
 		} else {
 			factory( global );
 		}
-	
+
 	// Pass this if window is not defined yet
 	}(typeof window !== "undefined" ? window : this, function( window, noGlobal ) {
-	
+
 	// Support: Firefox 18+
 	// Can't be in strict mode, several libs including ASP.NET trace
 	// the stack via arguments.caller.callee and Firefox dies if
 	// you try to trace through "use strict" call chains. (#13335)
 	//
-	
+
 	var arr = [];
-	
+
 	var slice = arr.slice;
-	
+
 	var concat = arr.concat;
-	
+
 	var push = arr.push;
-	
+
 	var indexOf = arr.indexOf;
-	
+
 	var class2type = {};
-	
+
 	var toString = class2type.toString;
-	
+
 	var hasOwn = class2type.hasOwnProperty;
-	
+
 	var support = {};
-	
-	
-	
+
+
+
 	var
 		// Use the correct document accordingly with window argument (sandbox)
 		document = window.document,
-	
+
 		version = "2.1.4",
-	
+
 		// Define a local copy of jQuery
 		jQuery = function( selector, context ) {
 			// The jQuery object is actually just the init constructor 'enhanced'
 			// Need init if jQuery is called (just allow error to be thrown if not included)
 			return new jQuery.fn.init( selector, context );
 		},
-	
+
 		// Support: Android<4.1
 		// Make sure we trim BOM and NBSP
 		rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g,
-	
+
 		// Matches dashed string for camelizing
 		rmsPrefix = /^-ms-/,
 		rdashAlpha = /-([\da-z])/gi,
-	
+
 		// Used by jQuery.camelCase as callback to replace()
 		fcamelCase = function( all, letter ) {
 			return letter.toUpperCase();
 		};
-	
+
 	jQuery.fn = jQuery.prototype = {
 		// The current version of jQuery being used
 		jquery: version,
-	
+
 		constructor: jQuery,
-	
+
 		// Start with an empty selector
 		selector: "",
-	
+
 		// The default length of a jQuery object is 0
 		length: 0,
-	
+
 		toArray: function() {
 			return slice.call( this );
 		},
-	
+
 		// Get the Nth element in the matched element set OR
 		// Get the whole matched element set as a clean array
 		get: function( num ) {
 			return num != null ?
-	
+
 				// Return just the one element from the set
 				( num < 0 ? this[ num + this.length ] : this[ num ] ) :
-	
+
 				// Return all the elements in a clean array
 				slice.call( this );
 		},
-	
+
 		// Take an array of elements and push it onto the stack
 		// (returning the new matched element set)
 		pushStack: function( elems ) {
-	
+
 			// Build a new jQuery matched element set
 			var ret = jQuery.merge( this.constructor(), elems );
-	
+
 			// Add the old object onto the stack (as a reference)
 			ret.prevObject = this;
 			ret.context = this.context;
-	
+
 			// Return the newly-formed element set
 			return ret;
 		},
-	
+
 		// Execute a callback for every element in the matched set.
 		// (You can seed the arguments with an array of args, but this is
 		// only used internally.)
 		each: function( callback, args ) {
 			return jQuery.each( this, callback, args );
 		},
-	
+
 		map: function( callback ) {
 			return this.pushStack( jQuery.map(this, function( elem, i ) {
 				return callback.call( elem, i, elem );
 			}));
 		},
-	
+
 		slice: function() {
 			return this.pushStack( slice.apply( this, arguments ) );
 		},
-	
+
 		first: function() {
 			return this.eq( 0 );
 		},
-	
+
 		last: function() {
 			return this.eq( -1 );
 		},
-	
+
 		eq: function( i ) {
 			var len = this.length,
 				j = +i + ( i < 0 ? len : 0 );
 			return this.pushStack( j >= 0 && j < len ? [ this[j] ] : [] );
 		},
-	
+
 		end: function() {
 			return this.prevObject || this.constructor(null);
 		},
-	
+
 		// For internal use only.
 		// Behaves like an Array's method, not like a jQuery method.
 		push: push,
 		sort: arr.sort,
 		splice: arr.splice
 	};
-	
+
 	jQuery.extend = jQuery.fn.extend = function() {
 		var options, name, src, copy, copyIsArray, clone,
 			target = arguments[0] || {},
 			i = 1,
 			length = arguments.length,
 			deep = false;
-	
+
 		// Handle a deep copy situation
 		if ( typeof target === "boolean" ) {
 			deep = target;
-	
+
 			// Skip the boolean and the target
 			target = arguments[ i ] || {};
 			i++;
 		}
-	
+
 		// Handle case when target is a string or something (possible in deep copy)
 		if ( typeof target !== "object" && !jQuery.isFunction(target) ) {
 			target = {};
 		}
-	
+
 		// Extend jQuery itself if only one argument is passed
 		if ( i === length ) {
 			target = this;
 			i--;
 		}
-	
+
 		for ( ; i < length; i++ ) {
 			// Only deal with non-null/undefined values
 			if ( (options = arguments[ i ]) != null ) {
@@ -11595,25 +11272,25 @@
 				for ( name in options ) {
 					src = target[ name ];
 					copy = options[ name ];
-	
+
 					// Prevent never-ending loop
 					if ( target === copy ) {
 						continue;
 					}
-	
+
 					// Recurse if we're merging plain objects or arrays
 					if ( deep && copy && ( jQuery.isPlainObject(copy) || (copyIsArray = jQuery.isArray(copy)) ) ) {
 						if ( copyIsArray ) {
 							copyIsArray = false;
 							clone = src && jQuery.isArray(src) ? src : [];
-	
+
 						} else {
 							clone = src && jQuery.isPlainObject(src) ? src : {};
 						}
-	
+
 						// Never move original objects, clone them
 						target[ name ] = jQuery.extend( deep, clone, copy );
-	
+
 					// Don't bring in undefined values
 					} else if ( copy !== undefined ) {
 						target[ name ] = copy;
@@ -11621,34 +11298,34 @@
 				}
 			}
 		}
-	
+
 		// Return the modified object
 		return target;
 	};
-	
+
 	jQuery.extend({
 		// Unique for each copy of jQuery on the page
 		expando: "jQuery" + ( version + Math.random() ).replace( /\D/g, "" ),
-	
+
 		// Assume jQuery is ready without the ready module
 		isReady: true,
-	
+
 		error: function( msg ) {
 			throw new Error( msg );
 		},
-	
+
 		noop: function() {},
-	
+
 		isFunction: function( obj ) {
 			return jQuery.type(obj) === "function";
 		},
-	
+
 		isArray: Array.isArray,
-	
+
 		isWindow: function( obj ) {
 			return obj != null && obj === obj.window;
 		},
-	
+
 		isNumeric: function( obj ) {
 			// parseFloat NaNs numeric-cast false positives (null|true|false|"")
 			// ...but misinterprets leading-number strings, particularly hex literals ("0x...")
@@ -11656,7 +11333,7 @@
 			// adding 1 corrects loss of precision from parseFloat (#15100)
 			return !jQuery.isArray( obj ) && (obj - parseFloat( obj ) + 1) >= 0;
 		},
-	
+
 		isPlainObject: function( obj ) {
 			// Not plain objects:
 			// - Any object or value whose internal [[Class]] property is not "[object Object]"
@@ -11665,17 +11342,17 @@
 			if ( jQuery.type( obj ) !== "object" || obj.nodeType || jQuery.isWindow( obj ) ) {
 				return false;
 			}
-	
+
 			if ( obj.constructor &&
 					!hasOwn.call( obj.constructor.prototype, "isPrototypeOf" ) ) {
 				return false;
 			}
-	
+
 			// If the function hasn't returned already, we're confident that
 			// |obj| is a plain object, created by {} or constructed with new Object
 			return true;
 		},
-	
+
 		isEmptyObject: function( obj ) {
 			var name;
 			for ( name in obj ) {
@@ -11683,7 +11360,7 @@
 			}
 			return true;
 		},
-	
+
 		type: function( obj ) {
 			if ( obj == null ) {
 				return obj + "";
@@ -11693,14 +11370,14 @@
 				class2type[ toString.call(obj) ] || "object" :
 				typeof obj;
 		},
-	
+
 		// Evaluates a script in a global context
 		globalEval: function( code ) {
 			var script,
 				indirect = eval;
-	
+
 			code = jQuery.trim( code );
-	
+
 			if ( code ) {
 				// If the code includes a valid, prologue position
 				// strict mode pragma, execute code by injecting a
@@ -11716,30 +11393,30 @@
 				}
 			}
 		},
-	
+
 		// Convert dashed to camelCase; used by the css and data modules
 		// Support: IE9-11+
 		// Microsoft forgot to hump their vendor prefix (#9572)
 		camelCase: function( string ) {
 			return string.replace( rmsPrefix, "ms-" ).replace( rdashAlpha, fcamelCase );
 		},
-	
+
 		nodeName: function( elem, name ) {
 			return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
 		},
-	
+
 		// args is for internal usage only
 		each: function( obj, callback, args ) {
 			var value,
 				i = 0,
 				length = obj.length,
 				isArray = isArraylike( obj );
-	
+
 			if ( args ) {
 				if ( isArray ) {
 					for ( ; i < length; i++ ) {
 						value = callback.apply( obj[ i ], args );
-	
+
 						if ( value === false ) {
 							break;
 						}
@@ -11747,19 +11424,19 @@
 				} else {
 					for ( i in obj ) {
 						value = callback.apply( obj[ i ], args );
-	
+
 						if ( value === false ) {
 							break;
 						}
 					}
 				}
-	
+
 			// A special, fast, case for the most common use of each
 			} else {
 				if ( isArray ) {
 					for ( ; i < length; i++ ) {
 						value = callback.call( obj[ i ], i, obj[ i ] );
-	
+
 						if ( value === false ) {
 							break;
 						}
@@ -11767,28 +11444,28 @@
 				} else {
 					for ( i in obj ) {
 						value = callback.call( obj[ i ], i, obj[ i ] );
-	
+
 						if ( value === false ) {
 							break;
 						}
 					}
 				}
 			}
-	
+
 			return obj;
 		},
-	
+
 		// Support: Android<4.1
 		trim: function( text ) {
 			return text == null ?
 				"" :
 				( text + "" ).replace( rtrim, "" );
 		},
-	
+
 		// results is for internal usage only
 		makeArray: function( arr, results ) {
 			var ret = results || [];
-	
+
 			if ( arr != null ) {
 				if ( isArraylike( Object(arr) ) ) {
 					jQuery.merge( ret,
@@ -11799,35 +11476,35 @@
 					push.call( ret, arr );
 				}
 			}
-	
+
 			return ret;
 		},
-	
+
 		inArray: function( elem, arr, i ) {
 			return arr == null ? -1 : indexOf.call( arr, elem, i );
 		},
-	
+
 		merge: function( first, second ) {
 			var len = +second.length,
 				j = 0,
 				i = first.length;
-	
+
 			for ( ; j < len; j++ ) {
 				first[ i++ ] = second[ j ];
 			}
-	
+
 			first.length = i;
-	
+
 			return first;
 		},
-	
+
 		grep: function( elems, callback, invert ) {
 			var callbackInverse,
 				matches = [],
 				i = 0,
 				length = elems.length,
 				callbackExpect = !invert;
-	
+
 			// Go through the array, only saving the items
 			// that pass the validator function
 			for ( ; i < length; i++ ) {
@@ -11836,10 +11513,10 @@
 					matches.push( elems[ i ] );
 				}
 			}
-	
+
 			return matches;
 		},
-	
+
 		// arg is for internal usage only
 		map: function( elems, callback, arg ) {
 			var value,
@@ -11847,93 +11524,93 @@
 				length = elems.length,
 				isArray = isArraylike( elems ),
 				ret = [];
-	
+
 			// Go through the array, translating each of the items to their new values
 			if ( isArray ) {
 				for ( ; i < length; i++ ) {
 					value = callback( elems[ i ], i, arg );
-	
+
 					if ( value != null ) {
 						ret.push( value );
 					}
 				}
-	
+
 			// Go through every key on the object,
 			} else {
 				for ( i in elems ) {
 					value = callback( elems[ i ], i, arg );
-	
+
 					if ( value != null ) {
 						ret.push( value );
 					}
 				}
 			}
-	
+
 			// Flatten any nested arrays
 			return concat.apply( [], ret );
 		},
-	
+
 		// A global GUID counter for objects
 		guid: 1,
-	
+
 		// Bind a function to a context, optionally partially applying any
 		// arguments.
 		proxy: function( fn, context ) {
 			var tmp, args, proxy;
-	
+
 			if ( typeof context === "string" ) {
 				tmp = fn[ context ];
 				context = fn;
 				fn = tmp;
 			}
-	
+
 			// Quick check to determine if target is callable, in the spec
 			// this throws a TypeError, but we will just return undefined.
 			if ( !jQuery.isFunction( fn ) ) {
 				return undefined;
 			}
-	
+
 			// Simulated bind
 			args = slice.call( arguments, 2 );
 			proxy = function() {
 				return fn.apply( context || this, args.concat( slice.call( arguments ) ) );
 			};
-	
+
 			// Set the guid of unique handler to the same of original handler, so it can be removed
 			proxy.guid = fn.guid = fn.guid || jQuery.guid++;
-	
+
 			return proxy;
 		},
-	
+
 		now: Date.now,
-	
+
 		// jQuery.support is not used in Core but other projects attach their
 		// properties to it so it needs to exist.
 		support: support
 	});
-	
+
 	// Populate the class2type map
 	jQuery.each("Boolean Number String Function Array Date RegExp Object Error".split(" "), function(i, name) {
 		class2type[ "[object " + name + "]" ] = name.toLowerCase();
 	});
-	
+
 	function isArraylike( obj ) {
-	
+
 		// Support: iOS 8.2 (not reproducible in simulator)
 		// `in` check used to prevent JIT error (gh-2145)
 		// hasOwn isn't used here due to false negatives
 		// regarding Nodelist length in IE
 		var length = "length" in obj && obj.length,
 			type = jQuery.type( obj );
-	
+
 		if ( type === "function" || jQuery.isWindow( obj ) ) {
 			return false;
 		}
-	
+
 		if ( obj.nodeType === 1 && length ) {
 			return true;
 		}
-	
+
 		return type === "array" || length === 0 ||
 			typeof length === "number" && length > 0 && ( length - 1 ) in obj;
 	}
@@ -11949,7 +11626,7 @@
 	 * Date: 2014-12-16
 	 */
 	(function( window ) {
-	
+
 	var i,
 		support,
 		Expr,
@@ -11961,7 +11638,7 @@
 		outermostContext,
 		sortInput,
 		hasDuplicate,
-	
+
 		// Local document vars
 		setDocument,
 		document,
@@ -11971,7 +11648,7 @@
 		rbuggyMatches,
 		matches,
 		contains,
-	
+
 		// Instance-specific data
 		expando = "sizzle" + 1 * new Date(),
 		preferredDoc = window.document,
@@ -11986,10 +11663,10 @@
 			}
 			return 0;
 		},
-	
+
 		// General-purpose constants
 		MAX_NEGATIVE = 1 << 31,
-	
+
 		// Instance methods
 		hasOwn = ({}).hasOwnProperty,
 		arr = [],
@@ -12009,21 +11686,21 @@
 			}
 			return -1;
 		},
-	
+
 		booleans = "checked|selected|async|autofocus|autoplay|controls|defer|disabled|hidden|ismap|loop|multiple|open|readonly|required|scoped",
-	
+
 		// Regular expressions
-	
+
 		// Whitespace characters http://www.w3.org/TR/css3-selectors/#whitespace
 		whitespace = "[\\x20\\t\\r\\n\\f]",
 		// http://www.w3.org/TR/css3-syntax/#characters
 		characterEncoding = "(?:\\\\.|[\\w-]|[^\\x00-\\xa0])+",
-	
+
 		// Loosely modeled on CSS identifier characters
 		// An unquoted value should be a CSS identifier http://www.w3.org/TR/css3-selectors/#attribute-selectors
 		// Proper syntax: http://www.w3.org/TR/CSS21/syndata.html#value-def-identifier
 		identifier = characterEncoding.replace( "w", "w#" ),
-	
+
 		// Attribute selectors: http://www.w3.org/TR/selectors/#attribute-selectors
 		attributes = "\\[" + whitespace + "*(" + characterEncoding + ")(?:" + whitespace +
 			// Operator (capture 2)
@@ -12031,7 +11708,7 @@
 			// "Attribute values must be CSS identifiers [capture 5] or strings [capture 3 or capture 4]"
 			"*(?:'((?:\\\\.|[^\\\\'])*)'|\"((?:\\\\.|[^\\\\\"])*)\"|(" + identifier + "))|)" + whitespace +
 			"*\\]",
-	
+
 		pseudos = ":(" + characterEncoding + ")(?:\\((" +
 			// To reduce the number of selectors needing tokenize in the preFilter, prefer arguments:
 			// 1. quoted (capture 3; capture 4 or capture 5)
@@ -12041,19 +11718,19 @@
 			// 3. anything else (capture 2)
 			".*" +
 			")\\)|)",
-	
+
 		// Leading and non-escaped trailing whitespace, capturing some non-whitespace characters preceding the latter
 		rwhitespace = new RegExp( whitespace + "+", "g" ),
 		rtrim = new RegExp( "^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$", "g" ),
-	
+
 		rcomma = new RegExp( "^" + whitespace + "*," + whitespace + "*" ),
 		rcombinators = new RegExp( "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace + "*" ),
-	
+
 		rattributeQuotes = new RegExp( "=" + whitespace + "*([^\\]'\"]*?)" + whitespace + "*\\]", "g" ),
-	
+
 		rpseudo = new RegExp( pseudos ),
 		ridentifier = new RegExp( "^" + identifier + "$" ),
-	
+
 		matchExpr = {
 			"ID": new RegExp( "^#(" + characterEncoding + ")" ),
 			"CLASS": new RegExp( "^\\.(" + characterEncoding + ")" ),
@@ -12069,18 +11746,18 @@
 			"needsContext": new RegExp( "^" + whitespace + "*[>+~]|:(even|odd|eq|gt|lt|nth|first|last)(?:\\(" +
 				whitespace + "*((?:-\\d)?\\d*)" + whitespace + "*\\)|)(?=[^-]|$)", "i" )
 		},
-	
+
 		rinputs = /^(?:input|select|textarea|button)$/i,
 		rheader = /^h\d$/i,
-	
+
 		rnative = /^[^{]+\{\s*\[native \w/,
-	
+
 		// Easily-parseable/retrievable ID or TAG or CLASS selectors
 		rquickExpr = /^(?:#([\w-]+)|(\w+)|\.([\w-]+))$/,
-	
+
 		rsibling = /[+~]/,
 		rescape = /'|\\/g,
-	
+
 		// CSS escapes http://www.w3.org/TR/CSS21/syndata.html#escaped-characters
 		runescape = new RegExp( "\\\\([\\da-f]{1,6}" + whitespace + "?|(" + whitespace + ")|.)", "ig" ),
 		funescape = function( _, escaped, escapedWhitespace ) {
@@ -12096,7 +11773,7 @@
 					// Supplemental Plane codepoint (surrogate pair)
 					String.fromCharCode( high >> 10 | 0xD800, high & 0x3FF | 0xDC00 );
 		},
-	
+
 		// Used for iframes
 		// See setDocument()
 		// Removing the function wrapper causes a "Permission Denied"
@@ -12104,7 +11781,7 @@
 		unloadHandler = function() {
 			setDocument();
 		};
-	
+
 	// Optimize for push.apply( _, NodeList )
 	try {
 		push.apply(
@@ -12116,12 +11793,12 @@
 		arr[ preferredDoc.childNodes.length ].nodeType;
 	} catch ( e ) {
 		push = { apply: arr.length ?
-	
+
 			// Leverage slice if possible
 			function( target, els ) {
 				push_native.apply( target, slice.call(els) );
 			} :
-	
+
 			// Support: IE<9
 			// Otherwise append directly
 			function( target, els ) {
@@ -12133,28 +11810,28 @@
 			}
 		};
 	}
-	
+
 	function Sizzle( selector, context, results, seed ) {
 		var match, elem, m, nodeType,
 			// QSA vars
 			i, groups, old, nid, newContext, newSelector;
-	
+
 		if ( ( context ? context.ownerDocument || context : preferredDoc ) !== document ) {
 			setDocument( context );
 		}
-	
+
 		context = context || document;
 		results = results || [];
 		nodeType = context.nodeType;
-	
+
 		if ( typeof selector !== "string" || !selector ||
 			nodeType !== 1 && nodeType !== 9 && nodeType !== 11 ) {
-	
+
 			return results;
 		}
-	
+
 		if ( !seed && documentIsHTML ) {
-	
+
 			// Try to shortcut find operations when possible (e.g., not under DocumentFragment)
 			if ( nodeType !== 11 && (match = rquickExpr.exec( selector )) ) {
 				// Speed-up: Sizzle("#ID")
@@ -12181,39 +11858,39 @@
 							return results;
 						}
 					}
-	
+
 				// Speed-up: Sizzle("TAG")
 				} else if ( match[2] ) {
 					push.apply( results, context.getElementsByTagName( selector ) );
 					return results;
-	
+
 				// Speed-up: Sizzle(".CLASS")
 				} else if ( (m = match[3]) && support.getElementsByClassName ) {
 					push.apply( results, context.getElementsByClassName( m ) );
 					return results;
 				}
 			}
-	
+
 			// QSA path
 			if ( support.qsa && (!rbuggyQSA || !rbuggyQSA.test( selector )) ) {
 				nid = old = expando;
 				newContext = context;
 				newSelector = nodeType !== 1 && selector;
-	
+
 				// qSA works strangely on Element-rooted queries
 				// We can work around this by specifying an extra ID on the root
 				// and working up from there (Thanks to Andrew Dupont for the technique)
 				// IE 8 doesn't work on object elements
 				if ( nodeType === 1 && context.nodeName.toLowerCase() !== "object" ) {
 					groups = tokenize( selector );
-	
+
 					if ( (old = context.getAttribute("id")) ) {
 						nid = old.replace( rescape, "\\$&" );
 					} else {
 						context.setAttribute( "id", nid );
 					}
 					nid = "[id='" + nid + "'] ";
-	
+
 					i = groups.length;
 					while ( i-- ) {
 						groups[i] = nid + toSelector( groups[i] );
@@ -12221,7 +11898,7 @@
 					newContext = rsibling.test( selector ) && testContext( context.parentNode ) || context;
 					newSelector = groups.join(",");
 				}
-	
+
 				if ( newSelector ) {
 					try {
 						push.apply( results,
@@ -12237,11 +11914,11 @@
 				}
 			}
 		}
-	
+
 		// All others
 		return select( selector.replace( rtrim, "$1" ), context, results, seed );
 	}
-	
+
 	/**
 	 * Create key-value caches of limited size
 	 * @returns {Function(string, Object)} Returns the Object data after storing it on itself with
@@ -12250,7 +11927,7 @@
 	 */
 	function createCache() {
 		var keys = [];
-	
+
 		function cache( key, value ) {
 			// Use (key + " ") to avoid collision with native prototype properties (see Issue #157)
 			if ( keys.push( key + " " ) > Expr.cacheLength ) {
@@ -12261,7 +11938,7 @@
 		}
 		return cache;
 	}
-	
+
 	/**
 	 * Mark a function for special use by Sizzle
 	 * @param {Function} fn The function to mark
@@ -12270,14 +11947,14 @@
 		fn[ expando ] = true;
 		return fn;
 	}
-	
+
 	/**
 	 * Support testing using an element
 	 * @param {Function} fn Passed the created div and expects a boolean result
 	 */
 	function assert( fn ) {
 		var div = document.createElement("div");
-	
+
 		try {
 			return !!fn( div );
 		} catch (e) {
@@ -12291,7 +11968,7 @@
 			div = null;
 		}
 	}
-	
+
 	/**
 	 * Adds the same handler for all of the specified attrs
 	 * @param {String} attrs Pipe-separated list of attributes
@@ -12300,12 +11977,12 @@
 	function addHandle( attrs, handler ) {
 		var arr = attrs.split("|"),
 			i = attrs.length;
-	
+
 		while ( i-- ) {
 			Expr.attrHandle[ arr[i] ] = handler;
 		}
 	}
-	
+
 	/**
 	 * Checks document order of two siblings
 	 * @param {Element} a
@@ -12317,12 +11994,12 @@
 			diff = cur && a.nodeType === 1 && b.nodeType === 1 &&
 				( ~b.sourceIndex || MAX_NEGATIVE ) -
 				( ~a.sourceIndex || MAX_NEGATIVE );
-	
+
 		// Use IE sourceIndex if available on both nodes
 		if ( diff ) {
 			return diff;
 		}
-	
+
 		// Check if b follows a
 		if ( cur ) {
 			while ( (cur = cur.nextSibling) ) {
@@ -12331,10 +12008,10 @@
 				}
 			}
 		}
-	
+
 		return a ? 1 : -1;
 	}
-	
+
 	/**
 	 * Returns a function to use in pseudos for input types
 	 * @param {String} type
@@ -12345,7 +12022,7 @@
 			return name === "input" && elem.type === type;
 		};
 	}
-	
+
 	/**
 	 * Returns a function to use in pseudos for buttons
 	 * @param {String} type
@@ -12356,7 +12033,7 @@
 			return (name === "input" || name === "button") && elem.type === type;
 		};
 	}
-	
+
 	/**
 	 * Returns a function to use in pseudos for positionals
 	 * @param {Function} fn
@@ -12368,7 +12045,7 @@
 				var j,
 					matchIndexes = fn( [], seed.length, argument ),
 					i = matchIndexes.length;
-	
+
 				// Match elements found at the specified indexes
 				while ( i-- ) {
 					if ( seed[ (j = matchIndexes[i]) ] ) {
@@ -12378,7 +12055,7 @@
 			});
 		});
 	}
-	
+
 	/**
 	 * Checks a node for validity as a Sizzle context
 	 * @param {Element|Object=} context
@@ -12387,10 +12064,10 @@
 	function testContext( context ) {
 		return context && typeof context.getElementsByTagName !== "undefined" && context;
 	}
-	
+
 	// Expose support vars for convenience
 	support = Sizzle.support = {};
-	
+
 	/**
 	 * Detects XML nodes
 	 * @param {Element|Object} elem An element or a document
@@ -12402,7 +12079,7 @@
 		var documentElement = elem && (elem.ownerDocument || elem).documentElement;
 		return documentElement ? documentElement.nodeName !== "HTML" : false;
 	};
-	
+
 	/**
 	 * Sets document-related variables once based on the current document
 	 * @param {Element|Object} [doc] An element or document object to use to set the document
@@ -12411,17 +12088,17 @@
 	setDocument = Sizzle.setDocument = function( node ) {
 		var hasCompare, parent,
 			doc = node ? node.ownerDocument || node : preferredDoc;
-	
+
 		// If no document and documentElement is available, return
 		if ( doc === document || doc.nodeType !== 9 || !doc.documentElement ) {
 			return document;
 		}
-	
+
 		// Set our document
 		document = doc;
 		docElem = doc.documentElement;
 		parent = doc.defaultView;
-	
+
 		// Support: IE>8
 		// If iframe document is assigned to "document" variable and if iframe has been reloaded,
 		// IE will throw "permission denied" error when accessing "document" variable, see jQuery #13936
@@ -12434,14 +12111,14 @@
 				parent.attachEvent( "onunload", unloadHandler );
 			}
 		}
-	
+
 		/* Support tests
 		---------------------------------------------------------------------- */
 		documentIsHTML = !isXML( doc );
-	
+
 		/* Attributes
 		---------------------------------------------------------------------- */
-	
+
 		// Support: IE<8
 		// Verify that getAttribute really returns attributes and not properties
 		// (excepting IE8 booleans)
@@ -12449,19 +12126,19 @@
 			div.className = "i";
 			return !div.getAttribute("className");
 		});
-	
+
 		/* getElement(s)By*
 		---------------------------------------------------------------------- */
-	
+
 		// Check if getElementsByTagName("*") returns only elements
 		support.getElementsByTagName = assert(function( div ) {
 			div.appendChild( doc.createComment("") );
 			return !div.getElementsByTagName("*").length;
 		});
-	
+
 		// Support: IE<9
 		support.getElementsByClassName = rnative.test( doc.getElementsByClassName );
-	
+
 		// Support: IE<10
 		// Check if getElementById returns elements by name
 		// The broken getElementById methods don't pick up programatically-set names,
@@ -12470,7 +12147,7 @@
 			docElem.appendChild( div ).id = expando;
 			return !doc.getElementsByName || !doc.getElementsByName( expando ).length;
 		});
-	
+
 		// ID find and filter
 		if ( support.getById ) {
 			Expr.find["ID"] = function( id, context ) {
@@ -12491,7 +12168,7 @@
 			// Support: IE6/7
 			// getElementById is not reliable as a find shortcut
 			delete Expr.find["ID"];
-	
+
 			Expr.filter["ID"] =  function( id ) {
 				var attrId = id.replace( runescape, funescape );
 				return function( elem ) {
@@ -12500,26 +12177,26 @@
 				};
 			};
 		}
-	
+
 		// Tag
 		Expr.find["TAG"] = support.getElementsByTagName ?
 			function( tag, context ) {
 				if ( typeof context.getElementsByTagName !== "undefined" ) {
 					return context.getElementsByTagName( tag );
-	
+
 				// DocumentFragment nodes don't have gEBTN
 				} else if ( support.qsa ) {
 					return context.querySelectorAll( tag );
 				}
 			} :
-	
+
 			function( tag, context ) {
 				var elem,
 					tmp = [],
 					i = 0,
 					// By happy coincidence, a (broken) gEBTN appears on DocumentFragment nodes too
 					results = context.getElementsByTagName( tag );
-	
+
 				// Filter out possible comments
 				if ( tag === "*" ) {
 					while ( (elem = results[i++]) ) {
@@ -12527,34 +12204,34 @@
 							tmp.push( elem );
 						}
 					}
-	
+
 					return tmp;
 				}
 				return results;
 			};
-	
+
 		// Class
 		Expr.find["CLASS"] = support.getElementsByClassName && function( className, context ) {
 			if ( documentIsHTML ) {
 				return context.getElementsByClassName( className );
 			}
 		};
-	
+
 		/* QSA/matchesSelector
 		---------------------------------------------------------------------- */
-	
+
 		// QSA and matchesSelector support
-	
+
 		// matchesSelector(:active) reports false when true (IE9/Opera 11.5)
 		rbuggyMatches = [];
-	
+
 		// qSa(:focus) reports false when true (Chrome 21)
 		// We allow this because of a bug in IE8/9 that throws an error
 		// whenever `document.activeElement` is accessed on an iframe
 		// So, we allow :focus to pass through QSA all the time to avoid the IE error
 		// See http://bugs.jquery.com/ticket/13378
 		rbuggyQSA = [];
-	
+
 		if ( (support.qsa = rnative.test( doc.querySelectorAll )) ) {
 			// Build QSA regex
 			// Regex strategy adopted from Diego Perini
@@ -12567,7 +12244,7 @@
 				docElem.appendChild( div ).innerHTML = "<a id='" + expando + "'></a>" +
 					"<select id='" + expando + "-\f]' msallowcapture=''>" +
 					"<option selected=''></option></select>";
-	
+
 				// Support: IE8, Opera 11-12.16
 				// Nothing should be selected when empty strings follow ^= or $= or *=
 				// The test attribute must be unknown in Opera but "safe" for WinRT
@@ -12575,25 +12252,25 @@
 				if ( div.querySelectorAll("[msallowcapture^='']").length ) {
 					rbuggyQSA.push( "[*^$]=" + whitespace + "*(?:''|\"\")" );
 				}
-	
+
 				// Support: IE8
 				// Boolean attributes and "value" are not treated correctly
 				if ( !div.querySelectorAll("[selected]").length ) {
 					rbuggyQSA.push( "\\[" + whitespace + "*(?:value|" + booleans + ")" );
 				}
-	
+
 				// Support: Chrome<29, Android<4.2+, Safari<7.0+, iOS<7.0+, PhantomJS<1.9.7+
 				if ( !div.querySelectorAll( "[id~=" + expando + "-]" ).length ) {
 					rbuggyQSA.push("~=");
 				}
-	
+
 				// Webkit/Opera - :checked should return selected option elements
 				// http://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked
 				// IE8 throws error here and will not see later tests
 				if ( !div.querySelectorAll(":checked").length ) {
 					rbuggyQSA.push(":checked");
 				}
-	
+
 				// Support: Safari 8+, iOS 8+
 				// https://bugs.webkit.org/show_bug.cgi?id=136851
 				// In-page `selector#id sibing-combinator selector` fails
@@ -12601,57 +12278,57 @@
 					rbuggyQSA.push(".#.+[+~]");
 				}
 			});
-	
+
 			assert(function( div ) {
 				// Support: Windows 8 Native Apps
 				// The type and name attributes are restricted during .innerHTML assignment
 				var input = doc.createElement("input");
 				input.setAttribute( "type", "hidden" );
 				div.appendChild( input ).setAttribute( "name", "D" );
-	
+
 				// Support: IE8
 				// Enforce case-sensitivity of name attribute
 				if ( div.querySelectorAll("[name=d]").length ) {
 					rbuggyQSA.push( "name" + whitespace + "*[*^$|!~]?=" );
 				}
-	
+
 				// FF 3.5 - :enabled/:disabled and hidden elements (hidden elements are still enabled)
 				// IE8 throws error here and will not see later tests
 				if ( !div.querySelectorAll(":enabled").length ) {
 					rbuggyQSA.push( ":enabled", ":disabled" );
 				}
-	
+
 				// Opera 10-11 does not throw on post-comma invalid pseudos
 				div.querySelectorAll("*,:x");
 				rbuggyQSA.push(",.*:");
 			});
 		}
-	
+
 		if ( (support.matchesSelector = rnative.test( (matches = docElem.matches ||
 			docElem.webkitMatchesSelector ||
 			docElem.mozMatchesSelector ||
 			docElem.oMatchesSelector ||
 			docElem.msMatchesSelector) )) ) {
-	
+
 			assert(function( div ) {
 				// Check to see if it's possible to do matchesSelector
 				// on a disconnected node (IE 9)
 				support.disconnectedMatch = matches.call( div, "div" );
-	
+
 				// This should fail with an exception
 				// Gecko does not error, returns false instead
 				matches.call( div, "[s!='']:x" );
 				rbuggyMatches.push( "!=", pseudos );
 			});
 		}
-	
+
 		rbuggyQSA = rbuggyQSA.length && new RegExp( rbuggyQSA.join("|") );
 		rbuggyMatches = rbuggyMatches.length && new RegExp( rbuggyMatches.join("|") );
-	
+
 		/* Contains
 		---------------------------------------------------------------------- */
 		hasCompare = rnative.test( docElem.compareDocumentPosition );
-	
+
 		// Element contains another
 		// Purposefully does not implement inclusive descendent
 		// As in, an element does not contain itself
@@ -12675,37 +12352,37 @@
 				}
 				return false;
 			};
-	
+
 		/* Sorting
 		---------------------------------------------------------------------- */
-	
+
 		// Document order sorting
 		sortOrder = hasCompare ?
 		function( a, b ) {
-	
+
 			// Flag for duplicate removal
 			if ( a === b ) {
 				hasDuplicate = true;
 				return 0;
 			}
-	
+
 			// Sort on method existence if only one input has compareDocumentPosition
 			var compare = !a.compareDocumentPosition - !b.compareDocumentPosition;
 			if ( compare ) {
 				return compare;
 			}
-	
+
 			// Calculate position if both inputs belong to the same document
 			compare = ( a.ownerDocument || a ) === ( b.ownerDocument || b ) ?
 				a.compareDocumentPosition( b ) :
-	
+
 				// Otherwise we know they are disconnected
 				1;
-	
+
 			// Disconnected nodes
 			if ( compare & 1 ||
 				(!support.sortDetached && b.compareDocumentPosition( a ) === compare) ) {
-	
+
 				// Choose the first element that is related to our preferred document
 				if ( a === doc || a.ownerDocument === preferredDoc && contains(preferredDoc, a) ) {
 					return -1;
@@ -12713,13 +12390,13 @@
 				if ( b === doc || b.ownerDocument === preferredDoc && contains(preferredDoc, b) ) {
 					return 1;
 				}
-	
+
 				// Maintain original order
 				return sortInput ?
 					( indexOf( sortInput, a ) - indexOf( sortInput, b ) ) :
 					0;
 			}
-	
+
 			return compare & 4 ? -1 : 1;
 		} :
 		function( a, b ) {
@@ -12728,14 +12405,14 @@
 				hasDuplicate = true;
 				return 0;
 			}
-	
+
 			var cur,
 				i = 0,
 				aup = a.parentNode,
 				bup = b.parentNode,
 				ap = [ a ],
 				bp = [ b ];
-	
+
 			// Parentless nodes are either documents or disconnected
 			if ( !aup || !bup ) {
 				return a === doc ? -1 :
@@ -12745,12 +12422,12 @@
 					sortInput ?
 					( indexOf( sortInput, a ) - indexOf( sortInput, b ) ) :
 					0;
-	
+
 			// If the nodes are siblings, we can do a quick check
 			} else if ( aup === bup ) {
 				return siblingCheck( a, b );
 			}
-	
+
 			// Otherwise we need full lists of their ancestors for comparison
 			cur = a;
 			while ( (cur = cur.parentNode) ) {
@@ -12760,45 +12437,45 @@
 			while ( (cur = cur.parentNode) ) {
 				bp.unshift( cur );
 			}
-	
+
 			// Walk down the tree looking for a discrepancy
 			while ( ap[i] === bp[i] ) {
 				i++;
 			}
-	
+
 			return i ?
 				// Do a sibling check if the nodes have a common ancestor
 				siblingCheck( ap[i], bp[i] ) :
-	
+
 				// Otherwise nodes in our document sort first
 				ap[i] === preferredDoc ? -1 :
 				bp[i] === preferredDoc ? 1 :
 				0;
 		};
-	
+
 		return doc;
 	};
-	
+
 	Sizzle.matches = function( expr, elements ) {
 		return Sizzle( expr, null, null, elements );
 	};
-	
+
 	Sizzle.matchesSelector = function( elem, expr ) {
 		// Set document vars if needed
 		if ( ( elem.ownerDocument || elem ) !== document ) {
 			setDocument( elem );
 		}
-	
+
 		// Make sure that attribute selectors are quoted
 		expr = expr.replace( rattributeQuotes, "='$1']" );
-	
+
 		if ( support.matchesSelector && documentIsHTML &&
 			( !rbuggyMatches || !rbuggyMatches.test( expr ) ) &&
 			( !rbuggyQSA     || !rbuggyQSA.test( expr ) ) ) {
-	
+
 			try {
 				var ret = matches.call( elem, expr );
-	
+
 				// IE 9's matchesSelector returns false on disconnected nodes
 				if ( ret || support.disconnectedMatch ||
 						// As well, disconnected nodes are said to be in a document
@@ -12808,10 +12485,10 @@
 				}
 			} catch (e) {}
 		}
-	
+
 		return Sizzle( expr, document, null, [ elem ] ).length > 0;
 	};
-	
+
 	Sizzle.contains = function( context, elem ) {
 		// Set document vars if needed
 		if ( ( context.ownerDocument || context ) !== document ) {
@@ -12819,19 +12496,19 @@
 		}
 		return contains( context, elem );
 	};
-	
+
 	Sizzle.attr = function( elem, name ) {
 		// Set document vars if needed
 		if ( ( elem.ownerDocument || elem ) !== document ) {
 			setDocument( elem );
 		}
-	
+
 		var fn = Expr.attrHandle[ name.toLowerCase() ],
 			// Don't get fooled by Object.prototype properties (jQuery #13807)
 			val = fn && hasOwn.call( Expr.attrHandle, name.toLowerCase() ) ?
 				fn( elem, name, !documentIsHTML ) :
 				undefined;
-	
+
 		return val !== undefined ?
 			val :
 			support.attributes || !documentIsHTML ?
@@ -12840,11 +12517,11 @@
 					val.value :
 					null;
 	};
-	
+
 	Sizzle.error = function( msg ) {
 		throw new Error( "Syntax error, unrecognized expression: " + msg );
 	};
-	
+
 	/**
 	 * Document sorting and removing duplicates
 	 * @param {ArrayLike} results
@@ -12854,12 +12531,12 @@
 			duplicates = [],
 			j = 0,
 			i = 0;
-	
+
 		// Unless we *know* we can detect duplicates, assume their presence
 		hasDuplicate = !support.detectDuplicates;
 		sortInput = !support.sortStable && results.slice( 0 );
 		results.sort( sortOrder );
-	
+
 		if ( hasDuplicate ) {
 			while ( (elem = results[i++]) ) {
 				if ( elem === results[ i ] ) {
@@ -12870,14 +12547,14 @@
 				results.splice( duplicates[ j ], 1 );
 			}
 		}
-	
+
 		// Clear input after sorting to release objects
 		// See https://github.com/jquery/sizzle/pull/225
 		sortInput = null;
-	
+
 		return results;
 	};
-	
+
 	/**
 	 * Utility function for retrieving the text value of an array of DOM nodes
 	 * @param {Array|Element} elem
@@ -12887,7 +12564,7 @@
 			ret = "",
 			i = 0,
 			nodeType = elem.nodeType;
-	
+
 		if ( !nodeType ) {
 			// If no nodeType, this is expected to be an array
 			while ( (node = elem[i++]) ) {
@@ -12909,44 +12586,44 @@
 			return elem.nodeValue;
 		}
 		// Do not include comment or processing instruction nodes
-	
+
 		return ret;
 	};
-	
+
 	Expr = Sizzle.selectors = {
-	
+
 		// Can be adjusted by the user
 		cacheLength: 50,
-	
+
 		createPseudo: markFunction,
-	
+
 		match: matchExpr,
-	
+
 		attrHandle: {},
-	
+
 		find: {},
-	
+
 		relative: {
 			">": { dir: "parentNode", first: true },
 			" ": { dir: "parentNode" },
 			"+": { dir: "previousSibling", first: true },
 			"~": { dir: "previousSibling" }
 		},
-	
+
 		preFilter: {
 			"ATTR": function( match ) {
 				match[1] = match[1].replace( runescape, funescape );
-	
+
 				// Move the given value to match[3] whether quoted or unquoted
 				match[3] = ( match[3] || match[4] || match[5] || "" ).replace( runescape, funescape );
-	
+
 				if ( match[2] === "~=" ) {
 					match[3] = " " + match[3] + " ";
 				}
-	
+
 				return match.slice( 0, 4 );
 			},
-	
+
 			"CHILD": function( match ) {
 				/* matches from matchExpr["CHILD"]
 					1 type (only|nth|...)
@@ -12959,57 +12636,57 @@
 					8 y of y-component
 				*/
 				match[1] = match[1].toLowerCase();
-	
+
 				if ( match[1].slice( 0, 3 ) === "nth" ) {
 					// nth-* requires argument
 					if ( !match[3] ) {
 						Sizzle.error( match[0] );
 					}
-	
+
 					// numeric x and y parameters for Expr.filter.CHILD
 					// remember that false/true cast respectively to 0/1
 					match[4] = +( match[4] ? match[5] + (match[6] || 1) : 2 * ( match[3] === "even" || match[3] === "odd" ) );
 					match[5] = +( ( match[7] + match[8] ) || match[3] === "odd" );
-	
+
 				// other types prohibit arguments
 				} else if ( match[3] ) {
 					Sizzle.error( match[0] );
 				}
-	
+
 				return match;
 			},
-	
+
 			"PSEUDO": function( match ) {
 				var excess,
 					unquoted = !match[6] && match[2];
-	
+
 				if ( matchExpr["CHILD"].test( match[0] ) ) {
 					return null;
 				}
-	
+
 				// Accept quoted arguments as-is
 				if ( match[3] ) {
 					match[2] = match[4] || match[5] || "";
-	
+
 				// Strip excess characters from unquoted arguments
 				} else if ( unquoted && rpseudo.test( unquoted ) &&
 					// Get excess from tokenize (recursively)
 					(excess = tokenize( unquoted, true )) &&
 					// advance to the next closing parenthesis
 					(excess = unquoted.indexOf( ")", unquoted.length - excess ) - unquoted.length) ) {
-	
+
 					// excess is a negative index
 					match[0] = match[0].slice( 0, excess );
 					match[2] = unquoted.slice( 0, excess );
 				}
-	
+
 				// Return only captures needed by the pseudo filter method (type and argument)
 				return match.slice( 0, 3 );
 			}
 		},
-	
+
 		filter: {
-	
+
 			"TAG": function( nodeNameSelector ) {
 				var nodeName = nodeNameSelector.replace( runescape, funescape ).toLowerCase();
 				return nodeNameSelector === "*" ?
@@ -13018,30 +12695,30 @@
 						return elem.nodeName && elem.nodeName.toLowerCase() === nodeName;
 					};
 			},
-	
+
 			"CLASS": function( className ) {
 				var pattern = classCache[ className + " " ];
-	
+
 				return pattern ||
 					(pattern = new RegExp( "(^|" + whitespace + ")" + className + "(" + whitespace + "|$)" )) &&
 					classCache( className, function( elem ) {
 						return pattern.test( typeof elem.className === "string" && elem.className || typeof elem.getAttribute !== "undefined" && elem.getAttribute("class") || "" );
 					});
 			},
-	
+
 			"ATTR": function( name, operator, check ) {
 				return function( elem ) {
 					var result = Sizzle.attr( elem, name );
-	
+
 					if ( result == null ) {
 						return operator === "!=";
 					}
 					if ( !operator ) {
 						return true;
 					}
-	
+
 					result += "";
-	
+
 					return operator === "=" ? result === check :
 						operator === "!=" ? result !== check :
 						operator === "^=" ? check && result.indexOf( check ) === 0 :
@@ -13052,28 +12729,28 @@
 						false;
 				};
 			},
-	
+
 			"CHILD": function( type, what, argument, first, last ) {
 				var simple = type.slice( 0, 3 ) !== "nth",
 					forward = type.slice( -4 ) !== "last",
 					ofType = what === "of-type";
-	
+
 				return first === 1 && last === 0 ?
-	
+
 					// Shortcut for :nth-*(n)
 					function( elem ) {
 						return !!elem.parentNode;
 					} :
-	
+
 					function( elem, context, xml ) {
 						var cache, outerCache, node, diff, nodeIndex, start,
 							dir = simple !== forward ? "nextSibling" : "previousSibling",
 							parent = elem.parentNode,
 							name = ofType && elem.nodeName.toLowerCase(),
 							useCache = !xml && !ofType;
-	
+
 						if ( parent ) {
-	
+
 							// :(first|last|only)-(child|of-type)
 							if ( simple ) {
 								while ( dir ) {
@@ -13088,9 +12765,9 @@
 								}
 								return true;
 							}
-	
+
 							start = [ forward ? parent.firstChild : parent.lastChild ];
-	
+
 							// non-xml :nth-child(...) stores cache data on `parent`
 							if ( forward && useCache ) {
 								// Seek `elem` from a previously-cached index
@@ -13099,49 +12776,49 @@
 								nodeIndex = cache[0] === dirruns && cache[1];
 								diff = cache[0] === dirruns && cache[2];
 								node = nodeIndex && parent.childNodes[ nodeIndex ];
-	
+
 								while ( (node = ++nodeIndex && node && node[ dir ] ||
-	
+
 									// Fallback to seeking `elem` from the start
 									(diff = nodeIndex = 0) || start.pop()) ) {
-	
+
 									// When found, cache indexes on `parent` and break
 									if ( node.nodeType === 1 && ++diff && node === elem ) {
 										outerCache[ type ] = [ dirruns, nodeIndex, diff ];
 										break;
 									}
 								}
-	
+
 							// Use previously-cached element index if available
 							} else if ( useCache && (cache = (elem[ expando ] || (elem[ expando ] = {}))[ type ]) && cache[0] === dirruns ) {
 								diff = cache[1];
-	
+
 							// xml :nth-child(...) or :nth-last-child(...) or :nth(-last)?-of-type(...)
 							} else {
 								// Use the same loop as above to seek `elem` from the start
 								while ( (node = ++nodeIndex && node && node[ dir ] ||
 									(diff = nodeIndex = 0) || start.pop()) ) {
-	
+
 									if ( ( ofType ? node.nodeName.toLowerCase() === name : node.nodeType === 1 ) && ++diff ) {
 										// Cache the index of each encountered element
 										if ( useCache ) {
 											(node[ expando ] || (node[ expando ] = {}))[ type ] = [ dirruns, diff ];
 										}
-	
+
 										if ( node === elem ) {
 											break;
 										}
 									}
 								}
 							}
-	
+
 							// Incorporate the offset, then check against cycle size
 							diff -= last;
 							return diff === first || ( diff % first === 0 && diff / first >= 0 );
 						}
 					};
 			},
-	
+
 			"PSEUDO": function( pseudo, argument ) {
 				// pseudo-class names are case-insensitive
 				// http://www.w3.org/TR/selectors/#pseudo-classes
@@ -13150,14 +12827,14 @@
 				var args,
 					fn = Expr.pseudos[ pseudo ] || Expr.setFilters[ pseudo.toLowerCase() ] ||
 						Sizzle.error( "unsupported pseudo: " + pseudo );
-	
+
 				// The user may use createPseudo to indicate that
 				// arguments are needed to create the filter function
 				// just as Sizzle does
 				if ( fn[ expando ] ) {
 					return fn( argument );
 				}
-	
+
 				// But maintain support for old signatures
 				if ( fn.length > 1 ) {
 					args = [ pseudo, pseudo, "", argument ];
@@ -13175,11 +12852,11 @@
 							return fn( elem, 0, args );
 						};
 				}
-	
+
 				return fn;
 			}
 		},
-	
+
 		pseudos: {
 			// Potentially complex pseudos
 			"not": markFunction(function( selector ) {
@@ -13189,13 +12866,13 @@
 				var input = [],
 					results = [],
 					matcher = compile( selector.replace( rtrim, "$1" ) );
-	
+
 				return matcher[ expando ] ?
 					markFunction(function( seed, matches, context, xml ) {
 						var elem,
 							unmatched = matcher( seed, null, xml, [] ),
 							i = seed.length;
-	
+
 						// Match elements unmatched by `matcher`
 						while ( i-- ) {
 							if ( (elem = unmatched[i]) ) {
@@ -13211,20 +12888,20 @@
 						return !results.pop();
 					};
 			}),
-	
+
 			"has": markFunction(function( selector ) {
 				return function( elem ) {
 					return Sizzle( selector, elem ).length > 0;
 				};
 			}),
-	
+
 			"contains": markFunction(function( text ) {
 				text = text.replace( runescape, funescape );
 				return function( elem ) {
 					return ( elem.textContent || elem.innerText || getText( elem ) ).indexOf( text ) > -1;
 				};
 			}),
-	
+
 			// "Whether an element is represented by a :lang() selector
 			// is based solely on the element's language value
 			// being equal to the identifier C,
@@ -13244,7 +12921,7 @@
 						if ( (elemLang = documentIsHTML ?
 							elem.lang :
 							elem.getAttribute("xml:lang") || elem.getAttribute("lang")) ) {
-	
+
 							elemLang = elemLang.toLowerCase();
 							return elemLang === lang || elemLang.indexOf( lang + "-" ) === 0;
 						}
@@ -13252,47 +12929,47 @@
 					return false;
 				};
 			}),
-	
+
 			// Miscellaneous
 			"target": function( elem ) {
 				var hash = window.location && window.location.hash;
 				return hash && hash.slice( 1 ) === elem.id;
 			},
-	
+
 			"root": function( elem ) {
 				return elem === docElem;
 			},
-	
+
 			"focus": function( elem ) {
 				return elem === document.activeElement && (!document.hasFocus || document.hasFocus()) && !!(elem.type || elem.href || ~elem.tabIndex);
 			},
-	
+
 			// Boolean properties
 			"enabled": function( elem ) {
 				return elem.disabled === false;
 			},
-	
+
 			"disabled": function( elem ) {
 				return elem.disabled === true;
 			},
-	
+
 			"checked": function( elem ) {
 				// In CSS3, :checked should return both checked and selected elements
 				// http://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked
 				var nodeName = elem.nodeName.toLowerCase();
 				return (nodeName === "input" && !!elem.checked) || (nodeName === "option" && !!elem.selected);
 			},
-	
+
 			"selected": function( elem ) {
 				// Accessing this property makes selected-by-default
 				// options in Safari work properly
 				if ( elem.parentNode ) {
 					elem.parentNode.selectedIndex;
 				}
-	
+
 				return elem.selected === true;
 			},
-	
+
 			// Contents
 			"empty": function( elem ) {
 				// http://www.w3.org/TR/selectors/#empty-pseudo
@@ -13306,48 +12983,48 @@
 				}
 				return true;
 			},
-	
+
 			"parent": function( elem ) {
 				return !Expr.pseudos["empty"]( elem );
 			},
-	
+
 			// Element/input types
 			"header": function( elem ) {
 				return rheader.test( elem.nodeName );
 			},
-	
+
 			"input": function( elem ) {
 				return rinputs.test( elem.nodeName );
 			},
-	
+
 			"button": function( elem ) {
 				var name = elem.nodeName.toLowerCase();
 				return name === "input" && elem.type === "button" || name === "button";
 			},
-	
+
 			"text": function( elem ) {
 				var attr;
 				return elem.nodeName.toLowerCase() === "input" &&
 					elem.type === "text" &&
-	
+
 					// Support: IE<8
 					// New HTML5 attribute values (e.g., "search") appear with elem.type === "text"
 					( (attr = elem.getAttribute("type")) == null || attr.toLowerCase() === "text" );
 			},
-	
+
 			// Position-in-collection
 			"first": createPositionalPseudo(function() {
 				return [ 0 ];
 			}),
-	
+
 			"last": createPositionalPseudo(function( matchIndexes, length ) {
 				return [ length - 1 ];
 			}),
-	
+
 			"eq": createPositionalPseudo(function( matchIndexes, length, argument ) {
 				return [ argument < 0 ? argument + length : argument ];
 			}),
-	
+
 			"even": createPositionalPseudo(function( matchIndexes, length ) {
 				var i = 0;
 				for ( ; i < length; i += 2 ) {
@@ -13355,7 +13032,7 @@
 				}
 				return matchIndexes;
 			}),
-	
+
 			"odd": createPositionalPseudo(function( matchIndexes, length ) {
 				var i = 1;
 				for ( ; i < length; i += 2 ) {
@@ -13363,7 +13040,7 @@
 				}
 				return matchIndexes;
 			}),
-	
+
 			"lt": createPositionalPseudo(function( matchIndexes, length, argument ) {
 				var i = argument < 0 ? argument + length : argument;
 				for ( ; --i >= 0; ) {
@@ -13371,7 +13048,7 @@
 				}
 				return matchIndexes;
 			}),
-	
+
 			"gt": createPositionalPseudo(function( matchIndexes, length, argument ) {
 				var i = argument < 0 ? argument + length : argument;
 				for ( ; ++i < length; ) {
@@ -13381,9 +13058,9 @@
 			})
 		}
 	};
-	
+
 	Expr.pseudos["nth"] = Expr.pseudos["eq"];
-	
+
 	// Add button/input type pseudos
 	for ( i in { radio: true, checkbox: true, file: true, password: true, image: true } ) {
 		Expr.pseudos[ i ] = createInputPseudo( i );
@@ -13391,27 +13068,27 @@
 	for ( i in { submit: true, reset: true } ) {
 		Expr.pseudos[ i ] = createButtonPseudo( i );
 	}
-	
+
 	// Easy API for creating new setFilters
 	function setFilters() {}
 	setFilters.prototype = Expr.filters = Expr.pseudos;
 	Expr.setFilters = new setFilters();
-	
+
 	tokenize = Sizzle.tokenize = function( selector, parseOnly ) {
 		var matched, match, tokens, type,
 			soFar, groups, preFilters,
 			cached = tokenCache[ selector + " " ];
-	
+
 		if ( cached ) {
 			return parseOnly ? 0 : cached.slice( 0 );
 		}
-	
+
 		soFar = selector;
 		groups = [];
 		preFilters = Expr.preFilter;
-	
+
 		while ( soFar ) {
-	
+
 			// Comma and first run
 			if ( !matched || (match = rcomma.exec( soFar )) ) {
 				if ( match ) {
@@ -13420,9 +13097,9 @@
 				}
 				groups.push( (tokens = []) );
 			}
-	
+
 			matched = false;
-	
+
 			// Combinators
 			if ( (match = rcombinators.exec( soFar )) ) {
 				matched = match.shift();
@@ -13433,7 +13110,7 @@
 				});
 				soFar = soFar.slice( matched.length );
 			}
-	
+
 			// Filters
 			for ( type in Expr.filter ) {
 				if ( (match = matchExpr[ type ].exec( soFar )) && (!preFilters[ type ] ||
@@ -13447,12 +13124,12 @@
 					soFar = soFar.slice( matched.length );
 				}
 			}
-	
+
 			if ( !matched ) {
 				break;
 			}
 		}
-	
+
 		// Return the length of the invalid excess
 		// if we're just parsing
 		// Otherwise, throw an error or return tokens
@@ -13463,7 +13140,7 @@
 				// Cache the tokens
 				tokenCache( selector, groups ).slice( 0 );
 	};
-	
+
 	function toSelector( tokens ) {
 		var i = 0,
 			len = tokens.length,
@@ -13473,12 +13150,12 @@
 		}
 		return selector;
 	}
-	
+
 	function addCombinator( matcher, combinator, base ) {
 		var dir = combinator.dir,
 			checkNonElements = base && dir === "parentNode",
 			doneName = done++;
-	
+
 		return combinator.first ?
 			// Check against closest ancestor/preceding element
 			function( elem, context, xml ) {
@@ -13488,12 +13165,12 @@
 					}
 				}
 			} :
-	
+
 			// Check against all ancestor/preceding elements
 			function( elem, context, xml ) {
 				var oldCache, outerCache,
 					newCache = [ dirruns, doneName ];
-	
+
 				// We can't set arbitrary data on XML nodes, so they don't benefit from dir caching
 				if ( xml ) {
 					while ( (elem = elem[ dir ]) ) {
@@ -13509,13 +13186,13 @@
 							outerCache = elem[ expando ] || (elem[ expando ] = {});
 							if ( (oldCache = outerCache[ dir ]) &&
 								oldCache[ 0 ] === dirruns && oldCache[ 1 ] === doneName ) {
-	
+
 								// Assign to newCache so results back-propagate to previous elements
 								return (newCache[ 2 ] = oldCache[ 2 ]);
 							} else {
 								// Reuse newcache so results back-propagate to previous elements
 								outerCache[ dir ] = newCache;
-	
+
 								// A match means we're done; a fail means we have to keep checking
 								if ( (newCache[ 2 ] = matcher( elem, context, xml )) ) {
 									return true;
@@ -13526,7 +13203,7 @@
 				}
 			};
 	}
-	
+
 	function elementMatcher( matchers ) {
 		return matchers.length > 1 ?
 			function( elem, context, xml ) {
@@ -13540,7 +13217,7 @@
 			} :
 			matchers[0];
 	}
-	
+
 	function multipleContexts( selector, contexts, results ) {
 		var i = 0,
 			len = contexts.length;
@@ -13549,14 +13226,14 @@
 		}
 		return results;
 	}
-	
+
 	function condense( unmatched, map, filter, context, xml ) {
 		var elem,
 			newUnmatched = [],
 			i = 0,
 			len = unmatched.length,
 			mapped = map != null;
-	
+
 		for ( ; i < len; i++ ) {
 			if ( (elem = unmatched[i]) ) {
 				if ( !filter || filter( elem, context, xml ) ) {
@@ -13567,10 +13244,10 @@
 				}
 			}
 		}
-	
+
 		return newUnmatched;
 	}
-	
+
 	function setMatcher( preFilter, selector, matcher, postFilter, postFinder, postSelector ) {
 		if ( postFilter && !postFilter[ expando ] ) {
 			postFilter = setMatcher( postFilter );
@@ -13583,36 +13260,36 @@
 				preMap = [],
 				postMap = [],
 				preexisting = results.length,
-	
+
 				// Get initial elements from seed or context
 				elems = seed || multipleContexts( selector || "*", context.nodeType ? [ context ] : context, [] ),
-	
+
 				// Prefilter to get matcher input, preserving a map for seed-results synchronization
 				matcherIn = preFilter && ( seed || !selector ) ?
 					condense( elems, preMap, preFilter, context, xml ) :
 					elems,
-	
+
 				matcherOut = matcher ?
 					// If we have a postFinder, or filtered seed, or non-seed postFilter or preexisting results,
 					postFinder || ( seed ? preFilter : preexisting || postFilter ) ?
-	
+
 						// ...intermediate processing is necessary
 						[] :
-	
+
 						// ...otherwise use results directly
 						results :
 					matcherIn;
-	
+
 			// Find primary matches
 			if ( matcher ) {
 				matcher( matcherIn, matcherOut, context, xml );
 			}
-	
+
 			// Apply postFilter
 			if ( postFilter ) {
 				temp = condense( matcherOut, postMap );
 				postFilter( temp, [], context, xml );
-	
+
 				// Un-match failing elements by moving them back to matcherIn
 				i = temp.length;
 				while ( i-- ) {
@@ -13621,7 +13298,7 @@
 					}
 				}
 			}
-	
+
 			if ( seed ) {
 				if ( postFinder || preFilter ) {
 					if ( postFinder ) {
@@ -13636,18 +13313,18 @@
 						}
 						postFinder( null, (matcherOut = []), temp, xml );
 					}
-	
+
 					// Move matched elements from seed to results to keep them synchronized
 					i = matcherOut.length;
 					while ( i-- ) {
 						if ( (elem = matcherOut[i]) &&
 							(temp = postFinder ? indexOf( seed, elem ) : preMap[i]) > -1 ) {
-	
+
 							seed[temp] = !(results[temp] = elem);
 						}
 					}
 				}
-	
+
 			// Add elements to results, through postFinder if defined
 			} else {
 				matcherOut = condense(
@@ -13663,14 +13340,14 @@
 			}
 		});
 	}
-	
+
 	function matcherFromTokens( tokens ) {
 		var checkContext, matcher, j,
 			len = tokens.length,
 			leadingRelative = Expr.relative[ tokens[0].type ],
 			implicitRelative = leadingRelative || Expr.relative[" "],
 			i = leadingRelative ? 1 : 0,
-	
+
 			// The foundational matcher ensures that elements are reachable from top-level context(s)
 			matchContext = addCombinator( function( elem ) {
 				return elem === checkContext;
@@ -13687,13 +13364,13 @@
 				checkContext = null;
 				return ret;
 			} ];
-	
+
 		for ( ; i < len; i++ ) {
 			if ( (matcher = Expr.relative[ tokens[i].type ]) ) {
 				matchers = [ addCombinator(elementMatcher( matchers ), matcher) ];
 			} else {
 				matcher = Expr.filter[ tokens[i].type ].apply( null, tokens[i].matches );
-	
+
 				// Return special upon seeing a positional matcher
 				if ( matcher[ expando ] ) {
 					// Find the next relative operator (if any) for proper handling
@@ -13718,10 +13395,10 @@
 				matchers.push( matcher );
 			}
 		}
-	
+
 		return elementMatcher( matchers );
 	}
-	
+
 	function matcherFromGroupMatchers( elementMatchers, setMatchers ) {
 		var bySet = setMatchers.length > 0,
 			byElement = elementMatchers.length > 0,
@@ -13737,11 +13414,11 @@
 					// Use integer dirruns iff this is the outermost matcher
 					dirrunsUnique = (dirruns += contextBackup == null ? 1 : Math.random() || 0.1),
 					len = elems.length;
-	
+
 				if ( outermost ) {
 					outermostContext = context !== document && context;
 				}
-	
+
 				// Add elements passing elementMatchers directly to results
 				// Keep `i` a string if there are no elements so `matchedCount` will be "00" below
 				// Support: IE<9, Safari
@@ -13759,21 +13436,21 @@
 							dirruns = dirrunsUnique;
 						}
 					}
-	
+
 					// Track unmatched elements for set filters
 					if ( bySet ) {
 						// They will have gone through all possible matchers
 						if ( (elem = !matcher && elem) ) {
 							matchedCount--;
 						}
-	
+
 						// Lengthen the array for every element, matched or not
 						if ( seed ) {
 							unmatched.push( elem );
 						}
 					}
 				}
-	
+
 				// Apply set filters to unmatched elements
 				matchedCount += i;
 				if ( bySet && i !== matchedCount ) {
@@ -13781,7 +13458,7 @@
 					while ( (matcher = setMatchers[j++]) ) {
 						matcher( unmatched, setMatched, context, xml );
 					}
-	
+
 					if ( seed ) {
 						// Reintegrate element matches to eliminate the need for sorting
 						if ( matchedCount > 0 ) {
@@ -13791,42 +13468,42 @@
 								}
 							}
 						}
-	
+
 						// Discard index placeholder values to get only actual matches
 						setMatched = condense( setMatched );
 					}
-	
+
 					// Add matches to results
 					push.apply( results, setMatched );
-	
+
 					// Seedless set matches succeeding multiple successful matchers stipulate sorting
 					if ( outermost && !seed && setMatched.length > 0 &&
 						( matchedCount + setMatchers.length ) > 1 ) {
-	
+
 						Sizzle.uniqueSort( results );
 					}
 				}
-	
+
 				// Override manipulation of globals by nested matchers
 				if ( outermost ) {
 					dirruns = dirrunsUnique;
 					outermostContext = contextBackup;
 				}
-	
+
 				return unmatched;
 			};
-	
+
 		return bySet ?
 			markFunction( superMatcher ) :
 			superMatcher;
 	}
-	
+
 	compile = Sizzle.compile = function( selector, match /* Internal Use Only */ ) {
 		var i,
 			setMatchers = [],
 			elementMatchers = [],
 			cached = compilerCache[ selector + " " ];
-	
+
 		if ( !cached ) {
 			// Generate a function of recursive functions that can be used to check each element
 			if ( !match ) {
@@ -13841,16 +13518,16 @@
 					elementMatchers.push( cached );
 				}
 			}
-	
+
 			// Cache the compiled function
 			cached = compilerCache( selector, matcherFromGroupMatchers( elementMatchers, setMatchers ) );
-	
+
 			// Save selector and tokenization
 			cached.selector = selector;
 		}
 		return cached;
 	};
-	
+
 	/**
 	 * A low-level selection function that works with Sizzle's compiled
 	 *  selector functions
@@ -13864,35 +13541,35 @@
 		var i, tokens, token, type, find,
 			compiled = typeof selector === "function" && selector,
 			match = !seed && tokenize( (selector = compiled.selector || selector) );
-	
+
 		results = results || [];
-	
+
 		// Try to minimize operations if there is no seed and only one group
 		if ( match.length === 1 ) {
-	
+
 			// Take a shortcut and set the context if the root selector is an ID
 			tokens = match[0] = match[0].slice( 0 );
 			if ( tokens.length > 2 && (token = tokens[0]).type === "ID" &&
 					support.getById && context.nodeType === 9 && documentIsHTML &&
 					Expr.relative[ tokens[1].type ] ) {
-	
+
 				context = ( Expr.find["ID"]( token.matches[0].replace(runescape, funescape), context ) || [] )[0];
 				if ( !context ) {
 					return results;
-	
+
 				// Precompiled matchers will still verify ancestry, so step up a level
 				} else if ( compiled ) {
 					context = context.parentNode;
 				}
-	
+
 				selector = selector.slice( tokens.shift().value.length );
 			}
-	
+
 			// Fetch a seed set for right-to-left matching
 			i = matchExpr["needsContext"].test( selector ) ? 0 : tokens.length;
 			while ( i-- ) {
 				token = tokens[i];
-	
+
 				// Abort if we hit a combinator
 				if ( Expr.relative[ (type = token.type) ] ) {
 					break;
@@ -13903,7 +13580,7 @@
 						token.matches[0].replace( runescape, funescape ),
 						rsibling.test( tokens[0].type ) && testContext( context.parentNode ) || context
 					)) ) {
-	
+
 						// If seed is empty or no tokens remain, we can return early
 						tokens.splice( i, 1 );
 						selector = seed.length && toSelector( tokens );
@@ -13911,13 +13588,13 @@
 							push.apply( results, seed );
 							return results;
 						}
-	
+
 						break;
 					}
 				}
 			}
 		}
-	
+
 		// Compile and execute a filtering function if one is not provided
 		// Provide `match` to avoid retokenization if we modified the selector above
 		( compiled || compile( selector, match ) )(
@@ -13929,26 +13606,26 @@
 		);
 		return results;
 	};
-	
+
 	// One-time assignments
-	
+
 	// Sort stability
 	support.sortStable = expando.split("").sort( sortOrder ).join("") === expando;
-	
+
 	// Support: Chrome 14-35+
 	// Always assume duplicates if they aren't passed to the comparison function
 	support.detectDuplicates = !!hasDuplicate;
-	
+
 	// Initialize against the default document
 	setDocument();
-	
+
 	// Support: Webkit<537.32 - Safari 6.0.3/Chrome 25 (fixed in Chrome 27)
 	// Detached nodes confoundingly follow *each other*
 	support.sortDetached = assert(function( div1 ) {
 		// Should return 1, but returns 4 (following)
 		return div1.compareDocumentPosition( document.createElement("div") ) & 1;
 	});
-	
+
 	// Support: IE<8
 	// Prevent attribute/property "interpolation"
 	// http://msdn.microsoft.com/en-us/library/ms536429%28VS.85%29.aspx
@@ -13962,7 +13639,7 @@
 			}
 		});
 	}
-	
+
 	// Support: IE<9
 	// Use defaultValue in place of getAttribute("value")
 	if ( !support.attributes || !assert(function( div ) {
@@ -13976,7 +13653,7 @@
 			}
 		});
 	}
-	
+
 	// Support: IE<9
 	// Use getAttributeNode to fetch booleans when getAttribute lies
 	if ( !assert(function( div ) {
@@ -13992,13 +13669,13 @@
 			}
 		});
 	}
-	
+
 	return Sizzle;
-	
+
 	})( window );
-	
-	
-	
+
+
+
 	jQuery.find = Sizzle;
 	jQuery.expr = Sizzle.selectors;
 	jQuery.expr[":"] = jQuery.expr.pseudos;
@@ -14006,17 +13683,17 @@
 	jQuery.text = Sizzle.getText;
 	jQuery.isXMLDoc = Sizzle.isXML;
 	jQuery.contains = Sizzle.contains;
-	
-	
-	
+
+
+
 	var rneedsContext = jQuery.expr.match.needsContext;
-	
+
 	var rsingleTag = (/^<(\w+)\s*\/?>(?:<\/\1>|)$/);
-	
-	
-	
+
+
+
 	var risSimple = /^.[^:#\[\.,]*$/;
-	
+
 	// Implement the identical functionality for filter and not
 	function winnow( elements, qualifier, not ) {
 		if ( jQuery.isFunction( qualifier ) ) {
@@ -14024,50 +13701,50 @@
 				/* jshint -W018 */
 				return !!qualifier.call( elem, i, elem ) !== not;
 			});
-	
+
 		}
-	
+
 		if ( qualifier.nodeType ) {
 			return jQuery.grep( elements, function( elem ) {
 				return ( elem === qualifier ) !== not;
 			});
-	
+
 		}
-	
+
 		if ( typeof qualifier === "string" ) {
 			if ( risSimple.test( qualifier ) ) {
 				return jQuery.filter( qualifier, elements, not );
 			}
-	
+
 			qualifier = jQuery.filter( qualifier, elements );
 		}
-	
+
 		return jQuery.grep( elements, function( elem ) {
 			return ( indexOf.call( qualifier, elem ) >= 0 ) !== not;
 		});
 	}
-	
+
 	jQuery.filter = function( expr, elems, not ) {
 		var elem = elems[ 0 ];
-	
+
 		if ( not ) {
 			expr = ":not(" + expr + ")";
 		}
-	
+
 		return elems.length === 1 && elem.nodeType === 1 ?
 			jQuery.find.matchesSelector( elem, expr ) ? [ elem ] : [] :
 			jQuery.find.matches( expr, jQuery.grep( elems, function( elem ) {
 				return elem.nodeType === 1;
 			}));
 	};
-	
+
 	jQuery.fn.extend({
 		find: function( selector ) {
 			var i,
 				len = this.length,
 				ret = [],
 				self = this;
-	
+
 			if ( typeof selector !== "string" ) {
 				return this.pushStack( jQuery( selector ).filter(function() {
 					for ( i = 0; i < len; i++ ) {
@@ -14077,11 +13754,11 @@
 					}
 				}) );
 			}
-	
+
 			for ( i = 0; i < len; i++ ) {
 				jQuery.find( selector, self[ i ], ret );
 			}
-	
+
 			// Needed because $( selector, context ) becomes $( context ).find( selector )
 			ret = this.pushStack( len > 1 ? jQuery.unique( ret ) : ret );
 			ret.selector = this.selector ? this.selector + " " + selector : selector;
@@ -14096,7 +13773,7 @@
 		is: function( selector ) {
 			return !!winnow(
 				this,
-	
+
 				// If this is a positional/relative selector, check membership in the returned set
 				// so $("p:first").is("p:last") won't return true for a doc with two "p".
 				typeof selector === "string" && rneedsContext.test( selector ) ?
@@ -14106,44 +13783,44 @@
 			).length;
 		}
 	});
-	
-	
+
+
 	// Initialize a jQuery object
-	
-	
+
+
 	// A central reference to the root jQuery(document)
 	var rootjQuery,
-	
+
 		// A simple way to check for HTML strings
 		// Prioritize #id over <tag> to avoid XSS via location.hash (#9521)
 		// Strict HTML recognition (#11290: must start with <)
 		rquickExpr = /^(?:\s*(<[\w\W]+>)[^>]*|#([\w-]*))$/,
-	
+
 		init = jQuery.fn.init = function( selector, context ) {
 			var match, elem;
-	
+
 			// HANDLE: $(""), $(null), $(undefined), $(false)
 			if ( !selector ) {
 				return this;
 			}
-	
+
 			// Handle HTML strings
 			if ( typeof selector === "string" ) {
 				if ( selector[0] === "<" && selector[ selector.length - 1 ] === ">" && selector.length >= 3 ) {
 					// Assume that strings that start and end with <> are HTML and skip the regex check
 					match = [ null, selector, null ];
-	
+
 				} else {
 					match = rquickExpr.exec( selector );
 				}
-	
+
 				// Match html or make sure no context is specified for #id
 				if ( match && (match[1] || !context) ) {
-	
+
 					// HANDLE: $(html) -> $(array)
 					if ( match[1] ) {
 						context = context instanceof jQuery ? context[0] : context;
-	
+
 						// Option to run scripts is true for back-compat
 						// Intentionally let the error be thrown if parseHTML is not present
 						jQuery.merge( this, jQuery.parseHTML(
@@ -14151,27 +13828,27 @@
 							context && context.nodeType ? context.ownerDocument || context : document,
 							true
 						) );
-	
+
 						// HANDLE: $(html, props)
 						if ( rsingleTag.test( match[1] ) && jQuery.isPlainObject( context ) ) {
 							for ( match in context ) {
 								// Properties of context are called as methods if possible
 								if ( jQuery.isFunction( this[ match ] ) ) {
 									this[ match ]( context[ match ] );
-	
+
 								// ...and otherwise set as attributes
 								} else {
 									this.attr( match, context[ match ] );
 								}
 							}
 						}
-	
+
 						return this;
-	
+
 					// HANDLE: $(#id)
 					} else {
 						elem = document.getElementById( match[2] );
-	
+
 						// Support: Blackberry 4.6
 						// gEBID returns nodes no longer in the document (#6963)
 						if ( elem && elem.parentNode ) {
@@ -14179,28 +13856,28 @@
 							this.length = 1;
 							this[0] = elem;
 						}
-	
+
 						this.context = document;
 						this.selector = selector;
 						return this;
 					}
-	
+
 				// HANDLE: $(expr, $(...))
 				} else if ( !context || context.jquery ) {
 					return ( context || rootjQuery ).find( selector );
-	
+
 				// HANDLE: $(expr, context)
 				// (which is just equivalent to: $(context).find(expr)
 				} else {
 					return this.constructor( context ).find( selector );
 				}
-	
+
 			// HANDLE: $(DOMElement)
 			} else if ( selector.nodeType ) {
 				this.context = this[0] = selector;
 				this.length = 1;
 				return this;
-	
+
 			// HANDLE: $(function)
 			// Shortcut for document ready
 			} else if ( jQuery.isFunction( selector ) ) {
@@ -14209,22 +13886,22 @@
 					// Execute immediately if ready is not present
 					selector( jQuery );
 			}
-	
+
 			if ( selector.selector !== undefined ) {
 				this.selector = selector.selector;
 				this.context = selector.context;
 			}
-	
+
 			return jQuery.makeArray( selector, this );
 		};
-	
+
 	// Give the init function the jQuery prototype for later instantiation
 	init.prototype = jQuery.fn;
-	
+
 	// Initialize central reference
 	rootjQuery = jQuery( document );
-	
-	
+
+
 	var rparentsprev = /^(?:parents|prev(?:Until|All))/,
 		// Methods guaranteed to produce a unique set when starting from a unique set
 		guaranteedUnique = {
@@ -14233,12 +13910,12 @@
 			next: true,
 			prev: true
 		};
-	
+
 	jQuery.extend({
 		dir: function( elem, dir, until ) {
 			var matched = [],
 				truncate = until !== undefined;
-	
+
 			while ( (elem = elem[ dir ]) && elem.nodeType !== 9 ) {
 				if ( elem.nodeType === 1 ) {
 					if ( truncate && jQuery( elem ).is( until ) ) {
@@ -14249,25 +13926,25 @@
 			}
 			return matched;
 		},
-	
+
 		sibling: function( n, elem ) {
 			var matched = [];
-	
+
 			for ( ; n; n = n.nextSibling ) {
 				if ( n.nodeType === 1 && n !== elem ) {
 					matched.push( n );
 				}
 			}
-	
+
 			return matched;
 		}
 	});
-	
+
 	jQuery.fn.extend({
 		has: function( target ) {
 			var targets = jQuery( target, this ),
 				l = targets.length;
-	
+
 			return this.filter(function() {
 				var i = 0;
 				for ( ; i < l; i++ ) {
@@ -14277,7 +13954,7 @@
 				}
 			});
 		},
-	
+
 		closest: function( selectors, context ) {
 			var cur,
 				i = 0,
@@ -14286,47 +13963,47 @@
 				pos = rneedsContext.test( selectors ) || typeof selectors !== "string" ?
 					jQuery( selectors, context || this.context ) :
 					0;
-	
+
 			for ( ; i < l; i++ ) {
 				for ( cur = this[i]; cur && cur !== context; cur = cur.parentNode ) {
 					// Always skip document fragments
 					if ( cur.nodeType < 11 && (pos ?
 						pos.index(cur) > -1 :
-	
+
 						// Don't pass non-elements to Sizzle
 						cur.nodeType === 1 &&
 							jQuery.find.matchesSelector(cur, selectors)) ) {
-	
+
 						matched.push( cur );
 						break;
 					}
 				}
 			}
-	
+
 			return this.pushStack( matched.length > 1 ? jQuery.unique( matched ) : matched );
 		},
-	
+
 		// Determine the position of an element within the set
 		index: function( elem ) {
-	
+
 			// No argument, return index in parent
 			if ( !elem ) {
 				return ( this[ 0 ] && this[ 0 ].parentNode ) ? this.first().prevAll().length : -1;
 			}
-	
+
 			// Index in selector
 			if ( typeof elem === "string" ) {
 				return indexOf.call( jQuery( elem ), this[ 0 ] );
 			}
-	
+
 			// Locate the position of the desired element
 			return indexOf.call( this,
-	
+
 				// If it receives a jQuery object, the first element is used
 				elem.jquery ? elem[ 0 ] : elem
 			);
 		},
-	
+
 		add: function( selector, context ) {
 			return this.pushStack(
 				jQuery.unique(
@@ -14334,19 +14011,19 @@
 				)
 			);
 		},
-	
+
 		addBack: function( selector ) {
 			return this.add( selector == null ?
 				this.prevObject : this.prevObject.filter(selector)
 			);
 		}
 	});
-	
+
 	function sibling( cur, dir ) {
 		while ( (cur = cur[dir]) && cur.nodeType !== 1 ) {}
 		return cur;
 	}
-	
+
 	jQuery.each({
 		parent: function( elem ) {
 			var parent = elem.parentNode;
@@ -14388,37 +14065,37 @@
 	}, function( name, fn ) {
 		jQuery.fn[ name ] = function( until, selector ) {
 			var matched = jQuery.map( this, fn, until );
-	
+
 			if ( name.slice( -5 ) !== "Until" ) {
 				selector = until;
 			}
-	
+
 			if ( selector && typeof selector === "string" ) {
 				matched = jQuery.filter( selector, matched );
 			}
-	
+
 			if ( this.length > 1 ) {
 				// Remove duplicates
 				if ( !guaranteedUnique[ name ] ) {
 					jQuery.unique( matched );
 				}
-	
+
 				// Reverse order for parents* and prev-derivatives
 				if ( rparentsprev.test( name ) ) {
 					matched.reverse();
 				}
 			}
-	
+
 			return this.pushStack( matched );
 		};
 	});
 	var rnotwhite = (/\S+/g);
-	
-	
-	
+
+
+
 	// String to Object options format cache
 	var optionsCache = {};
-	
+
 	// Convert String-formatted options into Object-formatted ones and store in cache
 	function createOptions( options ) {
 		var object = optionsCache[ options ] = {};
@@ -14427,7 +14104,7 @@
 		});
 		return object;
 	}
-	
+
 	/*
 	 * Create a callback list using the following parameters:
 	 *
@@ -14451,13 +14128,13 @@
 	 *
 	 */
 	jQuery.Callbacks = function( options ) {
-	
+
 		// Convert options from String-formatted to Object-formatted if needed
 		// (we check in cache first)
 		options = typeof options === "string" ?
 			( optionsCache[ options ] || createOptions( options ) ) :
 			jQuery.extend( {}, options );
-	
+
 		var // Last fire value (for non-forgettable lists)
 			memory,
 			// Flag to know if list was already fired
@@ -14610,13 +14287,13 @@
 					return !!fired;
 				}
 			};
-	
+
 		return self;
 	};
-	
-	
+
+
 	jQuery.extend({
-	
+
 		Deferred: function( func ) {
 			var tuples = [
 					// action, add listener, listener list, final state
@@ -14661,28 +14338,28 @@
 					}
 				},
 				deferred = {};
-	
+
 			// Keep pipe for back-compat
 			promise.pipe = promise.then;
-	
+
 			// Add list-specific methods
 			jQuery.each( tuples, function( i, tuple ) {
 				var list = tuple[ 2 ],
 					stateString = tuple[ 3 ];
-	
+
 				// promise[ done | fail | progress ] = list.add
 				promise[ tuple[1] ] = list.add;
-	
+
 				// Handle state
 				if ( stateString ) {
 					list.add(function() {
 						// state = [ resolved | rejected ]
 						state = stateString;
-	
+
 					// [ reject_list | resolve_list ].disable; progress_list.lock
 					}, tuples[ i ^ 1 ][ 2 ].disable, tuples[ 2 ][ 2 ].lock );
 				}
-	
+
 				// deferred[ resolve | reject | notify ]
 				deferred[ tuple[0] ] = function() {
 					deferred[ tuple[0] + "With" ]( this === deferred ? promise : this, arguments );
@@ -14690,31 +14367,31 @@
 				};
 				deferred[ tuple[0] + "With" ] = list.fireWith;
 			});
-	
+
 			// Make the deferred a promise
 			promise.promise( deferred );
-	
+
 			// Call given func if any
 			if ( func ) {
 				func.call( deferred, deferred );
 			}
-	
+
 			// All done!
 			return deferred;
 		},
-	
+
 		// Deferred helper
 		when: function( subordinate /* , ..., subordinateN */ ) {
 			var i = 0,
 				resolveValues = slice.call( arguments ),
 				length = resolveValues.length,
-	
+
 				// the count of uncompleted subordinates
 				remaining = length !== 1 || ( subordinate && jQuery.isFunction( subordinate.promise ) ) ? length : 0,
-	
+
 				// the master Deferred. If resolveValues consist of only a single Deferred, just use that.
 				deferred = remaining === 1 ? subordinate : jQuery.Deferred(),
-	
+
 				// Update function for both resolve and progress values
 				updateFunc = function( i, contexts, values ) {
 					return function( value ) {
@@ -14727,9 +14404,9 @@
 						}
 					};
 				},
-	
+
 				progressValues, progressContexts, resolveContexts;
-	
+
 			// Add listeners to Deferred subordinates; treat others as resolved
 			if ( length > 1 ) {
 				progressValues = new Array( length );
@@ -14746,35 +14423,35 @@
 					}
 				}
 			}
-	
+
 			// If we're not waiting on anything, resolve the master
 			if ( !remaining ) {
 				deferred.resolveWith( resolveContexts, resolveValues );
 			}
-	
+
 			return deferred.promise();
 		}
 	});
-	
-	
+
+
 	// The deferred used on DOM ready
 	var readyList;
-	
+
 	jQuery.fn.ready = function( fn ) {
 		// Add the callback
 		jQuery.ready.promise().done( fn );
-	
+
 		return this;
 	};
-	
+
 	jQuery.extend({
 		// Is the DOM ready to be used? Set to true once it occurs.
 		isReady: false,
-	
+
 		// A counter to track how many items to wait for before
 		// the ready event fires. See #6781
 		readyWait: 1,
-	
+
 		// Hold (or release) the ready event
 		holdReady: function( hold ) {
 			if ( hold ) {
@@ -14783,26 +14460,26 @@
 				jQuery.ready( true );
 			}
 		},
-	
+
 		// Handle when the DOM is ready
 		ready: function( wait ) {
-	
+
 			// Abort if there are pending holds or we're already ready
 			if ( wait === true ? --jQuery.readyWait : jQuery.isReady ) {
 				return;
 			}
-	
+
 			// Remember that the DOM is ready
 			jQuery.isReady = true;
-	
+
 			// If a normal DOM Ready event fired, decrement, and wait if need be
 			if ( wait !== true && --jQuery.readyWait > 0 ) {
 				return;
 			}
-	
+
 			// If there are functions bound, to execute
 			readyList.resolveWith( document, [ jQuery ] );
-	
+
 			// Trigger any bound ready events
 			if ( jQuery.fn.triggerHandler ) {
 				jQuery( document ).triggerHandler( "ready" );
@@ -14810,7 +14487,7 @@
 			}
 		}
 	});
-	
+
 	/**
 	 * The ready event handler and self cleanup method
 	 */
@@ -14819,65 +14496,65 @@
 		window.removeEventListener( "load", completed, false );
 		jQuery.ready();
 	}
-	
+
 	jQuery.ready.promise = function( obj ) {
 		if ( !readyList ) {
-	
+
 			readyList = jQuery.Deferred();
-	
+
 			// Catch cases where $(document).ready() is called after the browser event has already occurred.
 			// We once tried to use readyState "interactive" here, but it caused issues like the one
 			// discovered by ChrisS here: http://bugs.jquery.com/ticket/12282#comment:15
 			if ( document.readyState === "complete" ) {
 				// Handle it asynchronously to allow scripts the opportunity to delay ready
 				setTimeout( jQuery.ready );
-	
+
 			} else {
-	
+
 				// Use the handy event callback
 				document.addEventListener( "DOMContentLoaded", completed, false );
-	
+
 				// A fallback to window.onload, that will always work
 				window.addEventListener( "load", completed, false );
 			}
 		}
 		return readyList.promise( obj );
 	};
-	
+
 	// Kick off the DOM ready check even if the user does not
 	jQuery.ready.promise();
-	
-	
-	
-	
+
+
+
+
 	// Multifunctional method to get and set values of a collection
 	// The value/s can optionally be executed if it's a function
 	var access = jQuery.access = function( elems, fn, key, value, chainable, emptyGet, raw ) {
 		var i = 0,
 			len = elems.length,
 			bulk = key == null;
-	
+
 		// Sets many values
 		if ( jQuery.type( key ) === "object" ) {
 			chainable = true;
 			for ( i in key ) {
 				jQuery.access( elems, fn, i, key[i], true, emptyGet, raw );
 			}
-	
+
 		// Sets one value
 		} else if ( value !== undefined ) {
 			chainable = true;
-	
+
 			if ( !jQuery.isFunction( value ) ) {
 				raw = true;
 			}
-	
+
 			if ( bulk ) {
 				// Bulk operations run against the entire set
 				if ( raw ) {
 					fn.call( elems, value );
 					fn = null;
-	
+
 				// ...except when executing function values
 				} else {
 					bulk = fn;
@@ -14886,24 +14563,24 @@
 					};
 				}
 			}
-	
+
 			if ( fn ) {
 				for ( ; i < len; i++ ) {
 					fn( elems[i], key, raw ? value : value.call( elems[i], i, fn( elems[i], key ) ) );
 				}
 			}
 		}
-	
+
 		return chainable ?
 			elems :
-	
+
 			// Gets
 			bulk ?
 				fn.call( elems ) :
 				len ? fn( elems[0], key ) : emptyGet;
 	};
-	
-	
+
+
 	/**
 	 * Determines whether an object can have data
 	 */
@@ -14917,8 +14594,8 @@
 		/* jshint -W018 */
 		return owner.nodeType === 1 || owner.nodeType === 9 || !( +owner.nodeType );
 	};
-	
-	
+
+
 	function Data() {
 		// Support: Android<4,
 		// Old WebKit does not have Object.preventExtensions/freeze method,
@@ -14928,13 +14605,13 @@
 				return {};
 			}
 		});
-	
+
 		this.expando = jQuery.expando + Data.uid++;
 	}
-	
+
 	Data.uid = 1;
 	Data.accepts = jQuery.acceptData;
-	
+
 	Data.prototype = {
 		key: function( owner ) {
 			// We can accept data for non-element nodes in modern browsers,
@@ -14943,20 +14620,20 @@
 			if ( !Data.accepts( owner ) ) {
 				return 0;
 			}
-	
+
 			var descriptor = {},
 				// Check if the owner object already has a cache key
 				unlock = owner[ this.expando ];
-	
+
 			// If not, create one
 			if ( !unlock ) {
 				unlock = Data.uid++;
-	
+
 				// Secure it in a non-enumerable, non-writable property
 				try {
 					descriptor[ this.expando ] = { value: unlock };
 					Object.defineProperties( owner, descriptor );
-	
+
 				// Support: Android<4
 				// Fallback to a less secure definition
 				} catch ( e ) {
@@ -14964,12 +14641,12 @@
 					jQuery.extend( owner, descriptor );
 				}
 			}
-	
+
 			// Ensure the cache object
 			if ( !this.cache[ unlock ] ) {
 				this.cache[ unlock ] = {};
 			}
-	
+
 			return unlock;
 		},
 		set: function( owner, data, value ) {
@@ -14979,11 +14656,11 @@
 				// and set the unlock as though an owner entry had always existed
 				unlock = this.key( owner ),
 				cache = this.cache[ unlock ];
-	
+
 			// Handle: [ owner, key, value ] args
 			if ( typeof data === "string" ) {
 				cache[ data ] = value;
-	
+
 			// Handle: [ owner, { properties } ] args
 			} else {
 				// Fresh assignments by object are shallow copied
@@ -15004,7 +14681,7 @@
 			// allowing direct access to the newly created
 			// empty data object. A valid owner object must be provided.
 			var cache = this.cache[ this.key( owner ) ];
-	
+
 			return key === undefined ?
 				cache : cache[ key ];
 		},
@@ -15023,13 +14700,13 @@
 			//
 			if ( key === undefined ||
 					((key && typeof key === "string") && value === undefined) ) {
-	
+
 				stored = this.get( owner, key );
-	
+
 				return stored !== undefined ?
 					stored : this.get( owner, jQuery.camelCase(key) );
 			}
-	
+
 			// [*]When the key is not a string, or both a key and value
 			// are specified, set or extend (existing objects) with either:
 			//
@@ -15037,7 +14714,7 @@
 			//   2. A key and value
 			//
 			this.set( owner, key, value );
-	
+
 			// Since the "set" path can have two possible entry points
 			// return the expected data based on which path was taken[*]
 			return value !== undefined ? value : key;
@@ -15046,10 +14723,10 @@
 			var i, name, camel,
 				unlock = this.key( owner ),
 				cache = this.cache[ unlock ];
-	
+
 			if ( key === undefined ) {
 				this.cache[ unlock ] = {};
-	
+
 			} else {
 				// Support array or space separated string of keys
 				if ( jQuery.isArray( key ) ) {
@@ -15073,7 +14750,7 @@
 							[ name ] : ( name.match( rnotwhite ) || [] );
 					}
 				}
-	
+
 				i = name.length;
 				while ( i-- ) {
 					delete cache[ name[ i ] ];
@@ -15092,11 +14769,11 @@
 		}
 	};
 	var data_priv = new Data();
-	
+
 	var data_user = new Data();
-	
-	
-	
+
+
+
 	//	Implementation Summary
 	//
 	//	1. Enforce API surface and semantic compatibility with 1.9.x branch
@@ -15106,19 +14783,19 @@
 	//	4. _Never_ expose "private" data to user code (TODO: Drop _data, _removeData)
 	//	5. Avoid exposing implementation details on user objects (eg. expando properties)
 	//	6. Provide a clear path for implementation upgrade to WeakMap in 2014
-	
+
 	var rbrace = /^(?:\{[\w\W]*\}|\[[\w\W]*\])$/,
 		rmultiDash = /([A-Z])/g;
-	
+
 	function dataAttr( elem, key, data ) {
 		var name;
-	
+
 		// If nothing was found internally, try to fetch any
 		// data from the HTML5 data-* attribute
 		if ( data === undefined && elem.nodeType === 1 ) {
 			name = "data-" + key.replace( rmultiDash, "-$1" ).toLowerCase();
 			data = elem.getAttribute( name );
-	
+
 			if ( typeof data === "string" ) {
 				try {
 					data = data === "true" ? true :
@@ -15129,7 +14806,7 @@
 						rbrace.test( data ) ? jQuery.parseJSON( data ) :
 						data;
 				} catch( e ) {}
-	
+
 				// Make sure we set the data so it isn't changed later
 				data_user.set( elem, key, data );
 			} else {
@@ -15138,46 +14815,46 @@
 		}
 		return data;
 	}
-	
+
 	jQuery.extend({
 		hasData: function( elem ) {
 			return data_user.hasData( elem ) || data_priv.hasData( elem );
 		},
-	
+
 		data: function( elem, name, data ) {
 			return data_user.access( elem, name, data );
 		},
-	
+
 		removeData: function( elem, name ) {
 			data_user.remove( elem, name );
 		},
-	
+
 		// TODO: Now that all calls to _data and _removeData have been replaced
 		// with direct calls to data_priv methods, these can be deprecated.
 		_data: function( elem, name, data ) {
 			return data_priv.access( elem, name, data );
 		},
-	
+
 		_removeData: function( elem, name ) {
 			data_priv.remove( elem, name );
 		}
 	});
-	
+
 	jQuery.fn.extend({
 		data: function( key, value ) {
 			var i, name, data,
 				elem = this[ 0 ],
 				attrs = elem && elem.attributes;
-	
+
 			// Gets all values
 			if ( key === undefined ) {
 				if ( this.length ) {
 					data = data_user.get( elem );
-	
+
 					if ( elem.nodeType === 1 && !data_priv.get( elem, "hasDataAttrs" ) ) {
 						i = attrs.length;
 						while ( i-- ) {
-	
+
 							// Support: IE11+
 							// The attrs elements can be null (#14894)
 							if ( attrs[ i ] ) {
@@ -15191,21 +14868,21 @@
 						data_priv.set( elem, "hasDataAttrs", true );
 					}
 				}
-	
+
 				return data;
 			}
-	
+
 			// Sets multiple values
 			if ( typeof key === "object" ) {
 				return this.each(function() {
 					data_user.set( this, key );
 				});
 			}
-	
+
 			return access( this, function( value ) {
 				var data,
 					camelKey = jQuery.camelCase( key );
-	
+
 				// The calling jQuery object (element matches) is not empty
 				// (and therefore has an element appears at this[ 0 ]) and the
 				// `value` parameter was not undefined. An empty jQuery object
@@ -15218,36 +14895,36 @@
 					if ( data !== undefined ) {
 						return data;
 					}
-	
+
 					// Attempt to get data from the cache
 					// with the key camelized
 					data = data_user.get( elem, camelKey );
 					if ( data !== undefined ) {
 						return data;
 					}
-	
+
 					// Attempt to "discover" the data in
 					// HTML5 custom data-* attrs
 					data = dataAttr( elem, camelKey, undefined );
 					if ( data !== undefined ) {
 						return data;
 					}
-	
+
 					// We tried really hard, but the data doesn't exist.
 					return;
 				}
-	
+
 				// Set the data...
 				this.each(function() {
 					// First, attempt to store a copy or reference of any
 					// data that might've been store with a camelCased key.
 					var data = data_user.get( this, camelKey );
-	
+
 					// For HTML5 data-* attribute interop, we have to
 					// store property names with dashes in a camelCase form.
 					// This might not apply to all properties...*
 					data_user.set( this, camelKey, value );
-	
+
 					// *... In the case of properties that might _actually_
 					// have dashes, we need to also store a copy of that
 					// unchanged property.
@@ -15257,23 +14934,23 @@
 				});
 			}, null, value, arguments.length > 1, null, true );
 		},
-	
+
 		removeData: function( key ) {
 			return this.each(function() {
 				data_user.remove( this, key );
 			});
 		}
 	});
-	
-	
+
+
 	jQuery.extend({
 		queue: function( elem, type, data ) {
 			var queue;
-	
+
 			if ( elem ) {
 				type = ( type || "fx" ) + "queue";
 				queue = data_priv.get( elem, type );
-	
+
 				// Speed up dequeue by getting out quickly if this is just a lookup
 				if ( data ) {
 					if ( !queue || jQuery.isArray( data ) ) {
@@ -15285,10 +14962,10 @@
 				return queue || [];
 			}
 		},
-	
+
 		dequeue: function( elem, type ) {
 			type = type || "fx";
-	
+
 			var queue = jQuery.queue( elem, type ),
 				startLength = queue.length,
 				fn = queue.shift(),
@@ -15296,31 +14973,31 @@
 				next = function() {
 					jQuery.dequeue( elem, type );
 				};
-	
+
 			// If the fx queue is dequeued, always remove the progress sentinel
 			if ( fn === "inprogress" ) {
 				fn = queue.shift();
 				startLength--;
 			}
-	
+
 			if ( fn ) {
-	
+
 				// Add a progress sentinel to prevent the fx queue from being
 				// automatically dequeued
 				if ( type === "fx" ) {
 					queue.unshift( "inprogress" );
 				}
-	
+
 				// Clear up the last queue stop function
 				delete hooks.stop;
 				fn.call( elem, next, hooks );
 			}
-	
+
 			if ( !startLength && hooks ) {
 				hooks.empty.fire();
 			}
 		},
-	
+
 		// Not public - generate a queueHooks object, or return the current one
 		_queueHooks: function( elem, type ) {
 			var key = type + "queueHooks";
@@ -15331,29 +15008,29 @@
 			});
 		}
 	});
-	
+
 	jQuery.fn.extend({
 		queue: function( type, data ) {
 			var setter = 2;
-	
+
 			if ( typeof type !== "string" ) {
 				data = type;
 				type = "fx";
 				setter--;
 			}
-	
+
 			if ( arguments.length < setter ) {
 				return jQuery.queue( this[0], type );
 			}
-	
+
 			return data === undefined ?
 				this :
 				this.each(function() {
 					var queue = jQuery.queue( this, type, data );
-	
+
 					// Ensure a hooks for this queue
 					jQuery._queueHooks( this, type );
-	
+
 					if ( type === "fx" && queue[0] !== "inprogress" ) {
 						jQuery.dequeue( this, type );
 					}
@@ -15380,13 +15057,13 @@
 						defer.resolveWith( elements, [ elements ] );
 					}
 				};
-	
+
 			if ( typeof type !== "string" ) {
 				obj = type;
 				type = undefined;
 			}
 			type = type || "fx";
-	
+
 			while ( i-- ) {
 				tmp = data_priv.get( elements[ i ], type + "queueHooks" );
 				if ( tmp && tmp.empty ) {
@@ -15399,25 +15076,25 @@
 		}
 	});
 	var pnum = (/[+-]?(?:\d*\.|)\d+(?:[eE][+-]?\d+|)/).source;
-	
+
 	var cssExpand = [ "Top", "Right", "Bottom", "Left" ];
-	
+
 	var isHidden = function( elem, el ) {
 			// isHidden might be called from jQuery#filter function;
 			// in that case, element will be second argument
 			elem = el || elem;
 			return jQuery.css( elem, "display" ) === "none" || !jQuery.contains( elem.ownerDocument, elem );
 		};
-	
+
 	var rcheckableType = (/^(?:checkbox|radio)$/i);
-	
-	
-	
+
+
+
 	(function() {
 		var fragment = document.createDocumentFragment(),
 			div = fragment.appendChild( document.createElement( "div" ) ),
 			input = document.createElement( "input" );
-	
+
 		// Support: Safari<=5.1
 		// Check state lost if the name is set (#11217)
 		// Support: Windows Web Apps (WWA)
@@ -15425,77 +15102,77 @@
 		input.setAttribute( "type", "radio" );
 		input.setAttribute( "checked", "checked" );
 		input.setAttribute( "name", "t" );
-	
+
 		div.appendChild( input );
-	
+
 		// Support: Safari<=5.1, Android<4.2
 		// Older WebKit doesn't clone checked state correctly in fragments
 		support.checkClone = div.cloneNode( true ).cloneNode( true ).lastChild.checked;
-	
+
 		// Support: IE<=11+
 		// Make sure textarea (and checkbox) defaultValue is properly cloned
 		div.innerHTML = "<textarea>x</textarea>";
 		support.noCloneChecked = !!div.cloneNode( true ).lastChild.defaultValue;
 	})();
 	var strundefined = typeof undefined;
-	
-	
-	
+
+
+
 	support.focusinBubbles = "onfocusin" in window;
-	
-	
+
+
 	var
 		rkeyEvent = /^key/,
 		rmouseEvent = /^(?:mouse|pointer|contextmenu)|click/,
 		rfocusMorph = /^(?:focusinfocus|focusoutblur)$/,
 		rtypenamespace = /^([^.]*)(?:\.(.+)|)$/;
-	
+
 	function returnTrue() {
 		return true;
 	}
-	
+
 	function returnFalse() {
 		return false;
 	}
-	
+
 	function safeActiveElement() {
 		try {
 			return document.activeElement;
 		} catch ( err ) { }
 	}
-	
+
 	/*
 	 * Helper functions for managing events -- not part of the public interface.
 	 * Props to Dean Edwards' addEvent library for many of the ideas.
 	 */
 	jQuery.event = {
-	
+
 		global: {},
-	
+
 		add: function( elem, types, handler, data, selector ) {
-	
+
 			var handleObjIn, eventHandle, tmp,
 				events, t, handleObj,
 				special, handlers, type, namespaces, origType,
 				elemData = data_priv.get( elem );
-	
+
 			// Don't attach events to noData or text/comment nodes (but allow plain objects)
 			if ( !elemData ) {
 				return;
 			}
-	
+
 			// Caller can pass in an object of custom data in lieu of the handler
 			if ( handler.handler ) {
 				handleObjIn = handler;
 				handler = handleObjIn.handler;
 				selector = handleObjIn.selector;
 			}
-	
+
 			// Make sure that the handler has a unique ID, used to find/remove it later
 			if ( !handler.guid ) {
 				handler.guid = jQuery.guid++;
 			}
-	
+
 			// Init the element's event structure and main handler, if this is the first
 			if ( !(events = elemData.events) ) {
 				events = elemData.events = {};
@@ -15508,7 +15185,7 @@
 						jQuery.event.dispatch.apply( elem, arguments ) : undefined;
 				};
 			}
-	
+
 			// Handle multiple events separated by a space
 			types = ( types || "" ).match( rnotwhite ) || [ "" ];
 			t = types.length;
@@ -15516,21 +15193,21 @@
 				tmp = rtypenamespace.exec( types[t] ) || [];
 				type = origType = tmp[1];
 				namespaces = ( tmp[2] || "" ).split( "." ).sort();
-	
+
 				// There *must* be a type, no attaching namespace-only handlers
 				if ( !type ) {
 					continue;
 				}
-	
+
 				// If event changes its type, use the special event handlers for the changed type
 				special = jQuery.event.special[ type ] || {};
-	
+
 				// If selector defined, determine special event api type, otherwise given type
 				type = ( selector ? special.delegateType : special.bindType ) || type;
-	
+
 				// Update special based on newly reset type
 				special = jQuery.event.special[ type ] || {};
-	
+
 				// handleObj is passed to all event handlers
 				handleObj = jQuery.extend({
 					type: type,
@@ -15542,12 +15219,12 @@
 					needsContext: selector && jQuery.expr.match.needsContext.test( selector ),
 					namespace: namespaces.join(".")
 				}, handleObjIn );
-	
+
 				// Init the event handler queue if we're the first
 				if ( !(handlers = events[ type ]) ) {
 					handlers = events[ type ] = [];
 					handlers.delegateCount = 0;
-	
+
 					// Only use addEventListener if the special events handler returns false
 					if ( !special.setup || special.setup.call( elem, data, namespaces, eventHandle ) === false ) {
 						if ( elem.addEventListener ) {
@@ -15555,40 +15232,40 @@
 						}
 					}
 				}
-	
+
 				if ( special.add ) {
 					special.add.call( elem, handleObj );
-	
+
 					if ( !handleObj.handler.guid ) {
 						handleObj.handler.guid = handler.guid;
 					}
 				}
-	
+
 				// Add to the element's handler list, delegates in front
 				if ( selector ) {
 					handlers.splice( handlers.delegateCount++, 0, handleObj );
 				} else {
 					handlers.push( handleObj );
 				}
-	
+
 				// Keep track of which events have ever been used, for event optimization
 				jQuery.event.global[ type ] = true;
 			}
-	
+
 		},
-	
+
 		// Detach an event or set of events from an element
 		remove: function( elem, types, handler, selector, mappedTypes ) {
-	
+
 			var j, origCount, tmp,
 				events, t, handleObj,
 				special, handlers, type, namespaces, origType,
 				elemData = data_priv.hasData( elem ) && data_priv.get( elem );
-	
+
 			if ( !elemData || !(events = elemData.events) ) {
 				return;
 			}
-	
+
 			// Once for each type.namespace in types; type may be omitted
 			types = ( types || "" ).match( rnotwhite ) || [ "" ];
 			t = types.length;
@@ -15596,7 +15273,7 @@
 				tmp = rtypenamespace.exec( types[t] ) || [];
 				type = origType = tmp[1];
 				namespaces = ( tmp[2] || "" ).split( "." ).sort();
-	
+
 				// Unbind all events (on this namespace, if provided) for the element
 				if ( !type ) {
 					for ( type in events ) {
@@ -15604,23 +15281,23 @@
 					}
 					continue;
 				}
-	
+
 				special = jQuery.event.special[ type ] || {};
 				type = ( selector ? special.delegateType : special.bindType ) || type;
 				handlers = events[ type ] || [];
 				tmp = tmp[2] && new RegExp( "(^|\\.)" + namespaces.join("\\.(?:.*\\.|)") + "(\\.|$)" );
-	
+
 				// Remove matching events
 				origCount = j = handlers.length;
 				while ( j-- ) {
 					handleObj = handlers[ j ];
-	
+
 					if ( ( mappedTypes || origType === handleObj.origType ) &&
 						( !handler || handler.guid === handleObj.guid ) &&
 						( !tmp || tmp.test( handleObj.namespace ) ) &&
 						( !selector || selector === handleObj.selector || selector === "**" && handleObj.selector ) ) {
 						handlers.splice( j, 1 );
-	
+
 						if ( handleObj.selector ) {
 							handlers.delegateCount--;
 						}
@@ -15629,44 +15306,44 @@
 						}
 					}
 				}
-	
+
 				// Remove generic event handler if we removed something and no more handlers exist
 				// (avoids potential for endless recursion during removal of special event handlers)
 				if ( origCount && !handlers.length ) {
 					if ( !special.teardown || special.teardown.call( elem, namespaces, elemData.handle ) === false ) {
 						jQuery.removeEvent( elem, type, elemData.handle );
 					}
-	
+
 					delete events[ type ];
 				}
 			}
-	
+
 			// Remove the expando if it's no longer used
 			if ( jQuery.isEmptyObject( events ) ) {
 				delete elemData.handle;
 				data_priv.remove( elem, "events" );
 			}
 		},
-	
+
 		trigger: function( event, data, elem, onlyHandlers ) {
-	
+
 			var i, cur, tmp, bubbleType, ontype, handle, special,
 				eventPath = [ elem || document ],
 				type = hasOwn.call( event, "type" ) ? event.type : event,
 				namespaces = hasOwn.call( event, "namespace" ) ? event.namespace.split(".") : [];
-	
+
 			cur = tmp = elem = elem || document;
-	
+
 			// Don't do events on text and comment nodes
 			if ( elem.nodeType === 3 || elem.nodeType === 8 ) {
 				return;
 			}
-	
+
 			// focus/blur morphs to focusin/out; ensure we're not firing them right now
 			if ( rfocusMorph.test( type + jQuery.event.triggered ) ) {
 				return;
 			}
-	
+
 			if ( type.indexOf(".") >= 0 ) {
 				// Namespaced trigger; create a regexp to match event type in handle()
 				namespaces = type.split(".");
@@ -15674,40 +15351,40 @@
 				namespaces.sort();
 			}
 			ontype = type.indexOf(":") < 0 && "on" + type;
-	
+
 			// Caller can pass in a jQuery.Event object, Object, or just an event type string
 			event = event[ jQuery.expando ] ?
 				event :
 				new jQuery.Event( type, typeof event === "object" && event );
-	
+
 			// Trigger bitmask: & 1 for native handlers; & 2 for jQuery (always true)
 			event.isTrigger = onlyHandlers ? 2 : 3;
 			event.namespace = namespaces.join(".");
 			event.namespace_re = event.namespace ?
 				new RegExp( "(^|\\.)" + namespaces.join("\\.(?:.*\\.|)") + "(\\.|$)" ) :
 				null;
-	
+
 			// Clean up the event in case it is being reused
 			event.result = undefined;
 			if ( !event.target ) {
 				event.target = elem;
 			}
-	
+
 			// Clone any incoming data and prepend the event, creating the handler arg list
 			data = data == null ?
 				[ event ] :
 				jQuery.makeArray( data, [ event ] );
-	
+
 			// Allow special events to draw outside the lines
 			special = jQuery.event.special[ type ] || {};
 			if ( !onlyHandlers && special.trigger && special.trigger.apply( elem, data ) === false ) {
 				return;
 			}
-	
+
 			// Determine event propagation path in advance, per W3C events spec (#9951)
 			// Bubble up to document, then to window; watch for a global ownerDocument var (#9724)
 			if ( !onlyHandlers && !special.noBubble && !jQuery.isWindow( elem ) ) {
-	
+
 				bubbleType = special.delegateType || type;
 				if ( !rfocusMorph.test( bubbleType + type ) ) {
 					cur = cur.parentNode;
@@ -15716,27 +15393,27 @@
 					eventPath.push( cur );
 					tmp = cur;
 				}
-	
+
 				// Only add window if we got to document (e.g., not plain obj or detached DOM)
 				if ( tmp === (elem.ownerDocument || document) ) {
 					eventPath.push( tmp.defaultView || tmp.parentWindow || window );
 				}
 			}
-	
+
 			// Fire handlers on the event path
 			i = 0;
 			while ( (cur = eventPath[i++]) && !event.isPropagationStopped() ) {
-	
+
 				event.type = i > 1 ?
 					bubbleType :
 					special.bindType || type;
-	
+
 				// jQuery handler
 				handle = ( data_priv.get( cur, "events" ) || {} )[ event.type ] && data_priv.get( cur, "handle" );
 				if ( handle ) {
 					handle.apply( cur, data );
 				}
-	
+
 				// Native handler
 				handle = ontype && cur[ ontype ];
 				if ( handle && handle.apply && jQuery.acceptData( cur ) ) {
@@ -15747,80 +15424,80 @@
 				}
 			}
 			event.type = type;
-	
+
 			// If nobody prevented the default action, do it now
 			if ( !onlyHandlers && !event.isDefaultPrevented() ) {
-	
+
 				if ( (!special._default || special._default.apply( eventPath.pop(), data ) === false) &&
 					jQuery.acceptData( elem ) ) {
-	
+
 					// Call a native DOM method on the target with the same name name as the event.
 					// Don't do default actions on window, that's where global variables be (#6170)
 					if ( ontype && jQuery.isFunction( elem[ type ] ) && !jQuery.isWindow( elem ) ) {
-	
+
 						// Don't re-trigger an onFOO event when we call its FOO() method
 						tmp = elem[ ontype ];
-	
+
 						if ( tmp ) {
 							elem[ ontype ] = null;
 						}
-	
+
 						// Prevent re-triggering of the same event, since we already bubbled it above
 						jQuery.event.triggered = type;
 						elem[ type ]();
 						jQuery.event.triggered = undefined;
-	
+
 						if ( tmp ) {
 							elem[ ontype ] = tmp;
 						}
 					}
 				}
 			}
-	
+
 			return event.result;
 		},
-	
+
 		dispatch: function( event ) {
-	
+
 			// Make a writable jQuery.Event from the native event object
 			event = jQuery.event.fix( event );
-	
+
 			var i, j, ret, matched, handleObj,
 				handlerQueue = [],
 				args = slice.call( arguments ),
 				handlers = ( data_priv.get( this, "events" ) || {} )[ event.type ] || [],
 				special = jQuery.event.special[ event.type ] || {};
-	
+
 			// Use the fix-ed jQuery.Event rather than the (read-only) native event
 			args[0] = event;
 			event.delegateTarget = this;
-	
+
 			// Call the preDispatch hook for the mapped type, and let it bail if desired
 			if ( special.preDispatch && special.preDispatch.call( this, event ) === false ) {
 				return;
 			}
-	
+
 			// Determine handlers
 			handlerQueue = jQuery.event.handlers.call( this, event, handlers );
-	
+
 			// Run delegates first; they may want to stop propagation beneath us
 			i = 0;
 			while ( (matched = handlerQueue[ i++ ]) && !event.isPropagationStopped() ) {
 				event.currentTarget = matched.elem;
-	
+
 				j = 0;
 				while ( (handleObj = matched.handlers[ j++ ]) && !event.isImmediatePropagationStopped() ) {
-	
+
 					// Triggered event must either 1) have no namespace, or 2) have namespace(s)
 					// a subset or equal to those in the bound event (both can have no namespace).
 					if ( !event.namespace_re || event.namespace_re.test( handleObj.namespace ) ) {
-	
+
 						event.handleObj = handleObj;
 						event.data = handleObj.data;
-	
+
 						ret = ( (jQuery.event.special[ handleObj.origType ] || {}).handle || handleObj.handler )
 								.apply( matched.elem, args );
-	
+
 						if ( ret !== undefined ) {
 							if ( (event.result = ret) === false ) {
 								event.preventDefault();
@@ -15830,37 +15507,37 @@
 					}
 				}
 			}
-	
+
 			// Call the postDispatch hook for the mapped type
 			if ( special.postDispatch ) {
 				special.postDispatch.call( this, event );
 			}
-	
+
 			return event.result;
 		},
-	
+
 		handlers: function( event, handlers ) {
 			var i, matches, sel, handleObj,
 				handlerQueue = [],
 				delegateCount = handlers.delegateCount,
 				cur = event.target;
-	
+
 			// Find delegate handlers
 			// Black-hole SVG <use> instance trees (#13180)
 			// Avoid non-left-click bubbling in Firefox (#3861)
 			if ( delegateCount && cur.nodeType && (!event.button || event.type !== "click") ) {
-	
+
 				for ( ; cur !== this; cur = cur.parentNode || this ) {
-	
+
 					// Don't process clicks on disabled elements (#6911, #8165, #11382, #11764)
 					if ( cur.disabled !== true || event.type !== "click" ) {
 						matches = [];
 						for ( i = 0; i < delegateCount; i++ ) {
 							handleObj = handlers[ i ];
-	
+
 							// Don't conflict with Object.prototype properties (#13203)
 							sel = handleObj.selector + " ";
-	
+
 							if ( matches[ sel ] === undefined ) {
 								matches[ sel ] = handleObj.needsContext ?
 									jQuery( sel, this ).index( cur ) >= 0 :
@@ -15876,70 +15553,70 @@
 					}
 				}
 			}
-	
+
 			// Add the remaining (directly-bound) handlers
 			if ( delegateCount < handlers.length ) {
 				handlerQueue.push({ elem: this, handlers: handlers.slice( delegateCount ) });
 			}
-	
+
 			return handlerQueue;
 		},
-	
+
 		// Includes some event props shared by KeyEvent and MouseEvent
 		props: "altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(" "),
-	
+
 		fixHooks: {},
-	
+
 		keyHooks: {
 			props: "char charCode key keyCode".split(" "),
 			filter: function( event, original ) {
-	
+
 				// Add which for key events
 				if ( event.which == null ) {
 					event.which = original.charCode != null ? original.charCode : original.keyCode;
 				}
-	
+
 				return event;
 			}
 		},
-	
+
 		mouseHooks: {
 			props: "button buttons clientX clientY offsetX offsetY pageX pageY screenX screenY toElement".split(" "),
 			filter: function( event, original ) {
 				var eventDoc, doc, body,
 					button = original.button;
-	
+
 				// Calculate pageX/Y if missing and clientX/Y available
 				if ( event.pageX == null && original.clientX != null ) {
 					eventDoc = event.target.ownerDocument || document;
 					doc = eventDoc.documentElement;
 					body = eventDoc.body;
-	
+
 					event.pageX = original.clientX + ( doc && doc.scrollLeft || body && body.scrollLeft || 0 ) - ( doc && doc.clientLeft || body && body.clientLeft || 0 );
 					event.pageY = original.clientY + ( doc && doc.scrollTop  || body && body.scrollTop  || 0 ) - ( doc && doc.clientTop  || body && body.clientTop  || 0 );
 				}
-	
+
 				// Add which for click: 1 === left; 2 === middle; 3 === right
 				// Note: button is not normalized, so don't use it
 				if ( !event.which && button !== undefined ) {
 					event.which = ( button & 1 ? 1 : ( button & 2 ? 3 : ( button & 4 ? 2 : 0 ) ) );
 				}
-	
+
 				return event;
 			}
 		},
-	
+
 		fix: function( event ) {
 			if ( event[ jQuery.expando ] ) {
 				return event;
 			}
-	
+
 			// Create a writable copy of the event object and normalize some properties
 			var i, prop, copy,
 				type = event.type,
 				originalEvent = event,
 				fixHook = this.fixHooks[ type ];
-	
+
 			if ( !fixHook ) {
 				this.fixHooks[ type ] = fixHook =
 					rmouseEvent.test( type ) ? this.mouseHooks :
@@ -15947,30 +15624,30 @@
 					{};
 			}
 			copy = fixHook.props ? this.props.concat( fixHook.props ) : this.props;
-	
+
 			event = new jQuery.Event( originalEvent );
-	
+
 			i = copy.length;
 			while ( i-- ) {
 				prop = copy[ i ];
 				event[ prop ] = originalEvent[ prop ];
 			}
-	
+
 			// Support: Cordova 2.5 (WebKit) (#13255)
 			// All events should have a target; Cordova deviceready doesn't
 			if ( !event.target ) {
 				event.target = document;
 			}
-	
+
 			// Support: Safari 6.0+, Chrome<28
 			// Target should not be a text node (#504, #13143)
 			if ( event.target.nodeType === 3 ) {
 				event.target = event.target.parentNode;
 			}
-	
+
 			return fixHook.filter ? fixHook.filter( event, originalEvent ) : event;
 		},
-	
+
 		special: {
 			load: {
 				// Prevent triggered image.load events from bubbling to window.load
@@ -16003,16 +15680,16 @@
 						return false;
 					}
 				},
-	
+
 				// For cross-browser consistency, don't fire native .click() on links
 				_default: function( event ) {
 					return jQuery.nodeName( event.target, "a" );
 				}
 			},
-	
+
 			beforeunload: {
 				postDispatch: function( event ) {
-	
+
 					// Support: Firefox 20+
 					// Firefox doesn't alert if the returnValue field is not set.
 					if ( event.result !== undefined && event.originalEvent ) {
@@ -16021,7 +15698,7 @@
 				}
 			}
 		},
-	
+
 		simulate: function( type, elem, event, bubble ) {
 			// Piggyback on a donor event to simulate a different one.
 			// Fake originalEvent to avoid donor's stopPropagation, but if the
@@ -16045,24 +15722,24 @@
 			}
 		}
 	};
-	
+
 	jQuery.removeEvent = function( elem, type, handle ) {
 		if ( elem.removeEventListener ) {
 			elem.removeEventListener( type, handle, false );
 		}
 	};
-	
+
 	jQuery.Event = function( src, props ) {
 		// Allow instantiation without the 'new' keyword
 		if ( !(this instanceof jQuery.Event) ) {
 			return new jQuery.Event( src, props );
 		}
-	
+
 		// Event object
 		if ( src && src.type ) {
 			this.originalEvent = src;
 			this.type = src.type;
-	
+
 			// Events bubbling up the document may have been marked as prevented
 			// by a handler lower down the tree; reflect the correct value.
 			this.isDefaultPrevented = src.defaultPrevented ||
@@ -16071,62 +15748,62 @@
 					src.returnValue === false ?
 				returnTrue :
 				returnFalse;
-	
+
 		// Event type
 		} else {
 			this.type = src;
 		}
-	
+
 		// Put explicitly provided properties onto the event object
 		if ( props ) {
 			jQuery.extend( this, props );
 		}
-	
+
 		// Create a timestamp if incoming event doesn't have one
 		this.timeStamp = src && src.timeStamp || jQuery.now();
-	
+
 		// Mark it as fixed
 		this[ jQuery.expando ] = true;
 	};
-	
+
 	// jQuery.Event is based on DOM3 Events as specified by the ECMAScript Language Binding
 	// http://www.w3.org/TR/2003/WD-DOM-Level-3-Events-20030331/ecma-script-binding.html
 	jQuery.Event.prototype = {
 		isDefaultPrevented: returnFalse,
 		isPropagationStopped: returnFalse,
 		isImmediatePropagationStopped: returnFalse,
-	
+
 		preventDefault: function() {
 			var e = this.originalEvent;
-	
+
 			this.isDefaultPrevented = returnTrue;
-	
+
 			if ( e && e.preventDefault ) {
 				e.preventDefault();
 			}
 		},
 		stopPropagation: function() {
 			var e = this.originalEvent;
-	
+
 			this.isPropagationStopped = returnTrue;
-	
+
 			if ( e && e.stopPropagation ) {
 				e.stopPropagation();
 			}
 		},
 		stopImmediatePropagation: function() {
 			var e = this.originalEvent;
-	
+
 			this.isImmediatePropagationStopped = returnTrue;
-	
+
 			if ( e && e.stopImmediatePropagation ) {
 				e.stopImmediatePropagation();
 			}
-	
+
 			this.stopPropagation();
 		}
 	};
-	
+
 	// Create mouseenter/leave events using mouseover/out and event-time checks
 	// Support: Chrome 15+
 	jQuery.each({
@@ -16138,13 +15815,13 @@
 		jQuery.event.special[ orig ] = {
 			delegateType: fix,
 			bindType: fix,
-	
+
 			handle: function( event ) {
 				var ret,
 					target = this,
 					related = event.relatedTarget,
 					handleObj = event.handleObj;
-	
+
 				// For mousenter/leave call the handler if related is outside the target.
 				// NB: No relatedTarget if the mouse left/entered the browser window
 				if ( !related || (related !== target && !jQuery.contains( target, related )) ) {
@@ -16156,22 +15833,22 @@
 			}
 		};
 	});
-	
+
 	// Support: Firefox, Chrome, Safari
 	// Create "bubbling" focus and blur events
 	if ( !support.focusinBubbles ) {
 		jQuery.each({ focus: "focusin", blur: "focusout" }, function( orig, fix ) {
-	
+
 			// Attach a single capturing handler on the document while someone wants focusin/focusout
 			var handler = function( event ) {
 					jQuery.event.simulate( fix, event.target, jQuery.event.fix( event ), true );
 				};
-	
+
 			jQuery.event.special[ fix ] = {
 				setup: function() {
 					var doc = this.ownerDocument || this,
 						attaches = data_priv.access( doc, fix );
-	
+
 					if ( !attaches ) {
 						doc.addEventListener( orig, handler, true );
 					}
@@ -16180,11 +15857,11 @@
 				teardown: function() {
 					var doc = this.ownerDocument || this,
 						attaches = data_priv.access( doc, fix ) - 1;
-	
+
 					if ( !attaches ) {
 						doc.removeEventListener( orig, handler, true );
 						data_priv.remove( doc, fix );
-	
+
 					} else {
 						data_priv.access( doc, fix, attaches );
 					}
@@ -16192,12 +15869,12 @@
 			};
 		});
 	}
-	
+
 	jQuery.fn.extend({
-	
+
 		on: function( types, selector, data, fn, /*INTERNAL*/ one ) {
 			var origFn, type;
-	
+
 			// Types can be a map of types/handlers
 			if ( typeof types === "object" ) {
 				// ( types-Object, selector, data )
@@ -16211,7 +15888,7 @@
 				}
 				return this;
 			}
-	
+
 			if ( data == null && fn == null ) {
 				// ( types, fn )
 				fn = selector;
@@ -16233,7 +15910,7 @@
 			} else if ( !fn ) {
 				return this;
 			}
-	
+
 			if ( one === 1 ) {
 				origFn = fn;
 				fn = function( event ) {
@@ -16282,7 +15959,7 @@
 				jQuery.event.remove( this, types, fn, selector );
 			});
 		},
-	
+
 		trigger: function( type, data ) {
 			return this.each(function() {
 				jQuery.event.trigger( type, data, this );
@@ -16295,8 +15972,8 @@
 			}
 		}
 	});
-	
-	
+
+
 	var
 		rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([\w:]+)[^>]*)\/>/gi,
 		rtagName = /<([\w:]+)/,
@@ -16307,38 +15984,38 @@
 		rscriptType = /^$|\/(?:java|ecma)script/i,
 		rscriptTypeMasked = /^true\/(.*)/,
 		rcleanScript = /^\s*<!(?:\[CDATA\[|--)|(?:\]\]|--)>\s*$/g,
-	
+
 		// We have to close these tags to support XHTML (#13200)
 		wrapMap = {
-	
+
 			// Support: IE9
 			option: [ 1, "<select multiple='multiple'>", "</select>" ],
-	
+
 			thead: [ 1, "<table>", "</table>" ],
 			col: [ 2, "<table><colgroup>", "</colgroup></table>" ],
 			tr: [ 2, "<table><tbody>", "</tbody></table>" ],
 			td: [ 3, "<table><tbody><tr>", "</tr></tbody></table>" ],
-	
+
 			_default: [ 0, "", "" ]
 		};
-	
+
 	// Support: IE9
 	wrapMap.optgroup = wrapMap.option;
-	
+
 	wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption = wrapMap.thead;
 	wrapMap.th = wrapMap.td;
-	
+
 	// Support: 1.x compatibility
 	// Manipulating tables requires a tbody
 	function manipulationTarget( elem, content ) {
 		return jQuery.nodeName( elem, "table" ) &&
 			jQuery.nodeName( content.nodeType !== 11 ? content : content.firstChild, "tr" ) ?
-	
+
 			elem.getElementsByTagName("tbody")[0] ||
 				elem.appendChild( elem.ownerDocument.createElement("tbody") ) :
 			elem;
 	}
-	
+
 	// Replace/restore the type attribute of script elements for safe DOM manipulation
 	function disableScript( elem ) {
 		elem.type = (elem.getAttribute("type") !== null) + "/" + elem.type;
@@ -16346,45 +16023,45 @@
 	}
 	function restoreScript( elem ) {
 		var match = rscriptTypeMasked.exec( elem.type );
-	
+
 		if ( match ) {
 			elem.type = match[ 1 ];
 		} else {
 			elem.removeAttribute("type");
 		}
-	
+
 		return elem;
 	}
-	
+
 	// Mark scripts as having already been evaluated
 	function setGlobalEval( elems, refElements ) {
 		var i = 0,
 			l = elems.length;
-	
+
 		for ( ; i < l; i++ ) {
 			data_priv.set(
 				elems[ i ], "globalEval", !refElements || data_priv.get( refElements[ i ], "globalEval" )
 			);
 		}
 	}
-	
+
 	function cloneCopyEvent( src, dest ) {
 		var i, l, type, pdataOld, pdataCur, udataOld, udataCur, events;
-	
+
 		if ( dest.nodeType !== 1 ) {
 			return;
 		}
-	
+
 		// 1. Copy private data: events, handlers, etc.
 		if ( data_priv.hasData( src ) ) {
 			pdataOld = data_priv.access( src );
 			pdataCur = data_priv.set( dest, pdataOld );
 			events = pdataOld.events;
-	
+
 			if ( events ) {
 				delete pdataCur.handle;
 				pdataCur.events = {};
-	
+
 				for ( type in events ) {
 					for ( i = 0, l = events[ type ].length; i < l; i++ ) {
 						jQuery.event.add( dest, type, events[ type ][ i ] );
@@ -16392,65 +16069,65 @@
 				}
 			}
 		}
-	
+
 		// 2. Copy user data
 		if ( data_user.hasData( src ) ) {
 			udataOld = data_user.access( src );
 			udataCur = jQuery.extend( {}, udataOld );
-	
+
 			data_user.set( dest, udataCur );
 		}
 	}
-	
+
 	function getAll( context, tag ) {
 		var ret = context.getElementsByTagName ? context.getElementsByTagName( tag || "*" ) :
 				context.querySelectorAll ? context.querySelectorAll( tag || "*" ) :
 				[];
-	
+
 		return tag === undefined || tag && jQuery.nodeName( context, tag ) ?
 			jQuery.merge( [ context ], ret ) :
 			ret;
 	}
-	
+
 	// Fix IE bugs, see support tests
 	function fixInput( src, dest ) {
 		var nodeName = dest.nodeName.toLowerCase();
-	
+
 		// Fails to persist the checked state of a cloned checkbox or radio button.
 		if ( nodeName === "input" && rcheckableType.test( src.type ) ) {
 			dest.checked = src.checked;
-	
+
 		// Fails to return the selected option to the default selected state when cloning options
 		} else if ( nodeName === "input" || nodeName === "textarea" ) {
 			dest.defaultValue = src.defaultValue;
 		}
 	}
-	
+
 	jQuery.extend({
 		clone: function( elem, dataAndEvents, deepDataAndEvents ) {
 			var i, l, srcElements, destElements,
 				clone = elem.cloneNode( true ),
 				inPage = jQuery.contains( elem.ownerDocument, elem );
-	
+
 			// Fix IE cloning issues
 			if ( !support.noCloneChecked && ( elem.nodeType === 1 || elem.nodeType === 11 ) &&
 					!jQuery.isXMLDoc( elem ) ) {
-	
+
 				// We eschew Sizzle here for performance reasons: http://jsperf.com/getall-vs-sizzle/2
 				destElements = getAll( clone );
 				srcElements = getAll( elem );
-	
+
 				for ( i = 0, l = srcElements.length; i < l; i++ ) {
 					fixInput( srcElements[ i ], destElements[ i ] );
 				}
 			}
-	
+
 			// Copy the events from the original to the clone
 			if ( dataAndEvents ) {
 				if ( deepDataAndEvents ) {
 					srcElements = srcElements || getAll( elem );
 					destElements = destElements || getAll( clone );
-	
+
 					for ( i = 0, l = srcElements.length; i < l; i++ ) {
 						cloneCopyEvent( srcElements[ i ], destElements[ i ] );
 					}
@@ -16458,89 +16135,89 @@
 					cloneCopyEvent( elem, clone );
 				}
 			}
-	
+
 			// Preserve script evaluation history
 			destElements = getAll( clone, "script" );
 			if ( destElements.length > 0 ) {
 				setGlobalEval( destElements, !inPage && getAll( elem, "script" ) );
 			}
-	
+
 			// Return the cloned set
 			return clone;
 		},
-	
+
 		buildFragment: function( elems, context, scripts, selection ) {
 			var elem, tmp, tag, wrap, contains, j,
 				fragment = context.createDocumentFragment(),
 				nodes = [],
 				i = 0,
 				l = elems.length;
-	
+
 			for ( ; i < l; i++ ) {
 				elem = elems[ i ];
-	
+
 				if ( elem || elem === 0 ) {
-	
+
 					// Add nodes directly
 					if ( jQuery.type( elem ) === "object" ) {
 						// Support: QtWebKit, PhantomJS
 						// push.apply(_, arraylike) throws on ancient WebKit
 						jQuery.merge( nodes, elem.nodeType ? [ elem ] : elem );
-	
+
 					// Convert non-html into a text node
 					} else if ( !rhtml.test( elem ) ) {
 						nodes.push( context.createTextNode( elem ) );
-	
+
 					// Convert html into DOM nodes
 					} else {
 						tmp = tmp || fragment.appendChild( context.createElement("div") );
-	
+
 						// Deserialize a standard representation
 						tag = ( rtagName.exec( elem ) || [ "", "" ] )[ 1 ].toLowerCase();
 						wrap = wrapMap[ tag ] || wrapMap._default;
 						tmp.innerHTML = wrap[ 1 ] + elem.replace( rxhtmlTag, "<$1></$2>" ) + wrap[ 2 ];
-	
+
 						// Descend through wrappers to the right content
 						j = wrap[ 0 ];
 						while ( j-- ) {
 							tmp = tmp.lastChild;
 						}
-	
+
 						// Support: QtWebKit, PhantomJS
 						// push.apply(_, arraylike) throws on ancient WebKit
 						jQuery.merge( nodes, tmp.childNodes );
-	
+
 						// Remember the top-level container
 						tmp = fragment.firstChild;
-	
+
 						// Ensure the created nodes are orphaned (#12392)
 						tmp.textContent = "";
 					}
 				}
 			}
-	
+
 			// Remove wrapper from fragment
 			fragment.textContent = "";
-	
+
 			i = 0;
 			while ( (elem = nodes[ i++ ]) ) {
-	
+
 				// #4087 - If origin and destination elements are the same, and this is
 				// that element, do not do anything
 				if ( selection && jQuery.inArray( elem, selection ) !== -1 ) {
 					continue;
 				}
-	
+
 				contains = jQuery.contains( elem.ownerDocument, elem );
-	
+
 				// Append to fragment
 				tmp = getAll( fragment.appendChild( elem ), "script" );
-	
+
 				// Preserve script evaluation history
 				if ( contains ) {
 					setGlobalEval( tmp );
 				}
-	
+
 				// Capture executables
 				if ( scripts ) {
 					j = 0;
@@ -16551,25 +16228,25 @@
 					}
 				}
 			}
-	
+
 			return fragment;
 		},
-	
+
 		cleanData: function( elems ) {
 			var data, elem, type, key,
 				special = jQuery.event.special,
 				i = 0;
-	
+
 			for ( ; (elem = elems[ i ]) !== undefined; i++ ) {
 				if ( jQuery.acceptData( elem ) ) {
 					key = elem[ data_priv.expando ];
-	
+
 					if ( key && (data = data_priv.cache[ key ]) ) {
 						if ( data.events ) {
 							for ( type in data.events ) {
 								if ( special[ type ] ) {
 									jQuery.event.remove( elem, type );
-	
+
 								// This is a shortcut to avoid jQuery.event.remove's overhead
 								} else {
 									jQuery.removeEvent( elem, type, data.handle );
@@ -16587,7 +16264,7 @@
 			}
 		}
 	});
-	
+
 	jQuery.fn.extend({
 		text: function( value ) {
 			return access( this, function( value ) {
@@ -16600,7 +16277,7 @@
 					});
 			}, null, value, arguments.length );
 		},
-	
+
 		append: function() {
 			return this.domManip( arguments, function( elem ) {
 				if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
@@ -16609,7 +16286,7 @@
 				}
 			});
 		},
-	
+
 		prepend: function() {
 			return this.domManip( arguments, function( elem ) {
 				if ( this.nodeType === 1 || this.nodeType === 11 || this.nodeType === 9 ) {
@@ -16618,7 +16295,7 @@
 				}
 			});
 		},
-	
+
 		before: function() {
 			return this.domManip( arguments, function( elem ) {
 				if ( this.parentNode ) {
@@ -16626,7 +16303,7 @@
 				}
 			});
 		},
-	
+
 		after: function() {
 			return this.domManip( arguments, function( elem ) {
 				if ( this.parentNode ) {
@@ -16634,17 +16311,17 @@
 				}
 			});
 		},
-	
+
 		remove: function( selector, keepData /* Internal Use Only */ ) {
 			var elem,
 				elems = selector ? jQuery.filter( selector, this ) : this,
 				i = 0;
-	
+
 			for ( ; (elem = elems[i]) != null; i++ ) {
 				if ( !keepData && elem.nodeType === 1 ) {
 					jQuery.cleanData( getAll( elem ) );
 				}
-	
+
 				if ( elem.parentNode ) {
 					if ( keepData && jQuery.contains( elem.ownerDocument, elem ) ) {
 						setGlobalEval( getAll( elem, "script" ) );
@@ -16652,103 +16329,103 @@
 					elem.parentNode.removeChild( elem );
 				}
 			}
-	
+
 			return this;
 		},
-	
+
 		empty: function() {
 			var elem,
 				i = 0;
-	
+
 			for ( ; (elem = this[i]) != null; i++ ) {
 				if ( elem.nodeType === 1 ) {
-	
+
 					// Prevent memory leaks
 					jQuery.cleanData( getAll( elem, false ) );
-	
+
 					// Remove any remaining nodes
 					elem.textContent = "";
 				}
 			}
-	
+
 			return this;
 		},
-	
+
 		clone: function( dataAndEvents, deepDataAndEvents ) {
 			dataAndEvents = dataAndEvents == null ? false : dataAndEvents;
 			deepDataAndEvents = deepDataAndEvents == null ? dataAndEvents : deepDataAndEvents;
-	
+
 			return this.map(function() {
 				return jQuery.clone( this, dataAndEvents, deepDataAndEvents );
 			});
 		},
-	
+
 		html: function( value ) {
 			return access( this, function( value ) {
 				var elem = this[ 0 ] || {},
 					i = 0,
 					l = this.length;
-	
+
 				if ( value === undefined && elem.nodeType === 1 ) {
 					return elem.innerHTML;
 				}
-	
+
 				// See if we can take a shortcut and just use innerHTML
 				if ( typeof value === "string" && !rnoInnerhtml.test( value ) &&
 					!wrapMap[ ( rtagName.exec( value ) || [ "", "" ] )[ 1 ].toLowerCase() ] ) {
-	
+
 					value = value.replace( rxhtmlTag, "<$1></$2>" );
-	
+
 					try {
 						for ( ; i < l; i++ ) {
 							elem = this[ i ] || {};
-	
+
 							// Remove element nodes and prevent memory leaks
 							if ( elem.nodeType === 1 ) {
 								jQuery.cleanData( getAll( elem, false ) );
 								elem.innerHTML = value;
 							}
 						}
-	
+
 						elem = 0;
-	
+
 					// If using innerHTML throws an exception, use the fallback method
 					} catch( e ) {}
 				}
-	
+
 				if ( elem ) {
 					this.empty().append( value );
 				}
 			}, null, value, arguments.length );
 		},
-	
+
 		replaceWith: function() {
 			var arg = arguments[ 0 ];
-	
+
 			// Make the changes, replacing each context element with the new content
 			this.domManip( arguments, function( elem ) {
 				arg = this.parentNode;
-	
+
 				jQuery.cleanData( getAll( this ) );
-	
+
 				if ( arg ) {
 					arg.replaceChild( elem, this );
 				}
 			});
-	
+
 			// Force removal if there was no new content (e.g., from empty arguments)
 			return arg && (arg.length || arg.nodeType) ? this : this.remove();
 		},
-	
+
 		detach: function( selector ) {
 			return this.remove( selector, true );
 		},
-	
+
 		domManip: function( args, callback ) {
-	
+
 			// Flatten any nested arrays
 			args = concat.apply( [], args );
-	
+
 			var fragment, first, scripts, hasScripts, node, doc,
 				i = 0,
 				l = this.length,
@@ -16756,7 +16433,7 @@
 				iNoClone = l - 1,
 				value = args[ 0 ],
 				isFunction = jQuery.isFunction( value );
-	
+
 			// We can't cloneNode fragments that contain checked, in WebKit
 			if ( isFunction ||
 					( l > 1 && typeof value === "string" &&
@@ -16769,27 +16446,27 @@
 					self.domManip( args, callback );
 				});
 			}
-	
+
 			if ( l ) {
 				fragment = jQuery.buildFragment( args, this[ 0 ].ownerDocument, false, this );
 				first = fragment.firstChild;
-	
+
 				if ( fragment.childNodes.length === 1 ) {
 					fragment = first;
 				}
-	
+
 				if ( first ) {
 					scripts = jQuery.map( getAll( fragment, "script" ), disableScript );
 					hasScripts = scripts.length;
-	
+
 					// Use the original fragment for the last item instead of the first because it can end up
 					// being emptied incorrectly in certain situations (#8070).
 					for ( ; i < l; i++ ) {
 						node = fragment;
-	
+
 						if ( i !== iNoClone ) {
 							node = jQuery.clone( node, true, true );
-	
+
 							// Keep references to cloned scripts for later restoration
 							if ( hasScripts ) {
 								// Support: QtWebKit
@@ -16797,22 +16474,22 @@
 								jQuery.merge( scripts, getAll( node, "script" ) );
 							}
 						}
-	
+
 						callback.call( this[ i ], node, i );
 					}
-	
+
 					if ( hasScripts ) {
 						doc = scripts[ scripts.length - 1 ].ownerDocument;
-	
+
 						// Reenable scripts
 						jQuery.map( scripts, restoreScript );
-	
+
 						// Evaluate executable scripts on first document insertion
 						for ( i = 0; i < hasScripts; i++ ) {
 							node = scripts[ i ];
 							if ( rscriptType.test( node.type || "" ) &&
 								!data_priv.access( node, "globalEval" ) && jQuery.contains( doc, node ) ) {
-	
+
 								if ( node.src ) {
 									// Optional AJAX dependency, but won't run scripts if not present
 									if ( jQuery._evalUrl ) {
@@ -16826,11 +16503,11 @@
 					}
 				}
 			}
-	
+
 			return this;
 		}
 	});
-	
+
 	jQuery.each({
 		appendTo: "append",
 		prependTo: "prepend",
@@ -16844,24 +16521,24 @@
 				insert = jQuery( selector ),
 				last = insert.length - 1,
 				i = 0;
-	
+
 			for ( ; i <= last; i++ ) {
 				elems = i === last ? this : this.clone( true );
 				jQuery( insert[ i ] )[ original ]( elems );
-	
+
 				// Support: QtWebKit
 				// .get() because push.apply(_, arraylike) throws
 				push.apply( ret, elems.get() );
 			}
-	
+
 			return this.pushStack( ret );
 		};
 	});
-	
-	
+
+
 	var iframe,
 		elemdisplay = {};
-	
+
 	/**
 	 * Retrieve the actual display of a element
 	 * @param {String} name nodeName of the element
@@ -16871,21 +16548,21 @@
 	function actualDisplay( name, doc ) {
 		var style,
 			elem = jQuery( doc.createElement( name ) ).appendTo( doc.body ),
-	
+
 			// getDefaultComputedStyle might be reliably used only on attached element
 			display = window.getDefaultComputedStyle && ( style = window.getDefaultComputedStyle( elem[ 0 ] ) ) ?
-	
+
 				// Use of this method is a temporary fix (more like optimization) until something better comes along,
 				// since it was removed from specification and supported only in FF
 				style.display : jQuery.css( elem[ 0 ], "display" );
-	
+
 		// We don't have any data stored on the element,
 		// so use "detach" method as fast way to get rid of the element
 		elem.detach();
-	
+
 		return display;
 	}
-	
+
 	/**
 	 * Try to determine the default display value of an element
 	 * @param {String} nodeName
@@ -16893,37 +16570,37 @@
 	function defaultDisplay( nodeName ) {
 		var doc = document,
 			display = elemdisplay[ nodeName ];
-	
+
 		if ( !display ) {
 			display = actualDisplay( nodeName, doc );
-	
+
 			// If the simple way fails, read from inside an iframe
 			if ( display === "none" || !display ) {
-	
+
 				// Use the already-created iframe if possible
 				iframe = (iframe || jQuery( "<iframe frameborder='0' width='0' height='0'/>" )).appendTo( doc.documentElement );
-	
+
 				// Always write a new HTML skeleton so Webkit and Firefox don't choke on reuse
 				doc = iframe[ 0 ].contentDocument;
-	
+
 				// Support: IE
 				doc.write();
 				doc.close();
-	
+
 				display = actualDisplay( nodeName, doc );
 				iframe.detach();
 			}
-	
+
 			// Store the correct default display
 			elemdisplay[ nodeName ] = display;
 		}
-	
+
 		return display;
 	}
 	var rmargin = (/^margin/);
-	
+
 	var rnumnonpx = new RegExp( "^(" + pnum + ")(?!px)[a-z%]+$", "i" );
-	
+
 	var getStyles = function( elem ) {
 			// Support: IE<=11+, Firefox<=30+ (#15098, #14150)
 			// IE throws on elements created in popups
@@ -16931,60 +16608,60 @@
 			if ( elem.ownerDocument.defaultView.opener ) {
 				return elem.ownerDocument.defaultView.getComputedStyle( elem, null );
 			}
-	
+
 			return window.getComputedStyle( elem, null );
 		};
-	
-	
-	
+
+
+
 	function curCSS( elem, name, computed ) {
 		var width, minWidth, maxWidth, ret,
 			style = elem.style;
-	
+
 		computed = computed || getStyles( elem );
-	
+
 		// Support: IE9
 		// getPropertyValue is only needed for .css('filter') (#12537)
 		if ( computed ) {
 			ret = computed.getPropertyValue( name ) || computed[ name ];
 		}
-	
+
 		if ( computed ) {
-	
+
 			if ( ret === "" && !jQuery.contains( elem.ownerDocument, elem ) ) {
 				ret = jQuery.style( elem, name );
 			}
-	
+
 			// Support: iOS < 6
 			// A tribute to the "awesome hack by Dean Edwards"
 			// iOS < 6 (at least) returns percentage for a larger set of values, but width seems to be reliably pixels
 			// this is against the CSSOM draft spec: http://dev.w3.org/csswg/cssom/#resolved-values
 			if ( rnumnonpx.test( ret ) && rmargin.test( name ) ) {
-	
+
 				// Remember the original values
 				width = style.width;
 				minWidth = style.minWidth;
 				maxWidth = style.maxWidth;
-	
+
 				// Put in the new values to get a computed value out
 				style.minWidth = style.maxWidth = style.width = ret;
 				ret = computed.width;
-	
+
 				// Revert the changed values
 				style.width = width;
 				style.minWidth = minWidth;
 				style.maxWidth = maxWidth;
 			}
 		}
-	
+
 		return ret !== undefined ?
 			// Support: IE
 			// IE returns zIndex value as an integer.
 			ret + "" :
 			ret;
 	}
-	
-	
+
+
 	function addGetHookIf( conditionFn, hookFn ) {
 		// Define the hook, we'll check on the first run if it's really needed.
 		return {
@@ -16995,34 +16672,34 @@
 					delete this.get;
 					return;
 				}
-	
+
 				// Hook needed; redefine it so that the support test is not executed again.
 				return (this.get = hookFn).apply( this, arguments );
 			}
 		};
 	}
-	
-	
+
+
 	(function() {
 		var pixelPositionVal, boxSizingReliableVal,
 			docElem = document.documentElement,
 			container = document.createElement( "div" ),
 			div = document.createElement( "div" );
-	
+
 		if ( !div.style ) {
 			return;
 		}
-	
+
 		// Support: IE9-11+
 		// Style of cloned element affects source element cloned (#8908)
 		div.style.backgroundClip = "content-box";
 		div.cloneNode( true ).style.backgroundClip = "";
 		support.clearCloneStyle = div.style.backgroundClip === "content-box";
-	
+
 		container.style.cssText = "border:0;width:0;height:0;top:0;left:-9999px;margin-top:1px;" +
 			"position:absolute";
 		container.appendChild( div );
-	
+
 		// Executing both pixelPosition & boxSizingReliable tests require only one layout
 		// so they're executed at the same time to save the second computation.
 		function computePixelPositionAndBoxSizingReliable() {
@@ -17034,20 +16711,20 @@
 				"border:1px;padding:1px;width:4px;position:absolute";
 			div.innerHTML = "";
 			docElem.appendChild( container );
-	
+
 			var divStyle = window.getComputedStyle( div, null );
 			pixelPositionVal = divStyle.top !== "1%";
 			boxSizingReliableVal = divStyle.width === "4px";
-	
+
 			docElem.removeChild( container );
 		}
-	
+
 		// Support: node.js jsdom
 		// Don't assume that getComputedStyle is a property of the global object
 		if ( window.getComputedStyle ) {
 			jQuery.extend( support, {
 				pixelPosition: function() {
-	
+
 					// This test is executed only once but we still do memoizing
 					// since we can use the boxSizingReliable pre-computing.
 					// No need to check if the test was already performed, though.
@@ -17061,7 +16738,7 @@
 					return boxSizingReliableVal;
 				},
 				reliableMarginRight: function() {
-	
+
 					// Support: Android 2.3
 					// Check if div with explicit width and no margin-right incorrectly
 					// gets computed margin-right based on width of container. (#3333)
@@ -17069,7 +16746,7 @@
 					// This support function is only executed once so no memoizing is needed.
 					var ret,
 						marginDiv = div.appendChild( document.createElement( "div" ) );
-	
+
 					// Reset CSS: box-sizing; display; margin; border; padding
 					marginDiv.style.cssText = div.style.cssText =
 						// Support: Firefox<29, Android 2.3
@@ -17079,79 +16756,79 @@
 					marginDiv.style.marginRight = marginDiv.style.width = "0";
 					div.style.width = "1px";
 					docElem.appendChild( container );
-	
+
 					ret = !parseFloat( window.getComputedStyle( marginDiv, null ).marginRight );
-	
+
 					docElem.removeChild( container );
 					div.removeChild( marginDiv );
-	
+
 					return ret;
 				}
 			});
 		}
 	})();
-	
-	
+
+
 	// A method for quickly swapping in/out CSS properties to get correct calculations.
 	jQuery.swap = function( elem, options, callback, args ) {
 		var ret, name,
 			old = {};
-	
+
 		// Remember the old values, and insert the new ones
 		for ( name in options ) {
 			old[ name ] = elem.style[ name ];
 			elem.style[ name ] = options[ name ];
 		}
-	
+
 		ret = callback.apply( elem, args || [] );
-	
+
 		// Revert the old values
 		for ( name in options ) {
 			elem.style[ name ] = old[ name ];
 		}
-	
+
 		return ret;
 	};
-	
-	
+
+
 	var
 		// Swappable if display is none or starts with table except "table", "table-cell", or "table-caption"
 		// See here for display values: https://developer.mozilla.org/en-US/docs/CSS/display
 		rdisplayswap = /^(none|table(?!-c[ea]).+)/,
 		rnumsplit = new RegExp( "^(" + pnum + ")(.*)$", "i" ),
 		rrelNum = new RegExp( "^([+-])=(" + pnum + ")", "i" ),
-	
+
 		cssShow = { position: "absolute", visibility: "hidden", display: "block" },
 		cssNormalTransform = {
 			letterSpacing: "0",
 			fontWeight: "400"
 		},
-	
+
 		cssPrefixes = [ "Webkit", "O", "Moz", "ms" ];
-	
+
 	// Return a css property mapped to a potentially vendor prefixed property
 	function vendorPropName( style, name ) {
-	
+
 		// Shortcut for names that are not vendor prefixed
 		if ( name in style ) {
 			return name;
 		}
-	
+
 		// Check for vendor prefixed names
 		var capName = name[0].toUpperCase() + name.slice(1),
 			origName = name,
 			i = cssPrefixes.length;
-	
+
 		while ( i-- ) {
 			name = cssPrefixes[ i ] + capName;
 			if ( name in style ) {
 				return name;
 			}
 		}
-	
+
 		return origName;
 	}
-	
+
 	function setPositiveNumber( elem, value, subtract ) {
 		var matches = rnumsplit.exec( value );
 		return matches ?
@@ -17159,28 +16836,28 @@
 			Math.max( 0, matches[ 1 ] - ( subtract || 0 ) ) + ( matches[ 2 ] || "px" ) :
 			value;
 	}
-	
+
 	function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
 		var i = extra === ( isBorderBox ? "border" : "content" ) ?
 			// If we already have the right measurement, avoid augmentation
 			4 :
 			// Otherwise initialize for horizontal or vertical properties
 			name === "width" ? 1 : 0,
-	
+
 			val = 0;
-	
+
 		for ( ; i < 4; i += 2 ) {
 			// Both box models exclude margin, so add it if we want it
 			if ( extra === "margin" ) {
 				val += jQuery.css( elem, extra + cssExpand[ i ], true, styles );
 			}
-	
+
 			if ( isBorderBox ) {
 				// border-box includes padding, so remove it if we want content
 				if ( extra === "content" ) {
 					val -= jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
 				}
-	
+
 				// At this point, extra isn't border nor margin, so remove border
 				if ( extra !== "margin" ) {
 					val -= jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
@@ -17188,25 +16865,25 @@
 			} else {
 				// At this point, extra isn't content, so add padding
 				val += jQuery.css( elem, "padding" + cssExpand[ i ], true, styles );
-	
+
 				// At this point, extra isn't content nor padding, so add border
 				if ( extra !== "padding" ) {
 					val += jQuery.css( elem, "border" + cssExpand[ i ] + "Width", true, styles );
 				}
 			}
 		}
-	
+
 		return val;
 	}
-	
+
 	function getWidthOrHeight( elem, name, extra ) {
-	
+
 		// Start with offset property, which is equivalent to the border-box value
 		var valueIsBorderBox = true,
 			val = name === "width" ? elem.offsetWidth : elem.offsetHeight,
 			styles = getStyles( elem ),
 			isBorderBox = jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
-	
+
 		// Some non-html elements return undefined for offsetWidth, so check for null/undefined
 		// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
 		// MathML - https://bugzilla.mozilla.org/show_bug.cgi?id=491668
@@ -17216,21 +16893,21 @@
 			if ( val < 0 || val == null ) {
 				val = elem.style[ name ];
 			}
-	
+
 			// Computed unit is not pixels. Stop here and return.
 			if ( rnumnonpx.test(val) ) {
 				return val;
 			}
-	
+
 			// Check for style in case a browser which returns unreliable values
 			// for getComputedStyle silently falls back to the reliable elem.style
 			valueIsBorderBox = isBorderBox &&
 				( support.boxSizingReliable() || val === elem.style[ name ] );
-	
+
 			// Normalize "", auto, and prepare for extra
 			val = parseFloat( val ) || 0;
 		}
-	
+
 		// Use the active box-sizing model to add/subtract irrelevant styles
 		return ( val +
 			augmentWidthOrHeight(
@@ -17242,19 +16919,19 @@
 			)
 		) + "px";
 	}
-	
+
 	function showHide( elements, show ) {
 		var display, elem, hidden,
 			values = [],
 			index = 0,
 			length = elements.length;
-	
+
 		for ( ; index < length; index++ ) {
 			elem = elements[ index ];
 			if ( !elem.style ) {
 				continue;
 			}
-	
+
 			values[ index ] = data_priv.get( elem, "olddisplay" );
 			display = elem.style.display;
 			if ( show ) {
@@ -17263,7 +16940,7 @@
 				if ( !values[ index ] && display === "none" ) {
 					elem.style.display = "";
 				}
-	
+
 				// Set elements which have been overridden with display: none
 				// in a stylesheet to whatever the default browser style is
 				// for such an element
@@ -17272,13 +16949,13 @@
 				}
 			} else {
 				hidden = isHidden( elem );
-	
+
 				if ( display !== "none" || !hidden ) {
 					data_priv.set( elem, "olddisplay", hidden ? display : jQuery.css( elem, "display" ) );
 				}
 			}
 		}
-	
+
 		// Set the display of most of the elements in a second loop
 		// to avoid the constant reflow
 		for ( index = 0; index < length; index++ ) {
@@ -17290,19 +16967,19 @@
 				elem.style.display = show ? values[ index ] || "" : "none";
 			}
 		}
-	
+
 		return elements;
 	}
-	
+
 	jQuery.extend({
-	
+
 		// Add in style property hooks for overriding the default
 		// behavior of getting and setting a style property
 		cssHooks: {
 			opacity: {
 				get: function( elem, computed ) {
 					if ( computed ) {
-	
+
 						// We should always get a number back from opacity
 						var ret = curCSS( elem, "opacity" );
 						return ret === "" ? "1" : ret;
@@ -17310,7 +16987,7 @@
 				}
 			}
 		},
-	
+
 		// Don't automatically add "px" to these possibly-unitless properties
 		cssNumber: {
 			"columnCount": true,
@@ -17326,99 +17003,99 @@
 			"zIndex": true,
 			"zoom": true
 		},
-	
+
 		// Add in properties whose names you wish to fix before
 		// setting or getting the value
 		cssProps: {
 			"float": "cssFloat"
 		},
-	
+
 		// Get and set the style property on a DOM Node
 		style: function( elem, name, value, extra ) {
-	
+
 			// Don't set styles on text and comment nodes
 			if ( !elem || elem.nodeType === 3 || elem.nodeType === 8 || !elem.style ) {
 				return;
 			}
-	
+
 			// Make sure that we're working with the right name
 			var ret, type, hooks,
 				origName = jQuery.camelCase( name ),
 				style = elem.style;
-	
+
 			name = jQuery.cssProps[ origName ] || ( jQuery.cssProps[ origName ] = vendorPropName( style, origName ) );
-	
+
 			// Gets hook for the prefixed version, then unprefixed version
 			hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
-	
+
 			// Check if we're setting a value
 			if ( value !== undefined ) {
 				type = typeof value;
-	
+
 				// Convert "+=" or "-=" to relative numbers (#7345)
 				if ( type === "string" && (ret = rrelNum.exec( value )) ) {
 					value = ( ret[1] + 1 ) * ret[2] + parseFloat( jQuery.css( elem, name ) );
 					// Fixes bug #9237
 					type = "number";
 				}
-	
+
 				// Make sure that null and NaN values aren't set (#7116)
 				if ( value == null || value !== value ) {
 					return;
 				}
-	
+
 				// If a number, add 'px' to the (except for certain CSS properties)
 				if ( type === "number" && !jQuery.cssNumber[ origName ] ) {
 					value += "px";
 				}
-	
+
 				// Support: IE9-11+
 				// background-* props affect original clone's values
 				if ( !support.clearCloneStyle && value === "" && name.indexOf( "background" ) === 0 ) {
 					style[ name ] = "inherit";
 				}
-	
+
 				// If a hook was provided, use that value, otherwise just set the specified value
 				if ( !hooks || !("set" in hooks) || (value = hooks.set( elem, value, extra )) !== undefined ) {
 					style[ name ] = value;
 				}
-	
+
 			} else {
 				// If a hook was provided get the non-computed value from there
 				if ( hooks && "get" in hooks && (ret = hooks.get( elem, false, extra )) !== undefined ) {
 					return ret;
 				}
-	
+
 				// Otherwise just get the value from the style object
 				return style[ name ];
 			}
 		},
-	
+
 		css: function( elem, name, extra, styles ) {
 			var val, num, hooks,
 				origName = jQuery.camelCase( name );
-	
+
 			// Make sure that we're working with the right name
 			name = jQuery.cssProps[ origName ] || ( jQuery.cssProps[ origName ] = vendorPropName( elem.style, origName ) );
-	
+
 			// Try prefixed name followed by the unprefixed name
 			hooks = jQuery.cssHooks[ name ] || jQuery.cssHooks[ origName ];
-	
+
 			// If a hook was provided get the computed value from there
 			if ( hooks && "get" in hooks ) {
 				val = hooks.get( elem, true, extra );
 			}
-	
+
 			// Otherwise, if a way to get the computed value exists, use that
 			if ( val === undefined ) {
 				val = curCSS( elem, name, styles );
 			}
-	
+
 			// Convert "normal" to computed value
 			if ( val === "normal" && name in cssNormalTransform ) {
 				val = cssNormalTransform[ name ];
 			}
-	
+
 			// Make numeric if forced or a qualifier was provided and val looks numeric
 			if ( extra === "" || extra ) {
 				num = parseFloat( val );
@@ -17427,12 +17104,12 @@
 			return val;
 		}
 	});
-	
+
 	jQuery.each([ "height", "width" ], function( i, name ) {
 		jQuery.cssHooks[ name ] = {
 			get: function( elem, computed, extra ) {
 				if ( computed ) {
-	
+
 					// Certain elements can have dimension info if we invisibly show them
 					// but it must have a current display style that would benefit
 					return rdisplayswap.test( jQuery.css( elem, "display" ) ) && elem.offsetWidth === 0 ?
@@ -17442,7 +17119,7 @@
 						getWidthOrHeight( elem, name, extra );
 				}
 			},
-	
+
 			set: function( elem, value, extra ) {
 				var styles = extra && getStyles( elem );
 				return setPositiveNumber( elem, value, extra ?
@@ -17457,7 +17134,7 @@
 			}
 		};
 	});
-	
+
 	// Support: Android 2.3
 	jQuery.cssHooks.marginRight = addGetHookIf( support.reliableMarginRight,
 		function( elem, computed ) {
@@ -17467,7 +17144,7 @@
 			}
 		}
 	);
-	
+
 	// These hooks are used by animate to expand properties
 	jQuery.each({
 		margin: "",
@@ -17478,42 +17155,42 @@
 			expand: function( value ) {
 				var i = 0,
 					expanded = {},
-	
+
 					// Assumes a single number if not a string
 					parts = typeof value === "string" ? value.split(" ") : [ value ];
-	
+
 				for ( ; i < 4; i++ ) {
 					expanded[ prefix + cssExpand[ i ] + suffix ] =
 						parts[ i ] || parts[ i - 2 ] || parts[ 0 ];
 				}
-	
+
 				return expanded;
 			}
 		};
-	
+
 		if ( !rmargin.test( prefix ) ) {
 			jQuery.cssHooks[ prefix + suffix ].set = setPositiveNumber;
 		}
 	});
-	
+
 	jQuery.fn.extend({
 		css: function( name, value ) {
 			return access( this, function( elem, name, value ) {
 				var styles, len,
 					map = {},
 					i = 0;
-	
+
 				if ( jQuery.isArray( name ) ) {
 					styles = getStyles( elem );
 					len = name.length;
-	
+
 					for ( ; i < len; i++ ) {
 						map[ name[ i ] ] = jQuery.css( elem, name[ i ], false, styles );
 					}
-	
+
 					return map;
 				}
-	
+
 				return value !== undefined ?
 					jQuery.style( elem, name, value ) :
 					jQuery.css( elem, name );
@@ -17529,7 +17206,7 @@
 			if ( typeof state === "boolean" ) {
 				return state ? this.show() : this.hide();
 			}
-	
+
 			return this.each(function() {
 				if ( isHidden( this ) ) {
 					jQuery( this ).show();
@@ -17539,13 +17216,13 @@
 			});
 		}
 	});
-	
-	
+
+
 	function Tween( elem, options, prop, end, easing ) {
 		return new Tween.prototype.init( elem, options, prop, end, easing );
 	}
 	jQuery.Tween = Tween;
-	
+
 	Tween.prototype = {
 		constructor: Tween,
 		init: function( elem, options, prop, end, easing, unit ) {
@@ -17559,7 +17236,7 @@
 		},
 		cur: function() {
 			var hooks = Tween.propHooks[ this.prop ];
-	
+
 			return hooks && hooks.get ?
 				hooks.get( this ) :
 				Tween.propHooks._default.get( this );
@@ -17567,7 +17244,7 @@
 		run: function( percent ) {
 			var eased,
 				hooks = Tween.propHooks[ this.prop ];
-	
+
 			if ( this.options.duration ) {
 				this.pos = eased = jQuery.easing[ this.easing ](
 					percent, this.options.duration * percent, 0, 1, this.options.duration
@@ -17576,11 +17253,11 @@
 				this.pos = eased = percent;
 			}
 			this.now = ( this.end - this.start ) * eased + this.start;
-	
+
 			if ( this.options.step ) {
 				this.options.step.call( this.elem, this.now, this );
 			}
-	
+
 			if ( hooks && hooks.set ) {
 				hooks.set( this );
 			} else {
@@ -17589,19 +17266,19 @@
 			return this;
 		}
 	};
-	
+
 	Tween.prototype.init.prototype = Tween.prototype;
-	
+
 	Tween.propHooks = {
 		_default: {
 			get: function( tween ) {
 				var result;
-	
+
 				if ( tween.elem[ tween.prop ] != null &&
 					(!tween.elem.style || tween.elem.style[ tween.prop ] == null) ) {
 					return tween.elem[ tween.prop ];
 				}
-	
+
 				// Passing an empty string as a 3rd parameter to .css will automatically
 				// attempt a parseFloat and fallback to a string if the parse fails.
 				// Simple values such as "10px" are parsed to Float;
@@ -17624,7 +17301,7 @@
 			}
 		}
 	};
-	
+
 	// Support: IE9
 	// Panic based approach to setting things on disconnected nodes
 	Tween.propHooks.scrollTop = Tween.propHooks.scrollLeft = {
@@ -17634,7 +17311,7 @@
 			}
 		}
 	};
-	
+
 	jQuery.easing = {
 		linear: function( p ) {
 			return p;
@@ -17643,15 +17320,15 @@
 			return 0.5 - Math.cos( p * Math.PI ) / 2;
 		}
 	};
-	
+
 	jQuery.fx = Tween.prototype.init;
-	
+
 	// Back Compat <1.8 extension point
 	jQuery.fx.step = {};
-	
-	
-	
-	
+
+
+
+
 	var
 		fxNow, timerId,
 		rfxtypes = /^(?:toggle|show|hide)$/,
@@ -17664,37 +17341,37 @@
 					target = tween.cur(),
 					parts = rfxnum.exec( value ),
 					unit = parts && parts[ 3 ] || ( jQuery.cssNumber[ prop ] ? "" : "px" ),
-	
+
 					// Starting value computation is required for potential unit mismatches
 					start = ( jQuery.cssNumber[ prop ] || unit !== "px" && +target ) &&
 						rfxnum.exec( jQuery.css( tween.elem, prop ) ),
 					scale = 1,
 					maxIterations = 20;
-	
+
 				if ( start && start[ 3 ] !== unit ) {
 					// Trust units reported by jQuery.css
 					unit = unit || start[ 3 ];
-	
+
 					// Make sure we update the tween properties later on
 					parts = parts || [];
-	
+
 					// Iteratively approximate from a nonzero starting point
 					start = +target || 1;
-	
+
 					do {
 						// If previous iteration zeroed out, double until we get *something*.
 						// Use string for doubling so we don't accidentally see scale as unchanged below
 						scale = scale || ".5";
-	
+
 						// Adjust and apply
 						start = start / scale;
 						jQuery.style( tween.elem, prop, start + unit );
-	
+
 					// Update scale, tolerating zero or NaN from tween.cur(),
 					// break the loop if scale is unchanged or perfect, or if we've just had enough
 					} while ( scale !== (scale = tween.cur() / target) && scale !== 1 && --maxIterations );
 				}
-	
+
 				// Update tween properties
 				if ( parts ) {
 					start = tween.start = +start || +target || 0;
@@ -17704,11 +17381,11 @@
 						start + ( parts[ 1 ] + 1 ) * parts[ 2 ] :
 						+parts[ 2 ];
 				}
-	
+
 				return tween;
 			} ]
 		};
-	
+
 	// Animations created synchronously will run synchronously
 	function createFxNow() {
 		setTimeout(function() {
@@ -17716,13 +17393,13 @@
 		});
 		return ( fxNow = jQuery.now() );
 	}
-	
+
 	// Generate parameters to create a standard animation
 	function genFx( type, includeWidth ) {
 		var which,
 			i = 0,
 			attrs = { height: type };
-	
+
 		// If we include width, step value is 1 to do all cssExpand values,
 		// otherwise step value is 2 to skip over Left and Right
 		includeWidth = includeWidth ? 1 : 0;
@@ -17730,14 +17407,14 @@
 			which = cssExpand[ i ];
 			attrs[ "margin" + which ] = attrs[ "padding" + which ] = type;
 		}
-	
+
 		if ( includeWidth ) {
 			attrs.opacity = attrs.width = type;
 		}
-	
+
 		return attrs;
 	}
-	
+
 	function createTween( value, prop, animation ) {
 		var tween,
 			collection = ( tweeners[ prop ] || [] ).concat( tweeners[ "*" ] ),
@@ -17745,13 +17422,13 @@
 			length = collection.length;
 		for ( ; index < length; index++ ) {
 			if ( (tween = collection[ index ].call( animation, prop, value )) ) {
-	
+
 				// We're done with this property
 				return tween;
 			}
 		}
 	}
-	
+
 	function defaultPrefilter( elem, props, opts ) {
 		/* jshint validthis: true */
 		var prop, value, toggle, tween, hooks, oldfire, display, checkDisplay,
@@ -17760,7 +17437,7 @@
 			style = elem.style,
 			hidden = elem.nodeType && isHidden( elem ),
 			dataShow = data_priv.get( elem, "fxshow" );
-	
+
 		// Handle queue: false promises
 		if ( !opts.queue ) {
 			hooks = jQuery._queueHooks( elem, "fx" );
@@ -17774,7 +17451,7 @@
 				};
 			}
 			hooks.unqueued++;
-	
+
 			anim.always(function() {
 				// Ensure the complete handler is called before this completes
 				anim.always(function() {
@@ -17785,7 +17462,7 @@
 				});
 			});
 		}
-	
+
 		// Height/width overflow pass
 		if ( elem.nodeType === 1 && ( "height" in props || "width" in props ) ) {
 			// Make sure that nothing sneaks out
@@ -17793,20 +17470,20 @@
 			// change the overflow attribute when overflowX and
 			// overflowY are set to the same value
 			opts.overflow = [ style.overflow, style.overflowX, style.overflowY ];
-	
+
 			// Set display property to inline-block for height/width
 			// animations on inline elements that are having width/height animated
 			display = jQuery.css( elem, "display" );
-	
+
 			// Test default display if display is currently "none"
 			checkDisplay = display === "none" ?
 				data_priv.get( elem, "olddisplay" ) || defaultDisplay( elem.nodeName ) : display;
-	
+
 			if ( checkDisplay === "inline" && jQuery.css( elem, "float" ) === "none" ) {
 				style.display = "inline-block";
 			}
 		}
-	
+
 		if ( opts.overflow ) {
 			style.overflow = "hidden";
 			anim.always(function() {
@@ -17815,7 +17492,7 @@
 				style.overflowY = opts.overflow[ 2 ];
 			});
 		}
-	
+
 		// show/hide pass
 		for ( prop in props ) {
 			value = props[ prop ];
@@ -17823,7 +17500,7 @@
 				delete props[ prop ];
 				toggle = toggle || value === "toggle";
 				if ( value === ( hidden ? "hide" : "show" ) ) {
-	
+
 					// If there is dataShow left over from a stopped hide or show and we are going to proceed with show, we should pretend to be hidden
 					if ( value === "show" && dataShow && dataShow[ prop ] !== undefined ) {
 						hidden = true;
@@ -17832,13 +17509,13 @@
 					}
 				}
 				orig[ prop ] = dataShow && dataShow[ prop ] || jQuery.style( elem, prop );
-	
+
 			// Any non-fx value stops us from restoring the original display value
 			} else {
 				display = undefined;
 			}
 		}
-	
+
 		if ( !jQuery.isEmptyObject( orig ) ) {
 			if ( dataShow ) {
 				if ( "hidden" in dataShow ) {
@@ -17847,7 +17524,7 @@
 			} else {
 				dataShow = data_priv.access( elem, "fxshow", {} );
 			}
-	
+
 			// Store state if its toggle - enables .stop().toggle() to "reverse"
 			if ( toggle ) {
 				dataShow.hidden = !hidden;
@@ -17861,7 +17538,7 @@
 			}
 			anim.done(function() {
 				var prop;
-	
+
 				data_priv.remove( elem, "fxshow" );
 				for ( prop in orig ) {
 					jQuery.style( elem, prop, orig[ prop ] );
@@ -17869,7 +17546,7 @@
 			});
 			for ( prop in orig ) {
 				tween = createTween( hidden ? dataShow[ prop ] : 0, prop, anim );
-	
+
 				if ( !( prop in dataShow ) ) {
 					dataShow[ prop ] = tween.start;
 					if ( hidden ) {
@@ -17878,16 +17555,16 @@
 					}
 				}
 			}
-	
+
 		// If this is a noop like .hide().hide(), restore an overwritten display value
 		} else if ( (display === "none" ? defaultDisplay( elem.nodeName ) : display) === "inline" ) {
 			style.display = display;
 		}
 	}
-	
+
 	function propFilter( props, specialEasing ) {
 		var index, name, easing, value, hooks;
-	
+
 		// camelCase, specialEasing and expand cssHook pass
 		for ( index in props ) {
 			name = jQuery.camelCase( index );
@@ -17897,17 +17574,17 @@
 				easing = value[ 1 ];
 				value = props[ index ] = value[ 0 ];
 			}
-	
+
 			if ( index !== name ) {
 				props[ name ] = value;
 				delete props[ index ];
 			}
-	
+
 			hooks = jQuery.cssHooks[ name ];
 			if ( hooks && "expand" in hooks ) {
 				value = hooks.expand( value );
 				delete props[ name ];
-	
+
 				// Not quite $.extend, this won't overwrite existing keys.
 				// Reusing 'index' because we have the correct "name"
 				for ( index in value ) {
@@ -17921,7 +17598,7 @@
 			}
 		}
 	}
-	
+
 	function Animation( elem, properties, options ) {
 		var result,
 			stopped,
@@ -17943,13 +17620,13 @@
 					percent = 1 - temp,
 					index = 0,
 					length = animation.tweens.length;
-	
+
 				for ( ; index < length ; index++ ) {
 					animation.tweens[ index ].run( percent );
 				}
-	
+
 				deferred.notifyWith( elem, [ animation, percent, remaining ]);
-	
+
 				if ( percent < 1 && length ) {
 					return remaining;
 				} else {
@@ -17984,7 +17661,7 @@
 					for ( ; index < length ; index++ ) {
 						animation.tweens[ index ].run( 1 );
 					}
-	
+
 					// Resolve when we played the last frame; otherwise, reject
 					if ( gotoEnd ) {
 						deferred.resolveWith( elem, [ animation, gotoEnd ] );
@@ -17995,22 +17672,22 @@
 				}
 			}),
 			props = animation.props;
-	
+
 		propFilter( props, animation.opts.specialEasing );
-	
+
 		for ( ; index < length ; index++ ) {
 			result = animationPrefilters[ index ].call( animation, elem, props, animation.opts );
 			if ( result ) {
 				return result;
 			}
 		}
-	
+
 		jQuery.map( props, createTween, animation );
-	
+
 		if ( jQuery.isFunction( animation.opts.start ) ) {
 			animation.opts.start.call( elem, animation );
 		}
-	
+
 		jQuery.fx.timer(
 			jQuery.extend( tick, {
 				elem: elem,
@@ -18018,16 +17695,16 @@
 				queue: animation.opts.queue
 			})
 		);
-	
+
 		// attach callbacks from options
 		return animation.progress( animation.opts.progress )
 			.done( animation.opts.done, animation.opts.complete )
 			.fail( animation.opts.fail )
 			.always( animation.opts.always );
 	}
-	
+
 	jQuery.Animation = jQuery.extend( Animation, {
-	
+
 		tweener: function( props, callback ) {
 			if ( jQuery.isFunction( props ) ) {
 				callback = props;
@@ -18035,18 +17712,18 @@
 			} else {
 				props = props.split(" ");
 			}
-	
+
 			var prop,
 				index = 0,
 				length = props.length;
-	
+
 			for ( ; index < length ; index++ ) {
 				prop = props[ index ];
 				tweeners[ prop ] = tweeners[ prop ] || [];
 				tweeners[ prop ].unshift( callback );
 			}
 		},
-	
+
 		prefilter: function( callback, prepend ) {
 			if ( prepend ) {
 				animationPrefilters.unshift( callback );
@@ -18055,7 +17732,7 @@
 			}
 		}
 	});
-	
+
 	jQuery.speed = function( speed, easing, fn ) {
 		var opt = speed && typeof speed === "object" ? jQuery.extend( {}, speed ) : {
 			complete: fn || !fn && easing ||
@@ -18063,37 +17740,37 @@
 			duration: speed,
 			easing: fn && easing || easing && !jQuery.isFunction( easing ) && easing
 		};
-	
+
 		opt.duration = jQuery.fx.off ? 0 : typeof opt.duration === "number" ? opt.duration :
 			opt.duration in jQuery.fx.speeds ? jQuery.fx.speeds[ opt.duration ] : jQuery.fx.speeds._default;
-	
+
 		// Normalize opt.queue - true/undefined/null -> "fx"
 		if ( opt.queue == null || opt.queue === true ) {
 			opt.queue = "fx";
 		}
-	
+
 		// Queueing
 		opt.old = opt.complete;
-	
+
 		opt.complete = function() {
 			if ( jQuery.isFunction( opt.old ) ) {
 				opt.old.call( this );
 			}
-	
+
 			if ( opt.queue ) {
 				jQuery.dequeue( this, opt.queue );
 			}
 		};
-	
+
 		return opt;
 	};
-	
+
 	jQuery.fn.extend({
 		fadeTo: function( speed, to, easing, callback ) {
-	
+
 			// Show any hidden elements after setting opacity to 0
 			return this.filter( isHidden ).css( "opacity", 0 ).show()
-	
+
 				// Animate to the value specified
 				.end().animate({ opacity: to }, speed, easing, callback );
 		},
@@ -18103,14 +17780,14 @@
 				doAnimation = function() {
 					// Operate on a copy of prop so per-property easing won't be lost
 					var anim = Animation( this, jQuery.extend( {}, prop ), optall );
-	
+
 					// Empty animations, or finishing resolves immediately
 					if ( empty || data_priv.get( this, "finish" ) ) {
 						anim.stop( true );
 					}
 				};
 				doAnimation.finish = doAnimation;
-	
+
 			return empty || optall.queue === false ?
 				this.each( doAnimation ) :
 				this.queue( optall.queue, doAnimation );
@@ -18121,7 +17798,7 @@
 				delete hooks.stop;
 				stop( gotoEnd );
 			};
-	
+
 			if ( typeof type !== "string" ) {
 				gotoEnd = clearQueue;
 				clearQueue = type;
@@ -18130,13 +17807,13 @@
 			if ( clearQueue && type !== false ) {
 				this.queue( type || "fx", [] );
 			}
-	
+
 			return this.each(function() {
 				var dequeue = true,
 					index = type != null && type + "queueHooks",
 					timers = jQuery.timers,
 					data = data_priv.get( this );
-	
+
 				if ( index ) {
 					if ( data[ index ] && data[ index ].stop ) {
 						stopQueue( data[ index ] );
@@ -18148,7 +17825,7 @@
 						}
 					}
 				}
-	
+
 				for ( index = timers.length; index--; ) {
 					if ( timers[ index ].elem === this && (type == null || timers[ index ].queue === type) ) {
 						timers[ index ].anim.stop( gotoEnd );
@@ -18156,7 +17833,7 @@
 						timers.splice( index, 1 );
 					}
 				}
-	
+
 				// Start the next in the queue if the last step wasn't forced.
 				// Timers currently will call their complete callbacks, which
 				// will dequeue but only if they were gotoEnd.
@@ -18176,17 +17853,17 @@
 					hooks = data[ type + "queueHooks" ],
 					timers = jQuery.timers,
 					length = queue ? queue.length : 0;
-	
+
 				// Enable finishing flag on private data
 				data.finish = true;
-	
+
 				// Empty the queue first
 				jQuery.queue( this, type, [] );
-	
+
 				if ( hooks && hooks.stop ) {
 					hooks.stop.call( this, true );
 				}
-	
+
 				// Look for any active animations, and finish them
 				for ( index = timers.length; index--; ) {
 					if ( timers[ index ].elem === this && timers[ index ].queue === type ) {
@@ -18194,20 +17871,20 @@
 						timers.splice( index, 1 );
 					}
 				}
-	
+
 				// Look for any animations in the old queue and finish them
 				for ( index = 0; index < length; index++ ) {
 					if ( queue[ index ] && queue[ index ].finish ) {
 						queue[ index ].finish.call( this );
 					}
 				}
-	
+
 				// Turn off finishing flag
 				delete data.finish;
 			});
 		}
 	});
-	
+
 	jQuery.each([ "toggle", "show", "hide" ], function( i, name ) {
 		var cssFn = jQuery.fn[ name ];
 		jQuery.fn[ name ] = function( speed, easing, callback ) {
@@ -18216,7 +17893,7 @@
 				this.animate( genFx( name, true ), speed, easing, callback );
 		};
 	});
-	
+
 	// Generate shortcuts for custom animations
 	jQuery.each({
 		slideDown: genFx("show"),
@@ -18230,15 +17907,15 @@
 			return this.animate( props, speed, easing, callback );
 		};
 	});
-	
+
 	jQuery.timers = [];
 	jQuery.fx.tick = function() {
 		var timer,
 			i = 0,
 			timers = jQuery.timers;
-	
+
 		fxNow = jQuery.now();
-	
+
 		for ( ; i < timers.length; i++ ) {
 			timer = timers[ i ];
 			// Checks the timer has not already been removed
@@ -18246,13 +17923,13 @@
 				timers.splice( i--, 1 );
 			}
 		}
-	
+
 		if ( !timers.length ) {
 			jQuery.fx.stop();
 		}
 		fxNow = undefined;
 	};
-	
+
 	jQuery.fx.timer = function( timer ) {
 		jQuery.timers.push( timer );
 		if ( timer() ) {
@@ -18261,34 +17938,34 @@
 			jQuery.timers.pop();
 		}
 	};
-	
+
 	jQuery.fx.interval = 13;
-	
+
 	jQuery.fx.start = function() {
 		if ( !timerId ) {
 			timerId = setInterval( jQuery.fx.tick, jQuery.fx.interval );
 		}
 	};
-	
+
 	jQuery.fx.stop = function() {
 		clearInterval( timerId );
 		timerId = null;
 	};
-	
+
 	jQuery.fx.speeds = {
 		slow: 600,
 		fast: 200,
 		// Default speed
 		_default: 400
 	};
-	
-	
+
+
 	// Based off of the plugin by Clint Helfers, with permission.
 	// http://blindsignals.com/index.php/2009/07/jquery-delay/
 	jQuery.fn.delay = function( time, type ) {
 		time = jQuery.fx ? jQuery.fx.speeds[ time ] || time : time;
 		type = type || "fx";
-	
+
 		return this.queue( type, function( next, hooks ) {
 			var timeout = setTimeout( next, time );
 			hooks.stop = function() {
@@ -18296,28 +17973,28 @@
 			};
 		});
 	};
-	
-	
+
+
 	(function() {
 		var input = document.createElement( "input" ),
 			select = document.createElement( "select" ),
 			opt = select.appendChild( document.createElement( "option" ) );
-	
+
 		input.type = "checkbox";
-	
+
 		// Support: iOS<=5.1, Android<=4.2+
 		// Default value for a checkbox should be "on"
 		support.checkOn = input.value !== "";
-	
+
 		// Support: IE<=11+
 		// Must access selectedIndex to make default options select
 		support.optSelected = opt.selected;
-	
+
 		// Support: Android<=2.3
 		// Options inside disabled selects are incorrectly marked as disabled
 		select.disabled = true;
 		support.optDisabled = !opt.disabled;
-	
+
 		// Support: IE<=11+
 		// An input loses its value after becoming a radio
 		input = document.createElement( "input" );
@@ -18325,38 +18002,38 @@
 		input.type = "radio";
 		support.radioValue = input.value === "t";
 	})();
-	
-	
+
+
 	var nodeHook, boolHook,
 		attrHandle = jQuery.expr.attrHandle;
-	
+
 	jQuery.fn.extend({
 		attr: function( name, value ) {
 			return access( this, jQuery.attr, name, value, arguments.length > 1 );
 		},
-	
+
 		removeAttr: function( name ) {
 			return this.each(function() {
 				jQuery.removeAttr( this, name );
 			});
 		}
 	});
-	
+
 	jQuery.extend({
 		attr: function( elem, name, value ) {
 			var hooks, ret,
 				nType = elem.nodeType;
-	
+
 			// don't get/set attributes on text, comment and attribute nodes
 			if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
 				return;
 			}
-	
+
 			// Fallback to prop when attributes are not supported
 			if ( typeof elem.getAttribute === strundefined ) {
 				return jQuery.prop( elem, name, value );
 			}
-	
+
 			// All attributes are lowercase
 			// Grab necessary hook if one is defined
 			if ( nType !== 1 || !jQuery.isXMLDoc( elem ) ) {
@@ -18364,53 +18041,53 @@
 				hooks = jQuery.attrHooks[ name ] ||
 					( jQuery.expr.match.bool.test( name ) ? boolHook : nodeHook );
 			}
-	
+
 			if ( value !== undefined ) {
-	
+
 				if ( value === null ) {
 					jQuery.removeAttr( elem, name );
-	
+
 				} else if ( hooks && "set" in hooks && (ret = hooks.set( elem, value, name )) !== undefined ) {
 					return ret;
-	
+
 				} else {
 					elem.setAttribute( name, value + "" );
 					return value;
 				}
-	
+
 			} else if ( hooks && "get" in hooks && (ret = hooks.get( elem, name )) !== null ) {
 				return ret;
-	
+
 			} else {
 				ret = jQuery.find.attr( elem, name );
-	
+
 				// Non-existent attributes return null, we normalize to undefined
 				return ret == null ?
 					undefined :
 					ret;
 			}
 		},
-	
+
 		removeAttr: function( elem, value ) {
 			var name, propName,
 				i = 0,
 				attrNames = value && value.match( rnotwhite );
-	
+
 			if ( attrNames && elem.nodeType === 1 ) {
 				while ( (name = attrNames[i++]) ) {
 					propName = jQuery.propFix[ name ] || name;
-	
+
 					// Boolean attributes get special treatment (#10870)
 					if ( jQuery.expr.match.bool.test( name ) ) {
 						// Set corresponding property to false
 						elem[ propName ] = false;
 					}
-	
+
 					elem.removeAttribute( name );
 				}
 			}
 		},
-	
+
 		attrHooks: {
 			type: {
 				set: function( elem, value ) {
@@ -18427,7 +18104,7 @@
 			}
 		}
 	});
-	
+
 	// Hooks for boolean attributes
 	boolHook = {
 		set: function( elem, value, name ) {
@@ -18442,7 +18119,7 @@
 	};
 	jQuery.each( jQuery.expr.match.bool.source.match( /\w+/g ), function( i, name ) {
 		var getter = attrHandle[ name ] || jQuery.find.attr;
-	
+
 		attrHandle[ name ] = function( elem, name, isXML ) {
 			var ret, handle;
 			if ( !isXML ) {
@@ -18457,59 +18134,59 @@
 			return ret;
 		};
 	});
-	
-	
-	
-	
+
+
+
+
 	var rfocusable = /^(?:input|select|textarea|button)$/i;
-	
+
 	jQuery.fn.extend({
 		prop: function( name, value ) {
 			return access( this, jQuery.prop, name, value, arguments.length > 1 );
 		},
-	
+
 		removeProp: function( name ) {
 			return this.each(function() {
 				delete this[ jQuery.propFix[ name ] || name ];
 			});
 		}
 	});
-	
+
 	jQuery.extend({
 		propFix: {
 			"for": "htmlFor",
 			"class": "className"
 		},
-	
+
 		prop: function( elem, name, value ) {
 			var ret, hooks, notxml,
 				nType = elem.nodeType;
-	
+
 			// Don't get/set properties on text, comment and attribute nodes
 			if ( !elem || nType === 3 || nType === 8 || nType === 2 ) {
 				return;
 			}
-	
+
 			notxml = nType !== 1 || !jQuery.isXMLDoc( elem );
-	
+
 			if ( notxml ) {
 				// Fix name and attach hooks
 				name = jQuery.propFix[ name ] || name;
 				hooks = jQuery.propHooks[ name ];
 			}
-	
+
 			if ( value !== undefined ) {
 				return hooks && "set" in hooks && (ret = hooks.set( elem, value, name )) !== undefined ?
 					ret :
 					( elem[ name ] = value );
-	
+
 			} else {
 				return hooks && "get" in hooks && (ret = hooks.get( elem, name )) !== null ?
 					ret :
 					elem[ name ];
 			}
 		},
-	
+
 		propHooks: {
 			tabIndex: {
 				get: function( elem ) {
@@ -18520,7 +18197,7 @@
 			}
 		}
 	});
-	
+
 	if ( !support.optSelected ) {
 		jQuery.propHooks.selected = {
 			get: function( elem ) {
@@ -18532,7 +18209,7 @@
 			}
 		};
 	}
-	
+
 	jQuery.each([
 		"tabIndex",
 		"readOnly",
@@ -18547,36 +18224,36 @@
 	], function() {
 		jQuery.propFix[ this.toLowerCase() ] = this;
 	});
-	
-	
-	
-	
+
+
+
+
 	var rclass = /[\t\r\n\f]/g;
-	
+
 	jQuery.fn.extend({
 		addClass: function( value ) {
 			var classes, elem, cur, clazz, j, finalValue,
 				proceed = typeof value === "string" && value,
 				i = 0,
 				len = this.length;
-	
+
 			if ( jQuery.isFunction( value ) ) {
 				return this.each(function( j ) {
 					jQuery( this ).addClass( value.call( this, j, this.className ) );
 				});
 			}
-	
+
 			if ( proceed ) {
 				// The disjunction here is for better compressibility (see removeClass)
 				classes = ( value || "" ).match( rnotwhite ) || [];
-	
+
 				for ( ; i < len; i++ ) {
 					elem = this[ i ];
 					cur = elem.nodeType === 1 && ( elem.className ?
 						( " " + elem.className + " " ).replace( rclass, " " ) :
 						" "
 					);
-	
+
 					if ( cur ) {
 						j = 0;
 						while ( (clazz = classes[j++]) ) {
@@ -18584,7 +18261,7 @@
 								cur += clazz + " ";
 							}
 						}
-	
+
 						// only assign if different to avoid unneeded rendering.
 						finalValue = jQuery.trim( cur );
 						if ( elem.className !== finalValue ) {
@@ -18593,16 +18270,16 @@
 					}
 				}
 			}
-	
+
 			return this;
 		},
-	
+
 		removeClass: function( value ) {
 			var classes, elem, cur, clazz, j, finalValue,
 				proceed = arguments.length === 0 || typeof value === "string" && value,
 				i = 0,
 				len = this.length;
-	
+
 			if ( jQuery.isFunction( value ) ) {
 				return this.each(function( j ) {
 					jQuery( this ).removeClass( value.call( this, j, this.className ) );
@@ -18610,7 +18287,7 @@
 			}
 			if ( proceed ) {
 				classes = ( value || "" ).match( rnotwhite ) || [];
-	
+
 				for ( ; i < len; i++ ) {
 					elem = this[ i ];
 					// This expression is here for better compressibility (see addClass)
@@ -18618,7 +18295,7 @@
 						( " " + elem.className + " " ).replace( rclass, " " ) :
 						""
 					);
-	
+
 					if ( cur ) {
 						j = 0;
 						while ( (clazz = classes[j++]) ) {
@@ -18627,7 +18304,7 @@
 								cur = cur.replace( " " + clazz + " ", " " );
 							}
 						}
-	
+
 						// Only assign if different to avoid unneeded rendering.
 						finalValue = value ? jQuery.trim( cur ) : "";
 						if ( elem.className !== finalValue ) {
@@ -18636,23 +18313,23 @@
 					}
 				}
 			}
-	
+
 			return this;
 		},
-	
+
 		toggleClass: function( value, stateVal ) {
 			var type = typeof value;
-	
+
 			if ( typeof stateVal === "boolean" && type === "string" ) {
 				return stateVal ? this.addClass( value ) : this.removeClass( value );
 			}
-	
+
 			if ( jQuery.isFunction( value ) ) {
 				return this.each(function( i ) {
 					jQuery( this ).toggleClass( value.call(this, i, this.className, stateVal), stateVal );
 				});
 			}
-	
+
 			return this.each(function() {
 				if ( type === "string" ) {
 					// Toggle individual class names
@@ -18660,7 +18337,7 @@
 						i = 0,
 						self = jQuery( this ),
 						classNames = value.match( rnotwhite ) || [];
-	
+
 					while ( (className = classNames[ i++ ]) ) {
 						// Check each className given, space separated list
 						if ( self.hasClass( className ) ) {
@@ -18669,14 +18346,14 @@
 							self.addClass( className );
 						}
 					}
-	
+
 				// Toggle whole class name
 				} else if ( type === strundefined || type === "boolean" ) {
 					if ( this.className ) {
 						// store className if set
 						data_priv.set( this, "__className__", this.className );
 					}
-	
+
 					// If the element has a class name or if we're passed `false`,
 					// then remove the whole classname (if there was one, the above saved it).
 					// Otherwise bring back whatever was previously saved (if anything),
@@ -18685,7 +18362,7 @@
 				}
 			});
 		},
-	
+
 		hasClass: function( selector ) {
 			var className = " " + selector + " ",
 				i = 0,
@@ -18695,71 +18372,71 @@
 					return true;
 				}
 			}
-	
+
 			return false;
 		}
 	});
-	
-	
-	
-	
+
+
+
+
 	var rreturn = /\r/g;
-	
+
 	jQuery.fn.extend({
 		val: function( value ) {
 			var hooks, ret, isFunction,
 				elem = this[0];
-	
+
 			if ( !arguments.length ) {
 				if ( elem ) {
 					hooks = jQuery.valHooks[ elem.type ] || jQuery.valHooks[ elem.nodeName.toLowerCase() ];
-	
+
 					if ( hooks && "get" in hooks && (ret = hooks.get( elem, "value" )) !== undefined ) {
 						return ret;
 					}
-	
+
 					ret = elem.value;
-	
+
 					return typeof ret === "string" ?
 						// Handle most common string cases
 						ret.replace(rreturn, "") :
 						// Handle cases where value is null/undef or number
 						ret == null ? "" : ret;
 				}
-	
+
 				return;
 			}
-	
+
 			isFunction = jQuery.isFunction( value );
-	
+
 			return this.each(function( i ) {
 				var val;
-	
+
 				if ( this.nodeType !== 1 ) {
 					return;
 				}
-	
+
 				if ( isFunction ) {
 					val = value.call( this, i, jQuery( this ).val() );
 				} else {
 					val = value;
 				}
-	
+
 				// Treat null/undefined as ""; convert numbers to string
 				if ( val == null ) {
 					val = "";
-	
+
 				} else if ( typeof val === "number" ) {
 					val += "";
-	
+
 				} else if ( jQuery.isArray( val ) ) {
 					val = jQuery.map( val, function( value ) {
 						return value == null ? "" : value + "";
 					});
 				}
-	
+
 				hooks = jQuery.valHooks[ this.type ] || jQuery.valHooks[ this.nodeName.toLowerCase() ];
-	
+
 				// If set returns undefined, fall back to normal setting
 				if ( !hooks || !("set" in hooks) || hooks.set( this, val, "value" ) === undefined ) {
 					this.value = val;
@@ -18767,7 +18444,7 @@
 			});
 		}
 	});
-	
+
 	jQuery.extend({
 		valHooks: {
 			option: {
@@ -18791,46 +18468,46 @@
 						i = index < 0 ?
 							max :
 							one ? index : 0;
-	
+
 					// Loop through all the selected options
 					for ( ; i < max; i++ ) {
 						option = options[ i ];
-	
+
 						// IE6-9 doesn't update selected after form reset (#2551)
 						if ( ( option.selected || i === index ) &&
 								// Don't return options that are disabled or in a disabled optgroup
 								( support.optDisabled ? !option.disabled : option.getAttribute( "disabled" ) === null ) &&
 								( !option.parentNode.disabled || !jQuery.nodeName( option.parentNode, "optgroup" ) ) ) {
-	
+
 							// Get the specific value for the option
 							value = jQuery( option ).val();
-	
+
 							// We don't need an array for one selects
 							if ( one ) {
 								return value;
 							}
-	
+
 							// Multi-Selects return an array
 							values.push( value );
 						}
 					}
-	
+
 					return values;
 				},
-	
+
 				set: function( elem, value ) {
 					var optionSet, option,
 						options = elem.options,
 						values = jQuery.makeArray( value ),
 						i = options.length;
-	
+
 					while ( i-- ) {
 						option = options[ i ];
 						if ( (option.selected = jQuery.inArray( option.value, values ) >= 0) ) {
 							optionSet = true;
 						}
 					}
-	
+
 					// Force browsers to behave consistently when non-matching value is set
 					if ( !optionSet ) {
 						elem.selectedIndex = -1;
@@ -18840,7 +18517,7 @@
 			}
 		}
 	});
-	
+
 	// Radios and checkboxes getter/setter
 	jQuery.each([ "radio", "checkbox" ], function() {
 		jQuery.valHooks[ this ] = {
@@ -18856,17 +18533,17 @@
 			};
 		}
 	});
-	
-	
-	
-	
+
+
+
+
 	// Return jQuery for attributes-only inclusion
-	
-	
+
+
 	jQuery.each( ("blur focus focusin focusout load resize scroll unload click dblclick " +
 		"mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave " +
 		"change select submit keydown keypress keyup error contextmenu").split(" "), function( i, name ) {
-	
+
 		// Handle event binding
 		jQuery.fn[ name ] = function( data, fn ) {
 			return arguments.length > 0 ?
@@ -18874,19 +18551,19 @@
 				this.trigger( name );
 		};
 	});
-	
+
 	jQuery.fn.extend({
 		hover: function( fnOver, fnOut ) {
 			return this.mouseenter( fnOver ).mouseleave( fnOut || fnOver );
 		},
-	
+
 		bind: function( types, data, fn ) {
 			return this.on( types, null, data, fn );
 		},
 		unbind: function( types, fn ) {
 			return this.off( types, null, fn );
 		},
-	
+
 		delegate: function( selector, types, data, fn ) {
 			return this.on( types, selector, data, fn );
 		},
@@ -18895,28 +18572,28 @@
 			return arguments.length === 1 ? this.off( selector, "**" ) : this.off( types, selector || "**", fn );
 		}
 	});
-	
-	
+
+
 	var nonce = jQuery.now();
-	
+
 	var rquery = (/\?/);
-	
-	
-	
+
+
+
 	// Support: Android 2.3
 	// Workaround failure to string-cast null input
 	jQuery.parseJSON = function( data ) {
 		return JSON.parse( data + "" );
 	};
-	
-	
+
+
 	// Cross-browser xml parsing
 	jQuery.parseXML = function( data ) {
 		var xml, tmp;
 		if ( !data || typeof data !== "string" ) {
 			return null;
 		}
-	
+
 		// Support: IE9
 		try {
 			tmp = new DOMParser();
@@ -18924,14 +18601,14 @@
 		} catch ( e ) {
 			xml = undefined;
 		}
-	
+
 		if ( !xml || xml.getElementsByTagName( "parsererror" ).length ) {
 			jQuery.error( "Invalid XML: " + data );
 		}
 		return xml;
 	};
-	
-	
+
+
 	var
 		rhash = /#.*$/,
 		rts = /([?&])_=[^&]*/,
@@ -18941,7 +18618,7 @@
 		rnoContent = /^(?:GET|HEAD)$/,
 		rprotocol = /^\/\//,
 		rurl = /^([\w.+-]+:)(?:\/\/(?:[^\/?#]*@|)([^\/?#:]*)(?::(\d+)|)|)/,
-	
+
 		/* Prefilters
 		 * 1) They are useful to introduce custom dataTypes (see ajax/jsonp.js for an example)
 		 * 2) These are called:
@@ -18952,38 +18629,38 @@
 		 * 5) execution will start with transport dataType and THEN continue down to "*" if needed
 		 */
 		prefilters = {},
-	
+
 		/* Transports bindings
 		 * 1) key is the dataType
 		 * 2) the catchall symbol "*" can be used
 		 * 3) selection will start with transport dataType and THEN go to "*" if needed
 		 */
 		transports = {},
-	
+
 		// Avoid comment-prolog char sequence (#10098); must appease lint and evade compression
 		allTypes = "*/".concat( "*" ),
-	
+
 		// Document location
 		ajaxLocation = window.location.href,
-	
+
 		// Segment location into parts
 		ajaxLocParts = rurl.exec( ajaxLocation.toLowerCase() ) || [];
-	
+
 	// Base "constructor" for jQuery.ajaxPrefilter and jQuery.ajaxTransport
 	function addToPrefiltersOrTransports( structure ) {
-	
+
 		// dataTypeExpression is optional and defaults to "*"
 		return function( dataTypeExpression, func ) {
-	
+
 			if ( typeof dataTypeExpression !== "string" ) {
 				func = dataTypeExpression;
 				dataTypeExpression = "*";
 			}
-	
+
 			var dataType,
 				i = 0,
 				dataTypes = dataTypeExpression.toLowerCase().match( rnotwhite ) || [];
-	
+
 			if ( jQuery.isFunction( func ) ) {
 				// For each dataType in the dataTypeExpression
 				while ( (dataType = dataTypes[i++]) ) {
@@ -18991,7 +18668,7 @@
 					if ( dataType[0] === "+" ) {
 						dataType = dataType.slice( 1 ) || "*";
 						(structure[ dataType ] = structure[ dataType ] || []).unshift( func );
-	
+
 					// Otherwise append
 					} else {
 						(structure[ dataType ] = structure[ dataType ] || []).push( func );
@@ -19000,13 +18677,13 @@
 			}
 		};
 	}
-	
+
 	// Base inspection function for prefilters and transports
 	function inspectPrefiltersOrTransports( structure, options, originalOptions, jqXHR ) {
-	
+
 		var inspected = {},
 			seekingTransport = ( structure === transports );
-	
+
 		function inspect( dataType ) {
 			var selected;
 			inspected[ dataType ] = true;
@@ -19022,17 +18699,17 @@
 			});
 			return selected;
 		}
-	
+
 		return inspect( options.dataTypes[ 0 ] ) || !inspected[ "*" ] && inspect( "*" );
 	}
-	
+
 	// A special extend for ajax options
 	// that takes "flat" options (not to be deep extended)
 	// Fixes #9887
 	function ajaxExtend( target, src ) {
 		var key, deep,
 			flatOptions = jQuery.ajaxSettings.flatOptions || {};
-	
+
 		for ( key in src ) {
 			if ( src[ key ] !== undefined ) {
 				( flatOptions[ key ] ? target : ( deep || (deep = {}) ) )[ key ] = src[ key ];
@@ -19041,20 +18718,20 @@
 		if ( deep ) {
 			jQuery.extend( true, target, deep );
 		}
-	
+
 		return target;
 	}
-	
+
 	/* Handles responses to an ajax request:
 	 * - finds the right dataType (mediates between content-type and expected dataType)
 	 * - returns the corresponding response
 	 */
 	function ajaxHandleResponses( s, jqXHR, responses ) {
-	
+
 		var ct, type, finalDataType, firstDataType,
 			contents = s.contents,
 			dataTypes = s.dataTypes;
-	
+
 		// Remove auto dataType and get content-type in the process
 		while ( dataTypes[ 0 ] === "*" ) {
 			dataTypes.shift();
@@ -19062,7 +18739,7 @@
 				ct = s.mimeType || jqXHR.getResponseHeader("Content-Type");
 			}
 		}
-	
+
 		// Check if we're dealing with a known content-type
 		if ( ct ) {
 			for ( type in contents ) {
@@ -19072,7 +18749,7 @@
 				}
 			}
 		}
-	
+
 		// Check to see if we have a response for the expected dataType
 		if ( dataTypes[ 0 ] in responses ) {
 			finalDataType = dataTypes[ 0 ];
@@ -19090,7 +18767,7 @@
 			// Or just use first one
 			finalDataType = finalDataType || firstDataType;
 		}
-	
+
 		// If we found a dataType
 		// We add the dataType to the list if needed
 		// and return the corresponding response
@@ -19101,7 +18778,7 @@
 			return responses[ finalDataType ];
 		}
 	}
-	
+
 	/* Chain conversions given the request and the original response
 	 * Also sets the responseXXX fields on the jqXHR instance
 	 */
@@ -19110,52 +18787,52 @@
 			converters = {},
 			// Work with a copy of dataTypes in case we need to modify it for conversion
 			dataTypes = s.dataTypes.slice();
-	
+
 		// Create converters map with lowercased keys
 		if ( dataTypes[ 1 ] ) {
 			for ( conv in s.converters ) {
 				converters[ conv.toLowerCase() ] = s.converters[ conv ];
 			}
 		}
-	
+
 		current = dataTypes.shift();
-	
+
 		// Convert to each sequential dataType
 		while ( current ) {
-	
+
 			if ( s.responseFields[ current ] ) {
 				jqXHR[ s.responseFields[ current ] ] = response;
 			}
-	
+
 			// Apply the dataFilter if provided
 			if ( !prev && isSuccess && s.dataFilter ) {
 				response = s.dataFilter( response, s.dataType );
 			}
-	
+
 			prev = current;
 			current = dataTypes.shift();
-	
+
 			if ( current ) {
-	
+
 			// There's only work to do if current dataType is non-auto
 				if ( current === "*" ) {
-	
+
 					current = prev;
-	
+
 				// Convert response if prev dataType is non-auto and differs from current
 				} else if ( prev !== "*" && prev !== current ) {
-	
+
 					// Seek a direct converter
 					conv = converters[ prev + " " + current ] || converters[ "* " + current ];
-	
+
 					// If none found, seek a pair
 					if ( !conv ) {
 						for ( conv2 in converters ) {
-	
+
 							// If conv2 outputs current
 							tmp = conv2.split( " " );
 							if ( tmp[ 1 ] === current ) {
-	
+
 								// If prev can be converted to accepted input
 								conv = converters[ prev + " " + tmp[ 0 ] ] ||
 									converters[ "* " + tmp[ 0 ] ];
@@ -19163,7 +18840,7 @@
 									// Condense equivalence converters
 									if ( conv === true ) {
 										conv = converters[ conv2 ];
-	
+
 									// Otherwise, insert the intermediate dataType
 									} else if ( converters[ conv2 ] !== true ) {
 										current = tmp[ 0 ];
@@ -19174,10 +18851,10 @@
 							}
 						}
 					}
-	
+
 					// Apply converter (if not an equivalence)
 					if ( conv !== true ) {
-	
+
 						// Unless errors are allowed to bubble, catch and return them
 						if ( conv && s[ "throws" ] ) {
 							response = conv( response );
@@ -19192,19 +18869,19 @@
 				}
 			}
 		}
-	
+
 		return { state: "success", data: response };
 	}
-	
+
 	jQuery.extend({
-	
+
 		// Counter for holding the number of active queries
 		active: 0,
-	
+
 		// Last-Modified header cache for next request
 		lastModified: {},
 		etag: {},
-	
+
 		ajaxSettings: {
 			url: ajaxLocation,
 			type: "GET",
@@ -19224,7 +18901,7 @@
 			traditional: false,
 			headers: {},
 			*/
-	
+
 			accepts: {
 				"*": allTypes,
 				text: "text/plain",
@@ -19232,36 +18909,36 @@
 				xml: "application/xml, text/xml",
 				json: "application/json, text/javascript"
 			},
-	
+
 			contents: {
 				xml: /xml/,
 				html: /html/,
 				json: /json/
 			},
-	
+
 			responseFields: {
 				xml: "responseXML",
 				text: "responseText",
 				json: "responseJSON"
 			},
-	
+
 			// Data converters
 			// Keys separate source (or catchall "*") and destination types with a single space
 			converters: {
-	
+
 				// Convert anything to text
 				"* text": String,
-	
+
 				// Text to html (true = no transformation)
 				"text html": true,
-	
+
 				// Evaluate text as a json expression
 				"text json": jQuery.parseJSON,
-	
+
 				// Parse text as xml
 				"text xml": jQuery.parseXML
 			},
-	
+
 			// For options that shouldn't be deep extended:
 			// you can add your own custom options here if
 			// and when you create one that shouldn't be
@@ -19271,35 +18948,35 @@
 				context: true
 			}
 		},
-	
+
 		// Creates a full fledged settings object into target
 		// with both ajaxSettings and settings fields.
 		// If target is omitted, writes into ajaxSettings.
 		ajaxSetup: function( target, settings ) {
 			return settings ?
-	
+
 				// Building a settings object
 				ajaxExtend( ajaxExtend( target, jQuery.ajaxSettings ), settings ) :
-	
+
 				// Extending ajaxSettings
 				ajaxExtend( jQuery.ajaxSettings, target );
 		},
-	
+
 		ajaxPrefilter: addToPrefiltersOrTransports( prefilters ),
 		ajaxTransport: addToPrefiltersOrTransports( transports ),
-	
+
 		// Main method
 		ajax: function( url, options ) {
-	
+
 			// If url is an object, simulate pre-1.5 signature
 			if ( typeof url === "object" ) {
 				options = url;
 				url = undefined;
 			}
-	
+
 			// Force options to be an object
 			options = options || {};
-	
+
 			var transport,
 				// URL without anti-cache param
 				cacheURL,
@@ -19337,7 +19014,7 @@
 				// Fake xhr
 				jqXHR = {
 					readyState: 0,
-	
+
 					// Builds headers hashtable if needed
 					getResponseHeader: function( key ) {
 						var match;
@@ -19352,12 +19029,12 @@
 						}
 						return match == null ? null : match;
 					},
-	
+
 					// Raw string
 					getAllResponseHeaders: function() {
 						return state === 2 ? responseHeadersString : null;
 					},
-	
+
 					// Caches the header
 					setRequestHeader: function( name, value ) {
 						var lname = name.toLowerCase();
@@ -19367,7 +19044,7 @@
 						}
 						return this;
 					},
-	
+
 					// Overrides response content-type header
 					overrideMimeType: function( type ) {
 						if ( !state ) {
@@ -19375,7 +19052,7 @@
 						}
 						return this;
 					},
-	
+
 					// Status-dependent callbacks
 					statusCode: function( map ) {
 						var code;
@@ -19392,7 +19069,7 @@
 						}
 						return this;
 					},
-	
+
 					// Cancel the request
 					abort: function( statusText ) {
 						var finalText = statusText || strAbort;
@@ -19403,25 +19080,25 @@
 						return this;
 					}
 				};
-	
+
 			// Attach deferreds
 			deferred.promise( jqXHR ).complete = completeDeferred.add;
 			jqXHR.success = jqXHR.done;
 			jqXHR.error = jqXHR.fail;
-	
+
 			// Remove hash character (#7531: and string promotion)
 			// Add protocol if not provided (prefilters might expect it)
 			// Handle falsy url in the settings object (#10093: consistency with old signature)
 			// We also use the url parameter if available
 			s.url = ( ( url || s.url || ajaxLocation ) + "" ).replace( rhash, "" )
 				.replace( rprotocol, ajaxLocParts[ 1 ] + "//" );
-	
+
 			// Alias method option to type as per ticket #12004
 			s.type = options.method || options.type || s.method || s.type;
-	
+
 			// Extract dataTypes list
 			s.dataTypes = jQuery.trim( s.dataType || "*" ).toLowerCase().match( rnotwhite ) || [ "" ];
-	
+
 			// A cross-domain request is in order when we have a protocol:host:port mismatch
 			if ( s.crossDomain == null ) {
 				parts = rurl.exec( s.url.toLowerCase() );
@@ -19431,61 +19108,61 @@
 							( ajaxLocParts[ 3 ] || ( ajaxLocParts[ 1 ] === "http:" ? "80" : "443" ) ) )
 				);
 			}
-	
+
 			// Convert data if not already a string
 			if ( s.data && s.processData && typeof s.data !== "string" ) {
 				s.data = jQuery.param( s.data, s.traditional );
 			}
-	
+
 			// Apply prefilters
 			inspectPrefiltersOrTransports( prefilters, s, options, jqXHR );
-	
+
 			// If request was aborted inside a prefilter, stop there
 			if ( state === 2 ) {
 				return jqXHR;
 			}
-	
+
 			// We can fire global events as of now if asked to
 			// Don't fire events if jQuery.event is undefined in an AMD-usage scenario (#15118)
 			fireGlobals = jQuery.event && s.global;
-	
+
 			// Watch for a new set of requests
 			if ( fireGlobals && jQuery.active++ === 0 ) {
 				jQuery.event.trigger("ajaxStart");
 			}
-	
+
 			// Uppercase the type
 			s.type = s.type.toUpperCase();
-	
+
 			// Determine if request has content
 			s.hasContent = !rnoContent.test( s.type );
-	
+
 			// Save the URL in case we're toying with the If-Modified-Since
 			// and/or If-None-Match header later on
 			cacheURL = s.url;
-	
+
 			// More options handling for requests with no content
 			if ( !s.hasContent ) {
-	
+
 				// If data is available, append data to url
 				if ( s.data ) {
 					cacheURL = ( s.url += ( rquery.test( cacheURL ) ? "&" : "?" ) + s.data );
 					// #9682: remove data so that it's not used in an eventual retry
 					delete s.data;
 				}
-	
+
 				// Add anti-cache in url if needed
 				if ( s.cache === false ) {
 					s.url = rts.test( cacheURL ) ?
-	
+
 						// If there is already a '_' parameter, set its value
 						cacheURL.replace( rts, "$1_=" + nonce++ ) :
-	
+
 						// Otherwise add one to the end
 						cacheURL + ( rquery.test( cacheURL ) ? "&" : "?" ) + "_=" + nonce++;
 				}
 			}
-	
+
 			// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
 			if ( s.ifModified ) {
 				if ( jQuery.lastModified[ cacheURL ] ) {
@@ -19495,12 +19172,12 @@
 					jqXHR.setRequestHeader( "If-None-Match", jQuery.etag[ cacheURL ] );
 				}
 			}
-	
+
 			// Set the correct header, if data is being sent
 			if ( s.data && s.hasContent && s.contentType !== false || options.contentType ) {
 				jqXHR.setRequestHeader( "Content-Type", s.contentType );
 			}
-	
+
 			// Set the Accepts header for the server, depending on the dataType
 			jqXHR.setRequestHeader(
 				"Accept",
@@ -19508,35 +19185,35 @@
 					s.accepts[ s.dataTypes[0] ] + ( s.dataTypes[ 0 ] !== "*" ? ", " + allTypes + "; q=0.01" : "" ) :
 					s.accepts[ "*" ]
 			);
-	
+
 			// Check for headers option
 			for ( i in s.headers ) {
 				jqXHR.setRequestHeader( i, s.headers[ i ] );
 			}
-	
+
 			// Allow custom headers/mimetypes and early abort
 			if ( s.beforeSend && ( s.beforeSend.call( callbackContext, jqXHR, s ) === false || state === 2 ) ) {
 				// Abort if not done already and return
 				return jqXHR.abort();
 			}
-	
+
 			// Aborting is no longer a cancellation
 			strAbort = "abort";
-	
+
 			// Install callbacks on deferreds
 			for ( i in { success: 1, error: 1, complete: 1 } ) {
 				jqXHR[ i ]( s[ i ] );
 			}
-	
+
 			// Get transport
 			transport = inspectPrefiltersOrTransports( transports, s, options, jqXHR );
-	
+
 			// If no transport, we auto-abort
 			if ( !transport ) {
 				done( -1, "No Transport" );
 			} else {
 				jqXHR.readyState = 1;
-	
+
 				// Send global event
 				if ( fireGlobals ) {
 					globalEventContext.trigger( "ajaxSend", [ jqXHR, s ] );
@@ -19547,7 +19224,7 @@
 						jqXHR.abort("timeout");
 					}, s.timeout );
 				}
-	
+
 				try {
 					state = 1;
 					transport.send( requestHeaders, done );
@@ -19561,49 +19238,49 @@
 					}
 				}
 			}
-	
+
 			// Callback for when everything is done
 			function done( status, nativeStatusText, responses, headers ) {
 				var isSuccess, success, error, response, modified,
 					statusText = nativeStatusText;
-	
+
 				// Called once
 				if ( state === 2 ) {
 					return;
 				}
-	
+
 				// State is "done" now
 				state = 2;
-	
+
 				// Clear timeout if it exists
 				if ( timeoutTimer ) {
 					clearTimeout( timeoutTimer );
 				}
-	
+
 				// Dereference transport for early garbage collection
 				// (no matter how long the jqXHR object will be used)
 				transport = undefined;
-	
+
 				// Cache response headers
 				responseHeadersString = headers || "";
-	
+
 				// Set readyState
 				jqXHR.readyState = status > 0 ? 4 : 0;
-	
+
 				// Determine if successful
 				isSuccess = status >= 200 && status < 300 || status === 304;
-	
+
 				// Get response data
 				if ( responses ) {
 					response = ajaxHandleResponses( s, jqXHR, responses );
 				}
-	
+
 				// Convert no matter what (that way responseXXX fields are always set)
 				response = ajaxConvert( s, response, jqXHR, isSuccess );
-	
+
 				// If successful, handle type chaining
 				if ( isSuccess ) {
-	
+
 					// Set the If-Modified-Since and/or If-None-Match header, if in ifModified mode.
 					if ( s.ifModified ) {
 						modified = jqXHR.getResponseHeader("Last-Modified");
@@ -19615,15 +19292,15 @@
 							jQuery.etag[ cacheURL ] = modified;
 						}
 					}
-	
+
 					// if no content
 					if ( status === 204 || s.type === "HEAD" ) {
 						statusText = "nocontent";
-	
+
 					// if not modified
 					} else if ( status === 304 ) {
 						statusText = "notmodified";
-	
+
 					// If we have data, let's convert it
 					} else {
 						statusText = response.state;
@@ -19641,30 +19318,30 @@
 						}
 					}
 				}
-	
+
 				// Set data for the fake xhr object
 				jqXHR.status = status;
 				jqXHR.statusText = ( nativeStatusText || statusText ) + "";
-	
+
 				// Success/Error
 				if ( isSuccess ) {
 					deferred.resolveWith( callbackContext, [ success, statusText, jqXHR ] );
 				} else {
 					deferred.rejectWith( callbackContext, [ jqXHR, statusText, error ] );
 				}
-	
+
 				// Status-dependent callbacks
 				jqXHR.statusCode( statusCode );
 				statusCode = undefined;
-	
+
 				if ( fireGlobals ) {
 					globalEventContext.trigger( isSuccess ? "ajaxSuccess" : "ajaxError",
 						[ jqXHR, s, isSuccess ? success : error ] );
 				}
-	
+
 				// Complete
 				completeDeferred.fireWith( callbackContext, [ jqXHR, statusText ] );
-	
+
 				if ( fireGlobals ) {
 					globalEventContext.trigger( "ajaxComplete", [ jqXHR, s ] );
 					// Handle the global AJAX counter
@@ -19673,19 +19350,19 @@
 					}
 				}
 			}
-	
+
 			return jqXHR;
 		},
-	
+
 		getJSON: function( url, data, callback ) {
 			return jQuery.get( url, data, callback, "json" );
 		},
-	
+
 		getScript: function( url, callback ) {
 			return jQuery.get( url, undefined, callback, "script" );
 		}
 	});
-	
+
 	jQuery.each( [ "get", "post" ], function( i, method ) {
 		jQuery[ method ] = function( url, data, callback, type ) {
 			// Shift arguments if data argument was omitted
@@ -19694,7 +19371,7 @@
 				callback = data;
 				data = undefined;
 			}
-	
+
 			return jQuery.ajax({
 				url: url,
 				type: method,
@@ -19704,8 +19381,8 @@
 			});
 		};
 	});
-	
-	
+
+
 	jQuery._evalUrl = function( url ) {
 		return jQuery.ajax({
 			url: url,
@@ -19716,69 +19393,69 @@
 			"throws": true
 		});
 	};
-	
-	
+
+
 	jQuery.fn.extend({
 		wrapAll: function( html ) {
 			var wrap;
-	
+
 			if ( jQuery.isFunction( html ) ) {
 				return this.each(function( i ) {
 					jQuery( this ).wrapAll( html.call(this, i) );
 				});
 			}
-	
+
 			if ( this[ 0 ] ) {
-	
+
 				// The elements to wrap the target around
 				wrap = jQuery( html, this[ 0 ].ownerDocument ).eq( 0 ).clone( true );
-	
+
 				if ( this[ 0 ].parentNode ) {
 					wrap.insertBefore( this[ 0 ] );
 				}
-	
+
 				wrap.map(function() {
 					var elem = this;
-	
+
 					while ( elem.firstElementChild ) {
 						elem = elem.firstElementChild;
 					}
-	
+
 					return elem;
 				}).append( this );
 			}
-	
+
 			return this;
 		},
-	
+
 		wrapInner: function( html ) {
 			if ( jQuery.isFunction( html ) ) {
 				return this.each(function( i ) {
 					jQuery( this ).wrapInner( html.call(this, i) );
 				});
 			}
-	
+
 			return this.each(function() {
 				var self = jQuery( this ),
 					contents = self.contents();
-	
+
 				if ( contents.length ) {
 					contents.wrapAll( html );
-	
+
 				} else {
 					self.append( html );
 				}
 			});
 		},
-	
+
 		wrap: function( html ) {
 			var isFunction = jQuery.isFunction( html );
-	
+
 			return this.each(function( i ) {
 				jQuery( this ).wrapAll( isFunction ? html.call(this, i) : html );
 			});
 		},
-	
+
 		unwrap: function() {
 			return this.parent().each(function() {
 				if ( !jQuery.nodeName( this, "body" ) ) {
@@ -19787,8 +19464,8 @@
 			}).end();
 		}
 	});
-	
-	
+
+
 	jQuery.expr.filters.hidden = function( elem ) {
 		// Support: Opera <= 12.12
 		// Opera reports offsetWidths and offsetHeights less than zero on some elements
@@ -19797,44 +19474,44 @@
 	jQuery.expr.filters.visible = function( elem ) {
 		return !jQuery.expr.filters.hidden( elem );
 	};
-	
-	
-	
-	
+
+
+
+
 	var r20 = /%20/g,
 		rbracket = /\[\]$/,
 		rCRLF = /\r?\n/g,
 		rsubmitterTypes = /^(?:submit|button|image|reset|file)$/i,
 		rsubmittable = /^(?:input|select|textarea|keygen)/i;
-	
+
 	function buildParams( prefix, obj, traditional, add ) {
 		var name;
-	
+
 		if ( jQuery.isArray( obj ) ) {
 			// Serialize array item.
 			jQuery.each( obj, function( i, v ) {
 				if ( traditional || rbracket.test( prefix ) ) {
 					// Treat each array item as a scalar.
 					add( prefix, v );
-	
+
 				} else {
 					// Item is non-scalar (array or object), encode its numeric index.
 					buildParams( prefix + "[" + ( typeof v === "object" ? i : "" ) + "]", v, traditional, add );
 				}
 			});
-	
+
 		} else if ( !traditional && jQuery.type( obj ) === "object" ) {
 			// Serialize object item.
 			for ( name in obj ) {
 				buildParams( prefix + "[" + name + "]", obj[ name ], traditional, add );
 			}
-	
+
 		} else {
 			// Serialize scalar item.
 			add( prefix, obj );
 		}
 	}
-	
+
 	// Serialize an array of form elements or a set of
 	// key/values into a query string
 	jQuery.param = function( a, traditional ) {
@@ -19845,19 +19522,19 @@
 				value = jQuery.isFunction( value ) ? value() : ( value == null ? "" : value );
 				s[ s.length ] = encodeURIComponent( key ) + "=" + encodeURIComponent( value );
 			};
-	
+
 		// Set traditional to true for jQuery <= 1.3.2 behavior.
 		if ( traditional === undefined ) {
 			traditional = jQuery.ajaxSettings && jQuery.ajaxSettings.traditional;
 		}
-	
+
 		// If an array was passed in, assume that it is an array of form elements.
 		if ( jQuery.isArray( a ) || ( a.jquery && !jQuery.isPlainObject( a ) ) ) {
 			// Serialize the form elements
 			jQuery.each( a, function() {
 				add( this.name, this.value );
 			});
-	
+
 		} else {
 			// If traditional, encode the "old" way (the way 1.3.2 or older
 			// did it), otherwise encode params recursively.
@@ -19865,11 +19542,11 @@
 				buildParams( prefix, a[ prefix ], traditional, add );
 			}
 		}
-	
+
 		// Return the resulting serialization
 		return s.join( "&" ).replace( r20, "+" );
 	};
-	
+
 	jQuery.fn.extend({
 		serialize: function() {
 			return jQuery.param( this.serializeArray() );
@@ -19882,7 +19559,7 @@
 			})
 			.filter(function() {
 				var type = this.type;
-	
+
 				// Use .is( ":disabled" ) so that fieldset[disabled] works
 				return this.name && !jQuery( this ).is( ":disabled" ) &&
 					rsubmittable.test( this.nodeName ) && !rsubmitterTypes.test( type ) &&
@@ -19890,7 +19567,7 @@
 			})
 			.map(function( i, elem ) {
 				var val = jQuery( this ).val();
-	
+
 				return val == null ?
 					null :
 					jQuery.isArray( val ) ?
@@ -19901,14 +19578,14 @@
 			}).get();
 		}
 	});
-	
-	
+
+
 	jQuery.ajaxSettings.xhr = function() {
 		try {
 			return new XMLHttpRequest();
 		} catch( e ) {}
 	};
-	
+
 	var xhrId = 0,
 		xhrCallbacks = {},
 		xhrSuccessStatus = {
@@ -19919,7 +19596,7 @@
 			1223: 204
 		},
 		xhrSupported = jQuery.ajaxSettings.xhr();
-	
+
 	// Support: IE9
 	// Open requests must be manually aborted on unload (#5280)
 	// See https://support.microsoft.com/kb/2856746 for more info
@@ -19930,13 +19607,13 @@
 			}
 		});
 	}
-	
+
 	support.cors = !!xhrSupported && ( "withCredentials" in xhrSupported );
 	support.ajax = xhrSupported = !!xhrSupported;
-	
+
 	jQuery.ajaxTransport(function( options ) {
 		var callback;
-	
+
 		// Cross domain only allowed if supported through XMLHttpRequest
 		if ( support.cors || xhrSupported && !options.crossDomain ) {
 			return {
@@ -19944,21 +19621,21 @@
 					var i,
 						xhr = options.xhr(),
 						id = ++xhrId;
-	
+
 					xhr.open( options.type, options.url, options.async, options.username, options.password );
-	
+
 					// Apply custom fields if provided
 					if ( options.xhrFields ) {
 						for ( i in options.xhrFields ) {
 							xhr[ i ] = options.xhrFields[ i ];
 						}
 					}
-	
+
 					// Override mime type if needed
 					if ( options.mimeType && xhr.overrideMimeType ) {
 						xhr.overrideMimeType( options.mimeType );
 					}
-	
+
 					// X-Requested-With header
 					// For cross-domain requests, seeing as conditions for a preflight are
 					// akin to a jigsaw puzzle, we simply never set it to be sure.
@@ -19967,19 +19644,19 @@
 					if ( !options.crossDomain && !headers["X-Requested-With"] ) {
 						headers["X-Requested-With"] = "XMLHttpRequest";
 					}
-	
+
 					// Set headers
 					for ( i in headers ) {
 						xhr.setRequestHeader( i, headers[ i ] );
 					}
-	
+
 					// Callback
 					callback = function( type ) {
 						return function() {
 							if ( callback ) {
 								delete xhrCallbacks[ id ];
 								callback = xhr.onload = xhr.onerror = null;
-	
+
 								if ( type === "abort" ) {
 									xhr.abort();
 								} else if ( type === "error" ) {
@@ -20004,14 +19681,14 @@
 							}
 						};
 					};
-	
+
 					// Listen to events
 					xhr.onload = callback();
 					xhr.onerror = callback("error");
-	
+
 					// Create the abort callback
 					callback = xhrCallbacks[ id ] = callback("abort");
-	
+
 					try {
 						// Do send the request (this may raise an exception)
 						xhr.send( options.hasContent && options.data || null );
@@ -20022,7 +19699,7 @@
 						}
 					}
 				},
-	
+
 				abort: function() {
 					if ( callback ) {
 						callback();
@@ -20031,10 +19708,10 @@
 			};
 		}
 	});
-	
-	
-	
-	
+
+
+
+
 	// Install script dataType
 	jQuery.ajaxSetup({
 		accepts: {
@@ -20050,7 +19727,7 @@
 			}
 		}
 	});
-	
+
 	// Handle cache's special case and crossDomain
 	jQuery.ajaxPrefilter( "script", function( s ) {
 		if ( s.cache === undefined ) {
@@ -20060,7 +19737,7 @@
 			s.type = "GET";
 		}
 	});
-	
+
 	// Bind script tag hack transport
 	jQuery.ajaxTransport( "script", function( s ) {
 		// This transport only deals with cross domain requests
@@ -20092,13 +19769,13 @@
 			};
 		}
 	});
-	
-	
-	
-	
+
+
+
+
 	var oldCallbacks = [],
 		rjsonp = /(=)\?(?=&|$)|\?\?/;
-	
+
 	// Default jsonp settings
 	jQuery.ajaxSetup({
 		jsonp: "callback",
@@ -20108,31 +19785,31 @@
 			return callback;
 		}
 	});
-	
+
 	// Detect, normalize options and install callbacks for jsonp requests
 	jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
-	
+
 		var callbackName, overwritten, responseContainer,
 			jsonProp = s.jsonp !== false && ( rjsonp.test( s.url ) ?
 				"url" :
 				typeof s.data === "string" && !( s.contentType || "" ).indexOf("application/x-www-form-urlencoded") && rjsonp.test( s.data ) && "data"
 			);
-	
+
 		// Handle iff the expected data type is "jsonp" or we have a parameter to set
 		if ( jsonProp || s.dataTypes[ 0 ] === "jsonp" ) {
-	
+
 			// Get callback name, remembering preexisting value associated with it
 			callbackName = s.jsonpCallback = jQuery.isFunction( s.jsonpCallback ) ?
 				s.jsonpCallback() :
 				s.jsonpCallback;
-	
+
 			// Insert callback into url or form data
 			if ( jsonProp ) {
 				s[ jsonProp ] = s[ jsonProp ].replace( rjsonp, "$1" + callbackName );
 			} else if ( s.jsonp !== false ) {
 				s.url += ( rquery.test( s.url ) ? "&" : "?" ) + s.jsonp + "=" + callbackName;
 			}
-	
+
 			// Use data converter to retrieve json after script execution
 			s.converters["script json"] = function() {
 				if ( !responseContainer ) {
@@ -20140,46 +19817,46 @@
 				}
 				return responseContainer[ 0 ];
 			};
-	
+
 			// force json dataType
 			s.dataTypes[ 0 ] = "json";
-	
+
 			// Install callback
 			overwritten = window[ callbackName ];
 			window[ callbackName ] = function() {
 				responseContainer = arguments;
 			};
-	
+
 			// Clean-up function (fires after converters)
 			jqXHR.always(function() {
 				// Restore preexisting value
 				window[ callbackName ] = overwritten;
-	
+
 				// Save back as free
 				if ( s[ callbackName ] ) {
 					// make sure that re-using the options doesn't screw things around
 					s.jsonpCallback = originalSettings.jsonpCallback;
-	
+
 					// save the callback name for future use
 					oldCallbacks.push( callbackName );
 				}
-	
+
 				// Call if it was a function and we have a response
 				if ( responseContainer && jQuery.isFunction( overwritten ) ) {
 					overwritten( responseContainer[ 0 ] );
 				}
-	
+
 				responseContainer = overwritten = undefined;
 			});
-	
+
 			// Delegate to script
 			return "script";
 		}
 	});
-	
-	
-	
-	
+
+
+
+
 	// data: string of html
 	// context (optional): If specified, the fragment will be created in this context, defaults to document
 	// keepScripts (optional): If true, will include scripts passed in the html string
@@ -20192,28 +19869,28 @@
 			context = false;
 		}
 		context = context || document;
-	
+
 		var parsed = rsingleTag.exec( data ),
 			scripts = !keepScripts && [];
-	
+
 		// Single tag
 		if ( parsed ) {
 			return [ context.createElement( parsed[1] ) ];
 		}
-	
+
 		parsed = jQuery.buildFragment( [ data ], context, scripts );
-	
+
 		if ( scripts && scripts.length ) {
 			jQuery( scripts ).remove();
 		}
-	
+
 		return jQuery.merge( [], parsed.childNodes );
 	};
-	
-	
+
+
 	// Keep a copy of the old load method
 	var _load = jQuery.fn.load;
-	
+
 	/**
 	 * Load a url into a page
 	 */
@@ -20221,140 +19898,140 @@
 		if ( typeof url !== "string" && _load ) {
 			return _load.apply( this, arguments );
 		}
-	
+
 		var selector, type, response,
 			self = this,
 			off = url.indexOf(" ");
-	
+
 		if ( off >= 0 ) {
 			selector = jQuery.trim( url.slice( off ) );
 			url = url.slice( 0, off );
 		}
-	
+
 		// If it's a function
 		if ( jQuery.isFunction( params ) ) {
-	
+
 			// We assume that it's the callback
 			callback = params;
 			params = undefined;
-	
+
 		// Otherwise, build a param string
 		} else if ( params && typeof params === "object" ) {
 			type = "POST";
 		}
-	
+
 		// If we have elements to modify, make the request
 		if ( self.length > 0 ) {
 			jQuery.ajax({
 				url: url,
-	
+
 				// if "type" variable is undefined, then "GET" method will be used
 				type: type,
 				dataType: "html",
 				data: params
 			}).done(function( responseText ) {
-	
+
 				// Save response for use in complete callback
 				response = arguments;
-	
+
 				self.html( selector ?
-	
+
 					// If a selector was specified, locate the right elements in a dummy div
 					// Exclude scripts to avoid IE 'Permission Denied' errors
 					jQuery("<div>").append( jQuery.parseHTML( responseText ) ).find( selector ) :
-	
+
 					// Otherwise use the full result
 					responseText );
-	
+
 			}).complete( callback && function( jqXHR, status ) {
 				self.each( callback, response || [ jqXHR.responseText, status, jqXHR ] );
 			});
 		}
-	
+
 		return this;
 	};
-	
-	
-	
-	
+
+
+
+
 	// Attach a bunch of functions for handling common AJAX events
 	jQuery.each( [ "ajaxStart", "ajaxStop", "ajaxComplete", "ajaxError", "ajaxSuccess", "ajaxSend" ], function( i, type ) {
 		jQuery.fn[ type ] = function( fn ) {
 			return this.on( type, fn );
 		};
 	});
-	
-	
-	
-	
+
+
+
+
 	jQuery.expr.filters.animated = function( elem ) {
 		return jQuery.grep(jQuery.timers, function( fn ) {
 			return elem === fn.elem;
 		}).length;
 	};
-	
-	
-	
-	
+
+
+
+
 	var docElem = window.document.documentElement;
-	
+
 	/**
 	 * Gets a window from an element
 	 */
 	function getWindow( elem ) {
 		return jQuery.isWindow( elem ) ? elem : elem.nodeType === 9 && elem.defaultView;
 	}
-	
+
 	jQuery.offset = {
 		setOffset: function( elem, options, i ) {
 			var curPosition, curLeft, curCSSTop, curTop, curOffset, curCSSLeft, calculatePosition,
 				position = jQuery.css( elem, "position" ),
 				curElem = jQuery( elem ),
 				props = {};
-	
+
 			// Set position first, in-case top/left are set even on static elem
 			if ( position === "static" ) {
 				elem.style.position = "relative";
 			}
-	
+
 			curOffset = curElem.offset();
 			curCSSTop = jQuery.css( elem, "top" );
 			curCSSLeft = jQuery.css( elem, "left" );
 			calculatePosition = ( position === "absolute" || position === "fixed" ) &&
 				( curCSSTop + curCSSLeft ).indexOf("auto") > -1;
-	
+
 			// Need to be able to calculate position if either
 			// top or left is auto and position is either absolute or fixed
 			if ( calculatePosition ) {
 				curPosition = curElem.position();
 				curTop = curPosition.top;
 				curLeft = curPosition.left;
-	
+
 			} else {
 				curTop = parseFloat( curCSSTop ) || 0;
 				curLeft = parseFloat( curCSSLeft ) || 0;
 			}
-	
+
 			if ( jQuery.isFunction( options ) ) {
 				options = options.call( elem, i, curOffset );
 			}
-	
+
 			if ( options.top != null ) {
 				props.top = ( options.top - curOffset.top ) + curTop;
 			}
 			if ( options.left != null ) {
 				props.left = ( options.left - curOffset.left ) + curLeft;
 			}
-	
+
 			if ( "using" in options ) {
 				options.using.call( elem, props );
-	
+
 			} else {
 				curElem.css( props );
 			}
 		}
 	};
-	
+
 	jQuery.fn.extend({
 		offset: function( options ) {
 			if ( arguments.length ) {
@@ -20364,23 +20041,23 @@
 						jQuery.offset.setOffset( this, options, i );
 					});
 			}
-	
+
 			var docElem, win,
 				elem = this[ 0 ],
 				box = { top: 0, left: 0 },
 				doc = elem && elem.ownerDocument;
-	
+
 			if ( !doc ) {
 				return;
 			}
-	
+
 			docElem = doc.documentElement;
-	
+
 			// Make sure it's not a disconnected DOM node
 			if ( !jQuery.contains( docElem, elem ) ) {
 				return box;
 			}
-	
+
 			// Support: BlackBerry 5, iOS 3 (original iPhone)
 			// If we don't have gBCR, just use 0,0 rather than error
 			if ( typeof elem.getBoundingClientRect !== strundefined ) {
@@ -20392,81 +20069,81 @@
 				left: box.left + win.pageXOffset - docElem.clientLeft
 			};
 		},
-	
+
 		position: function() {
 			if ( !this[ 0 ] ) {
 				return;
 			}
-	
+
 			var offsetParent, offset,
 				elem = this[ 0 ],
 				parentOffset = { top: 0, left: 0 };
-	
+
 			// Fixed elements are offset from window (parentOffset = {top:0, left: 0}, because it is its only offset parent
 			if ( jQuery.css( elem, "position" ) === "fixed" ) {
 				// Assume getBoundingClientRect is there when computed position is fixed
 				offset = elem.getBoundingClientRect();
-	
+
 			} else {
 				// Get *real* offsetParent
 				offsetParent = this.offsetParent();
-	
+
 				// Get correct offsets
 				offset = this.offset();
 				if ( !jQuery.nodeName( offsetParent[ 0 ], "html" ) ) {
 					parentOffset = offsetParent.offset();
 				}
-	
+
 				// Add offsetParent borders
 				parentOffset.top += jQuery.css( offsetParent[ 0 ], "borderTopWidth", true );
 				parentOffset.left += jQuery.css( offsetParent[ 0 ], "borderLeftWidth", true );
 			}
-	
+
 			// Subtract parent offsets and element margins
 			return {
 				top: offset.top - parentOffset.top - jQuery.css( elem, "marginTop", true ),
 				left: offset.left - parentOffset.left - jQuery.css( elem, "marginLeft", true )
 			};
 		},
-	
+
 		offsetParent: function() {
 			return this.map(function() {
 				var offsetParent = this.offsetParent || docElem;
-	
+
 				while ( offsetParent && ( !jQuery.nodeName( offsetParent, "html" ) && jQuery.css( offsetParent, "position" ) === "static" ) ) {
 					offsetParent = offsetParent.offsetParent;
 				}
-	
+
 				return offsetParent || docElem;
 			});
 		}
 	});
-	
+
 	// Create scrollLeft and scrollTop methods
 	jQuery.each( { scrollLeft: "pageXOffset", scrollTop: "pageYOffset" }, function( method, prop ) {
 		var top = "pageYOffset" === prop;
-	
+
 		jQuery.fn[ method ] = function( val ) {
 			return access( this, function( elem, method, val ) {
 				var win = getWindow( elem );
-	
+
 				if ( val === undefined ) {
 					return win ? win[ prop ] : elem[ method ];
 				}
-	
+
 				if ( win ) {
 					win.scrollTo(
 						!top ? val : window.pageXOffset,
 						top ? val : window.pageYOffset
 					);
-	
+
 				} else {
 					elem[ method ] = val;
 				}
 			}, method, val, arguments.length, null );
 		};
 	});
-	
+
 	// Support: Safari<7+, Chrome<37+
 	// Add the top/left cssHooks using jQuery.fn.position
 	// Webkit bug: https://bugs.webkit.org/show_bug.cgi?id=29084
@@ -20486,8 +20163,8 @@
 			}
 		);
 	});
-	
-	
+
+
 	// Create innerHeight, innerWidth, height, width, outerHeight and outerWidth methods
 	jQuery.each( { Height: "height", Width: "width" }, function( name, type ) {
 		jQuery.each( { padding: "inner" + name, content: type, "": "outer" + name }, function( defaultExtra, funcName ) {
@@ -20495,21 +20172,21 @@
 			jQuery.fn[ funcName ] = function( margin, value ) {
 				var chainable = arguments.length && ( defaultExtra || typeof margin !== "boolean" ),
 					extra = defaultExtra || ( margin === true || value === true ? "margin" : "border" );
-	
+
 				return access( this, function( elem, type, value ) {
 					var doc;
-	
+
 					if ( jQuery.isWindow( elem ) ) {
 						// As of 5/8/2012 this will yield incorrect results for Mobile Safari, but there
 						// isn't a whole lot we can do. See pull request at this URL for discussion:
 						// https://github.com/jquery/jquery/pull/764
 						return elem.document.documentElement[ "client" + name ];
 					}
-	
+
 					// Get document width or height
 					if ( elem.nodeType === 9 ) {
 						doc = elem.documentElement;
-	
+
 						// Either scroll[Width/Height] or offset[Width/Height] or client[Width/Height],
 						// whichever is greatest
 						return Math.max(
@@ -20518,29 +20195,29 @@
 							doc[ "client" + name ]
 						);
 					}
-	
+
 					return value === undefined ?
 						// Get width or height on the element, requesting but not forcing parseFloat
 						jQuery.css( elem, type, extra ) :
-	
+
 						// Set width or height on the element
 						jQuery.style( elem, type, value, extra );
 				}, type, chainable ? margin : undefined, chainable, null );
 			};
 		});
 	});
-	
-	
+
+
 	// The number of elements contained in the matched element set
 	jQuery.fn.size = function() {
 		return this.length;
 	};
-	
+
 	jQuery.fn.andSelf = jQuery.fn.addBack;
-	
-	
-	
-	
+
+
+
+
 	// Register as a named AMD module, since jQuery can be concatenated with other
 	// files that may use define, but not via a proper concatenation script that
 	// understands anonymous AMD modules. A named AMD is safest and most robust
@@ -20548,100 +20225,101 @@
 	// derived from file names, and jQuery is normally delivered in a lowercase
 	// file name. Do this after creating the global so that if an AMD module wants
 	// to call noConflict to hide this version of jQuery, it will work.
-	
+
 	// Note that for maximum portability, libraries that are not jQuery should
 	// declare themselves as anonymous modules, and avoid setting a global if an
 	// AMD loader is present. jQuery is a special case. For more information, see
 	// https://github.com/jrburke/requirejs/wiki/Updating-existing-libraries#wiki-anon
-	
+
 	if ( true ) {
 		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
 			return jQuery;
 		}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
 	}
-	
-	
-	
-	
+
+
+
+
 	var
 		// Map over jQuery in case of overwrite
 		_jQuery = window.jQuery,
-	
+
 		// Map over the $ in case of overwrite
 		_$ = window.$;
-	
+
 	jQuery.noConflict = function( deep ) {
 		if ( window.$ === jQuery ) {
 			window.$ = _$;
 		}
-	
+
 		if ( deep && window.jQuery === jQuery ) {
 			window.jQuery = _jQuery;
 		}
-	
+
 		return jQuery;
 	};
-	
+
 	// Expose jQuery and $ identifiers, even in AMD
 	// (#7102#comment:10, https://github.com/jquery/jquery/pull/557)
 	// and CommonJS for browser emulators (#13566)
 	if ( typeof noGlobal === strundefined ) {
 		window.jQuery = window.$ = jQuery;
 	}
-	
-	
-	
-	
+
+
+
+
 	return jQuery;
-	
+
 	}));
 
 
 /***/ },
-/* 18 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//this is the main todo file
 	'use strict';
-	
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	var $ = __webpack_require__(17);
+
+	var $ = __webpack_require__(7);
 	var Rx = __webpack_require__(1);
-	var model = __webpack_require__(19);
-	var view = __webpack_require__(21);
-	
+	var model = __webpack_require__(9);
+	var view = __webpack_require__(11);
+	var spinnerComponent = __webpack_require__(46);
+
 	//import any styles for todo list app
-	var style = __webpack_require__(56);
-	
+	var style = __webpack_require__(58);
+
 	var todoMain = function todoMain() {
 		_classCallCheck(this, todoMain);
-	
+
 		model.wire();
 		view.wire();
 	};
-	
+
 	module.exports = new todoMain();
 
 /***/ },
-/* 19 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
+
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
+
 	var Rx = __webpack_require__(1);
-	var actions = __webpack_require__(16);
-	var EventEmitter = __webpack_require__(20);
+	var actions = __webpack_require__(6);
+	var EventEmitter = __webpack_require__(10);
 	var dataEmitter = new EventEmitter();
-	
+
 	var todoModel = (function () {
 		function todoModel() {
 			_classCallCheck(this, todoModel);
-	
+
 			this.initialTodos = [{
 				"name": "hello"
 			}, {
@@ -20652,14 +20330,14 @@
 			};
 			actions['todoModel.dataChanged$'] = Rx.Observable.fromEvent(dataEmitter, 'data');
 		}
-	
+
 		//handles different actions
-	
+
 		_createClass(todoModel, [{
 			key: 'wire',
 			value: function wire() {
 				var _this = this;
-	
+
 				function notifyChange(initialTodos) {
 					setTimeout(function () {
 						dataEmitter.emitEvent("data", [initialTodos]);
@@ -20675,14 +20353,14 @@
 				});
 			}
 		}]);
-	
+
 		return todoModel;
 	})();
-	
+
 	module.exports = new todoModel();
 
 /***/ },
-/* 20 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -20691,10 +20369,10 @@
 	 * Oliver Caldwell - http://oli.me.uk/
 	 * @preserve
 	 */
-	
+
 	;(function () {
 	    'use strict';
-	
+
 	    /**
 	     * Class for managing events.
 	     * Can be extended to provide event functionality in other classes.
@@ -20702,12 +20380,12 @@
 	     * @class EventEmitter Manages event registering and emitting.
 	     */
 	    function EventEmitter() {}
-	
+
 	    // Shortcuts to improve speed and size
 	    var proto = EventEmitter.prototype;
 	    var exports = this;
 	    var originalGlobalValue = exports.EventEmitter;
-	
+
 	    /**
 	     * Finds the index of the listener for the event in its storage array.
 	     *
@@ -20723,10 +20401,10 @@
 	                return i;
 	            }
 	        }
-	
+
 	        return -1;
 	    }
-	
+
 	    /**
 	     * Alias a method while keeping the context correct, to allow for overwriting of target method.
 	     *
@@ -20739,7 +20417,7 @@
 	            return this[name].apply(this, arguments);
 	        };
 	    }
-	
+
 	    /**
 	     * Returns the listener array for the specified event.
 	     * Will initialise the event object and listener arrays if required.
@@ -20753,7 +20431,7 @@
 	        var events = this._getEvents();
 	        var response;
 	        var key;
-	
+
 	        // Return a concatenated array of all matching events if
 	        // the selector is a regular expression.
 	        if (evt instanceof RegExp) {
@@ -20767,10 +20445,10 @@
 	        else {
 	            response = events[evt] || (events[evt] = []);
 	        }
-	
+
 	        return response;
 	    };
-	
+
 	    /**
 	     * Takes a list of listener objects and flattens it into a list of listener functions.
 	     *
@@ -20780,14 +20458,14 @@
 	    proto.flattenListeners = function flattenListeners(listeners) {
 	        var flatListeners = [];
 	        var i;
-	
+
 	        for (i = 0; i < listeners.length; i += 1) {
 	            flatListeners.push(listeners[i].listener);
 	        }
-	
+
 	        return flatListeners;
 	    };
-	
+
 	    /**
 	     * Fetches the requested listeners via getListeners but will always return the results inside an object. This is mainly for internal use but others may find it useful.
 	     *
@@ -20797,15 +20475,15 @@
 	    proto.getListenersAsObject = function getListenersAsObject(evt) {
 	        var listeners = this.getListeners(evt);
 	        var response;
-	
+
 	        if (listeners instanceof Array) {
 	            response = {};
 	            response[evt] = listeners;
 	        }
-	
+
 	        return response || listeners;
 	    };
-	
+
 	    /**
 	     * Adds a listener function to the specified event.
 	     * The listener will not be added if it is a duplicate.
@@ -20820,7 +20498,7 @@
 	        var listeners = this.getListenersAsObject(evt);
 	        var listenerIsWrapped = typeof listener === 'object';
 	        var key;
-	
+
 	        for (key in listeners) {
 	            if (listeners.hasOwnProperty(key) && indexOfListener(listeners[key], listener) === -1) {
 	                listeners[key].push(listenerIsWrapped ? listener : {
@@ -20829,15 +20507,15 @@
 	                });
 	            }
 	        }
-	
+
 	        return this;
 	    };
-	
+
 	    /**
 	     * Alias of addListener
 	     */
 	    proto.on = alias('addListener');
-	
+
 	    /**
 	     * Semi-alias of addListener. It will add a listener that will be
 	     * automatically removed after its first execution.
@@ -20852,12 +20530,12 @@
 	            once: true
 	        });
 	    };
-	
+
 	    /**
 	     * Alias of addOnceListener.
 	     */
 	    proto.once = alias('addOnceListener');
-	
+
 	    /**
 	     * Defines an event name. This is required if you want to use a regex to add a listener to multiple events at once. If you don't do this then how do you expect it to know what event to add to? Should it just add to every possible match for a regex? No. That is scary and bad.
 	     * You need to tell it what event names should be matched by a regex.
@@ -20869,7 +20547,7 @@
 	        this.getListeners(evt);
 	        return this;
 	    };
-	
+
 	    /**
 	     * Uses defineEvent to define multiple events.
 	     *
@@ -20882,7 +20560,7 @@
 	        }
 	        return this;
 	    };
-	
+
 	    /**
 	     * Removes a listener function from the specified event.
 	     * When passed a regular expression as the event name, it will remove the listener from all events that match it.
@@ -20895,25 +20573,25 @@
 	        var listeners = this.getListenersAsObject(evt);
 	        var index;
 	        var key;
-	
+
 	        for (key in listeners) {
 	            if (listeners.hasOwnProperty(key)) {
 	                index = indexOfListener(listeners[key], listener);
-	
+
 	                if (index !== -1) {
 	                    listeners[key].splice(index, 1);
 	                }
 	            }
 	        }
-	
+
 	        return this;
 	    };
-	
+
 	    /**
 	     * Alias of removeListener
 	     */
 	    proto.off = alias('removeListener');
-	
+
 	    /**
 	     * Adds listeners in bulk using the manipulateListeners method.
 	     * If you pass an object as the second argument you can add to multiple events at once. The object should contain key value pairs of events and listeners or listener arrays. You can also pass it an event name and an array of listeners to be added.
@@ -20928,7 +20606,7 @@
 	        // Pass through to manipulateListeners
 	        return this.manipulateListeners(false, evt, listeners);
 	    };
-	
+
 	    /**
 	     * Removes listeners in bulk using the manipulateListeners method.
 	     * If you pass an object as the second argument you can remove from multiple events at once. The object should contain key value pairs of events and listeners or listener arrays.
@@ -20943,7 +20621,7 @@
 	        // Pass through to manipulateListeners
 	        return this.manipulateListeners(true, evt, listeners);
 	    };
-	
+
 	    /**
 	     * Edits listeners in bulk. The addListeners and removeListeners methods both use this to do their job. You should really use those instead, this is a little lower level.
 	     * The first argument will determine if the listeners are removed (true) or added (false).
@@ -20961,7 +20639,7 @@
 	        var value;
 	        var single = remove ? this.removeListener : this.addListener;
 	        var multiple = remove ? this.removeListeners : this.addListeners;
-	
+
 	        // If evt is an object then pass each of its properties to this method
 	        if (typeof evt === 'object' && !(evt instanceof RegExp)) {
 	            for (i in evt) {
@@ -20986,10 +20664,10 @@
 	                single.call(this, evt, listeners[i]);
 	            }
 	        }
-	
+
 	        return this;
 	    };
-	
+
 	    /**
 	     * Removes all listeners from a specified event.
 	     * If you do not specify an event then all listeners will be removed.
@@ -21003,7 +20681,7 @@
 	        var type = typeof evt;
 	        var events = this._getEvents();
 	        var key;
-	
+
 	        // Remove different things depending on the state of evt
 	        if (type === 'string') {
 	            // Remove all listeners for the specified event
@@ -21021,17 +20699,17 @@
 	            // Remove all listeners in all events
 	            delete this._events;
 	        }
-	
+
 	        return this;
 	    };
-	
+
 	    /**
 	     * Alias of removeEvent.
 	     *
 	     * Added to mirror the node API.
 	     */
 	    proto.removeAllListeners = alias('removeEvent');
-	
+
 	    /**
 	     * Emits an event of your choice.
 	     * When emitted, every listener attached to that event will be executed.
@@ -21051,38 +20729,38 @@
 	        var i;
 	        var key;
 	        var response;
-	
+
 	        for (key in listenersMap) {
 	            if (listenersMap.hasOwnProperty(key)) {
 	                listeners = listenersMap[key].slice(0);
 	                i = listeners.length;
-	
+
 	                while (i--) {
 	                    // If the listener returns true then it shall be removed from the event
 	                    // The function is executed either with a basic call or an apply if there is an args array
 	                    listener = listeners[i];
-	
+
 	                    if (listener.once === true) {
 	                        this.removeListener(evt, listener.listener);
 	                    }
-	
+
 	                    response = listener.listener.apply(this, args || []);
-	
+
 	                    if (response === this._getOnceReturnValue()) {
 	                        this.removeListener(evt, listener.listener);
 	                    }
 	                }
 	            }
 	        }
-	
+
 	        return this;
 	    };
-	
+
 	    /**
 	     * Alias of emitEvent
 	     */
 	    proto.trigger = alias('emitEvent');
-	
+
 	    /**
 	     * Subtly different from emitEvent in that it will pass its arguments on to the listeners, as opposed to taking a single array of arguments to pass on.
 	     * As with emitEvent, you can pass a regex in place of the event name to emit to all events that match it.
@@ -21095,7 +20773,7 @@
 	        var args = Array.prototype.slice.call(arguments, 1);
 	        return this.emitEvent(evt, args);
 	    };
-	
+
 	    /**
 	     * Sets the current value to check against when executing listeners. If a
 	     * listeners return value matches the one set here then it will be removed
@@ -21108,7 +20786,7 @@
 	        this._onceReturnValue = value;
 	        return this;
 	    };
-	
+
 	    /**
 	     * Fetches the current value to check against when executing listeners. If
 	     * the listeners return value matches this one then it should be removed
@@ -21125,7 +20803,7 @@
 	            return true;
 	        }
 	    };
-	
+
 	    /**
 	     * Fetches the events object and creates one if required.
 	     *
@@ -21135,7 +20813,7 @@
 	    proto._getEvents = function _getEvents() {
 	        return this._events || (this._events = {});
 	    };
-	
+
 	    /**
 	     * Reverts the global {@link EventEmitter} to its previous value and returns a reference to this version.
 	     *
@@ -21145,7 +20823,7 @@
 	        exports.EventEmitter = originalGlobalValue;
 	        return EventEmitter;
 	    };
-	
+
 	    // Expose the class either via AMD, CommonJS or the global object
 	    if (true) {
 	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
@@ -21162,59 +20840,59 @@
 
 
 /***/ },
-/* 21 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	//this is the main todo file
 	'use strict';
-	
+
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	var $ = __webpack_require__(17);
+
+	var $ = __webpack_require__(7);
 	var Rx = __webpack_require__(1);
-	var actions = __webpack_require__(16);
-	var model = __webpack_require__(19);
-	var h = __webpack_require__(22);
-	var diff = __webpack_require__(40);
-	var patch = __webpack_require__(46);
-	var createElement = __webpack_require__(55);
-	
+	var actions = __webpack_require__(6);
+	var model = __webpack_require__(9);
+	var h = __webpack_require__(12);
+	var diff = __webpack_require__(30);
+	var patch = __webpack_require__(36);
+	var createElement = __webpack_require__(45);
+
 	var todoView = (function () {
 		function todoView() {
 			_classCallCheck(this, todoView);
-	
+
 			this.actions = {
 				templateLoaded$: Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'))
 			};
-	
+
 			//export actions to the top actions
 			actions['todoView.templateLoaded$'] = Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'));
-	
+
 			this.template = "todo";
-	
+
 			this.currentTree;
-	
+
 			this.currentNode;
-	
+
 			this.render = function (todos) {
-	
+
 				if (!todos) {
 					todos = [];
 				}
-	
+
 				return h("ul.todo-list", todos.map(function (todo) {
 					return h("li", [h("div.view", [h("input.toggle", { "type": "checkbox" }), h("label", [todo.name]), h("button.destroy")]), h("form", [h("input.edit")])]);
 				}));
 			};
 		}
-	
+
 		_createClass(todoView, [{
 			key: 'wire',
 			value: function wire() {
 				var _this = this;
-	
+
 				//I can combine latest here and send back the template with its data
 				this.actions.templateLoaded$.subscribe(function (data) {
 					//I can test the type of the data here before diswireing it
@@ -21242,67 +20920,67 @@
 			key: 'unWire',
 			value: function unWire() {}
 		}]);
-	
+
 		return todoView;
 	})();
-	
+
 	module.exports = new todoView();
 
 /***/ },
-/* 22 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var h = __webpack_require__(23)
-	
+	var h = __webpack_require__(13)
+
 	module.exports = h
 
 
 /***/ },
-/* 23 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
-	var isArray = __webpack_require__(24);
-	
-	var VNode = __webpack_require__(25);
-	var VText = __webpack_require__(31);
-	var isVNode = __webpack_require__(27);
-	var isVText = __webpack_require__(32);
-	var isWidget = __webpack_require__(28);
-	var isHook = __webpack_require__(30);
-	var isVThunk = __webpack_require__(29);
-	
-	var parseTag = __webpack_require__(33);
-	var softSetHook = __webpack_require__(35);
-	var evHook = __webpack_require__(36);
-	
+
+	var isArray = __webpack_require__(14);
+
+	var VNode = __webpack_require__(15);
+	var VText = __webpack_require__(21);
+	var isVNode = __webpack_require__(17);
+	var isVText = __webpack_require__(22);
+	var isWidget = __webpack_require__(18);
+	var isHook = __webpack_require__(20);
+	var isVThunk = __webpack_require__(19);
+
+	var parseTag = __webpack_require__(23);
+	var softSetHook = __webpack_require__(25);
+	var evHook = __webpack_require__(26);
+
 	module.exports = h;
-	
+
 	function h(tagName, properties, children) {
 	    var childNodes = [];
 	    var tag, props, key, namespace;
-	
+
 	    if (!children && isChildren(properties)) {
 	        children = properties;
 	        props = {};
 	    }
-	
+
 	    props = props || properties || {};
 	    tag = parseTag(tagName, props);
-	
+
 	    // support keys
 	    if (props.hasOwnProperty('key')) {
 	        key = props.key;
 	        props.key = undefined;
 	    }
-	
+
 	    // support namespace
 	    if (props.hasOwnProperty('namespace')) {
 	        namespace = props.namespace;
 	        props.namespace = undefined;
 	    }
-	
+
 	    // fix cursor bug
 	    if (tag === 'INPUT' &&
 	        !namespace &&
@@ -21312,17 +20990,17 @@
 	    ) {
 	        props.value = softSetHook(props.value);
 	    }
-	
+
 	    transformProperties(props);
-	
+
 	    if (children !== undefined && children !== null) {
 	        addChild(children, childNodes, tag, props);
 	    }
-	
-	
+
+
 	    return new VNode(tag, props, childNodes, key, namespace);
 	}
-	
+
 	function addChild(c, childNodes, tag, props) {
 	    if (typeof c === 'string') {
 	        childNodes.push(new VText(c));
@@ -21346,16 +21024,16 @@
 	        });
 	    }
 	}
-	
+
 	function transformProperties(props) {
 	    for (var propName in props) {
 	        if (props.hasOwnProperty(propName)) {
 	            var value = props[propName];
-	
+
 	            if (isHook(value)) {
 	                continue;
 	            }
-	
+
 	            if (propName.substr(0, 3) === 'ev-') {
 	                // add ev-foo support
 	                props[propName] = evHook(value);
@@ -21363,18 +21041,18 @@
 	        }
 	    }
 	}
-	
+
 	function isChild(x) {
 	    return isVNode(x) || isVText(x) || isWidget(x) || isVThunk(x);
 	}
-	
+
 	function isChildren(x) {
 	    return typeof x === 'string' || isArray(x) || isChild(x);
 	}
-	
+
 	function UnexpectedVirtualElement(data) {
 	    var err = new Error();
-	
+
 	    err.type = 'virtual-hyperscript.unexpected.virtual-element';
 	    err.message = 'Unexpected virtual child passed to h().\n' +
 	        'Expected a VNode / Vthunk / VWidget / string but:\n' +
@@ -21387,10 +21065,10 @@
 	        'Suggested fix: change your `h(..., [ ... ])` callsite.';
 	    err.foreignObject = data.foreignObject;
 	    err.parentVnode = data.parentVnode;
-	
+
 	    return err;
 	}
-	
+
 	function errorString(obj) {
 	    try {
 	        return JSON.stringify(obj, null, '    ');
@@ -21401,48 +21079,48 @@
 
 
 /***/ },
-/* 24 */
+/* 14 */
 /***/ function(module, exports) {
 
 	var nativeIsArray = Array.isArray
 	var toString = Object.prototype.toString
-	
+
 	module.exports = nativeIsArray || isArray
-	
+
 	function isArray(obj) {
 	    return toString.call(obj) === "[object Array]"
 	}
 
 
 /***/ },
-/* 25 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(26)
-	var isVNode = __webpack_require__(27)
-	var isWidget = __webpack_require__(28)
-	var isThunk = __webpack_require__(29)
-	var isVHook = __webpack_require__(30)
-	
+	var version = __webpack_require__(16)
+	var isVNode = __webpack_require__(17)
+	var isWidget = __webpack_require__(18)
+	var isThunk = __webpack_require__(19)
+	var isVHook = __webpack_require__(20)
+
 	module.exports = VirtualNode
-	
+
 	var noProperties = {}
 	var noChildren = []
-	
+
 	function VirtualNode(tagName, properties, children, key, namespace) {
 	    this.tagName = tagName
 	    this.properties = properties || noProperties
 	    this.children = children || noChildren
 	    this.key = key != null ? String(key) : undefined
 	    this.namespace = (typeof namespace === "string") ? namespace : null
-	
+
 	    var count = (children && children.length) || 0
 	    var descendants = 0
 	    var hasWidgets = false
 	    var hasThunks = false
 	    var descendantHooks = false
 	    var hooks
-	
+
 	    for (var propName in properties) {
 	        if (properties.hasOwnProperty(propName)) {
 	            var property = properties[propName]
@@ -21450,25 +21128,25 @@
 	                if (!hooks) {
 	                    hooks = {}
 	                }
-	
+
 	                hooks[propName] = property
 	            }
 	        }
 	    }
-	
+
 	    for (var i = 0; i < count; i++) {
 	        var child = children[i]
 	        if (isVNode(child)) {
 	            descendants += child.count || 0
-	
+
 	            if (!hasWidgets && child.hasWidgets) {
 	                hasWidgets = true
 	            }
-	
+
 	            if (!hasThunks && child.hasThunks) {
 	                hasThunks = true
 	            }
-	
+
 	            if (!descendantHooks && (child.hooks || child.descendantHooks)) {
 	                descendantHooks = true
 	            }
@@ -21480,66 +21158,66 @@
 	            hasThunks = true;
 	        }
 	    }
-	
+
 	    this.count = count + descendants
 	    this.hasWidgets = hasWidgets
 	    this.hasThunks = hasThunks
 	    this.hooks = hooks
 	    this.descendantHooks = descendantHooks
 	}
-	
+
 	VirtualNode.prototype.version = version
 	VirtualNode.prototype.type = "VirtualNode"
 
 
 /***/ },
-/* 26 */
+/* 16 */
 /***/ function(module, exports) {
 
 	module.exports = "2"
 
 
 /***/ },
-/* 27 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(26)
-	
+	var version = __webpack_require__(16)
+
 	module.exports = isVirtualNode
-	
+
 	function isVirtualNode(x) {
 	    return x && x.type === "VirtualNode" && x.version === version
 	}
 
 
 /***/ },
-/* 28 */
+/* 18 */
 /***/ function(module, exports) {
 
 	module.exports = isWidget
-	
+
 	function isWidget(w) {
 	    return w && w.type === "Widget"
 	}
 
 
 /***/ },
-/* 29 */
+/* 19 */
 /***/ function(module, exports) {
 
 	module.exports = isThunk
-	
+
 	function isThunk(t) {
 	    return t && t.type === "Thunk"
 	}
 
 
 /***/ },
-/* 30 */
+/* 20 */
 /***/ function(module, exports) {
 
 	module.exports = isHook
-	
+
 	function isHook(hook) {
 	    return hook &&
 	      (typeof hook.hook === "function" && !hook.hasOwnProperty("hook") ||
@@ -21548,72 +21226,72 @@
 
 
 /***/ },
-/* 31 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(26)
-	
+	var version = __webpack_require__(16)
+
 	module.exports = VirtualText
-	
+
 	function VirtualText(text) {
 	    this.text = String(text)
 	}
-	
+
 	VirtualText.prototype.version = version
 	VirtualText.prototype.type = "VirtualText"
 
 
 /***/ },
-/* 32 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(26)
-	
+	var version = __webpack_require__(16)
+
 	module.exports = isVirtualText
-	
+
 	function isVirtualText(x) {
 	    return x && x.type === "VirtualText" && x.version === version
 	}
 
 
 /***/ },
-/* 33 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
-	var split = __webpack_require__(34);
-	
+
+	var split = __webpack_require__(24);
+
 	var classIdSplit = /([\.#]?[a-zA-Z0-9\u007F-\uFFFF_:-]+)/;
 	var notClassId = /^\.|#/;
-	
+
 	module.exports = parseTag;
-	
+
 	function parseTag(tag, props) {
 	    if (!tag) {
 	        return 'DIV';
 	    }
-	
+
 	    var noId = !(props.hasOwnProperty('id'));
-	
+
 	    var tagParts = split(tag, classIdSplit);
 	    var tagName = null;
-	
+
 	    if (notClassId.test(tagParts[1])) {
 	        tagName = 'DIV';
 	    }
-	
+
 	    var classes, part, type, i;
-	
+
 	    for (i = 0; i < tagParts.length; i++) {
 	        part = tagParts[i];
-	
+
 	        if (!part) {
 	            continue;
 	        }
-	
+
 	        type = part.charAt(0);
-	
+
 	        if (!tagName) {
 	            tagName = part;
 	        } else if (type === '.') {
@@ -21623,21 +21301,21 @@
 	            props.id = part.substring(1, part.length);
 	        }
 	    }
-	
+
 	    if (classes) {
 	        if (props.className) {
 	            classes.push(props.className);
 	        }
-	
+
 	        props.className = classes.join(' ');
 	    }
-	
+
 	    return props.namespace ? tagName : tagName.toUpperCase();
 	}
 
 
 /***/ },
-/* 34 */
+/* 24 */
 /***/ function(module, exports) {
 
 	/*!
@@ -21646,7 +21324,7 @@
 	 * Available under the MIT License
 	 * ECMAScript compliant, uniform cross-browser split method
 	 */
-	
+
 	/**
 	 * Splits a string into an array of strings using a regex or string separator. Matches of the
 	 * separator are not included in the result array. However, if `separator` is a regex that contains
@@ -21672,12 +21350,12 @@
 	 * // -> ['..', 'word', '1', ' ', 'word', '2', '..']
 	 */
 	module.exports = (function split(undef) {
-	
+
 	  var nativeSplit = String.prototype.split,
 	    compliantExecNpcg = /()??/.exec("")[1] === undef,
 	    // NPCG: nonparticipating capturing group
 	    self;
-	
+
 	  self = function(str, separator, limit) {
 	    // If `separator` is not a regex, use `nativeSplit`
 	    if (Object.prototype.toString.call(separator) !== "[object RegExp]") {
@@ -21743,27 +21421,27 @@
 	    }
 	    return output.length > limit ? output.slice(0, limit) : output;
 	  };
-	
+
 	  return self;
 	})();
 
 
 /***/ },
-/* 35 */
+/* 25 */
 /***/ function(module, exports) {
 
 	'use strict';
-	
+
 	module.exports = SoftSetHook;
-	
+
 	function SoftSetHook(value) {
 	    if (!(this instanceof SoftSetHook)) {
 	        return new SoftSetHook(value);
 	    }
-	
+
 	    this.value = value;
 	}
-	
+
 	SoftSetHook.prototype.hook = function (node, propertyName) {
 	    if (node[propertyName] !== this.value) {
 	        node[propertyName] = this.value;
@@ -21772,80 +21450,80 @@
 
 
 /***/ },
-/* 36 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
-	var EvStore = __webpack_require__(37);
-	
+
+	var EvStore = __webpack_require__(27);
+
 	module.exports = EvHook;
-	
+
 	function EvHook(value) {
 	    if (!(this instanceof EvHook)) {
 	        return new EvHook(value);
 	    }
-	
+
 	    this.value = value;
 	}
-	
+
 	EvHook.prototype.hook = function (node, propertyName) {
 	    var es = EvStore(node);
 	    var propName = propertyName.substr(3);
-	
+
 	    es[propName] = this.value;
 	};
-	
+
 	EvHook.prototype.unhook = function(node, propertyName) {
 	    var es = EvStore(node);
 	    var propName = propertyName.substr(3);
-	
+
 	    es[propName] = undefined;
 	};
 
 
 /***/ },
-/* 37 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
-	var OneVersionConstraint = __webpack_require__(38);
-	
+
+	var OneVersionConstraint = __webpack_require__(28);
+
 	var MY_VERSION = '7';
 	OneVersionConstraint('ev-store', MY_VERSION);
-	
+
 	var hashKey = '__EV_STORE_KEY@' + MY_VERSION;
-	
+
 	module.exports = EvStore;
-	
+
 	function EvStore(elem) {
 	    var hash = elem[hashKey];
-	
+
 	    if (!hash) {
 	        hash = elem[hashKey] = {};
 	    }
-	
+
 	    return hash;
 	}
 
 
 /***/ },
-/* 38 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	
-	var Individual = __webpack_require__(39);
-	
+
+	var Individual = __webpack_require__(29);
+
 	module.exports = OneVersion;
-	
+
 	function OneVersion(moduleName, version, defaultValue) {
 	    var key = '__INDIVIDUAL_ONE_VERSION_' + moduleName;
 	    var enforceKey = key + '_ENFORCE_SINGLETON';
-	
+
 	    var versionValue = Individual(enforceKey, version);
-	
+
 	    if (versionValue !== version) {
 	        throw new Error('Can only have one copy of ' +
 	            moduleName + '.\n' +
@@ -21853,81 +21531,81 @@
 	            ' installed.\n' +
 	            'This means you cannot install version ' + version);
 	    }
-	
+
 	    return Individual(key, defaultValue);
 	}
 
 
 /***/ },
-/* 39 */
+/* 29 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {'use strict';
-	
+
 	/*global window, global*/
-	
+
 	var root = typeof window !== 'undefined' ?
 	    window : typeof global !== 'undefined' ?
 	    global : {};
-	
+
 	module.exports = Individual;
-	
+
 	function Individual(key, value) {
 	    if (key in root) {
 	        return root[key];
 	    }
-	
+
 	    root[key] = value;
-	
+
 	    return value;
 	}
-	
+
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 40 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var diff = __webpack_require__(41)
-	
+	var diff = __webpack_require__(31)
+
 	module.exports = diff
 
 
 /***/ },
-/* 41 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isArray = __webpack_require__(24)
-	
-	var VPatch = __webpack_require__(42)
-	var isVNode = __webpack_require__(27)
-	var isVText = __webpack_require__(32)
-	var isWidget = __webpack_require__(28)
-	var isThunk = __webpack_require__(29)
-	var handleThunk = __webpack_require__(43)
-	
-	var diffProps = __webpack_require__(44)
-	
+	var isArray = __webpack_require__(14)
+
+	var VPatch = __webpack_require__(32)
+	var isVNode = __webpack_require__(17)
+	var isVText = __webpack_require__(22)
+	var isWidget = __webpack_require__(18)
+	var isThunk = __webpack_require__(19)
+	var handleThunk = __webpack_require__(33)
+
+	var diffProps = __webpack_require__(34)
+
 	module.exports = diff
-	
+
 	function diff(a, b) {
 	    var patch = { a: a }
 	    walk(a, b, patch, 0)
 	    return patch
 	}
-	
+
 	function walk(a, b, patch, index) {
 	    if (a === b) {
 	        return
 	    }
-	
+
 	    var apply = patch[index]
 	    var applyClear = false
-	
+
 	    if (isThunk(a) || isThunk(b)) {
 	        thunks(a, b, patch, index)
 	    } else if (b == null) {
-	
+
 	        // If a is a widget we will add a remove patch for it
 	        // Otherwise any child widgets/hooks must be destroyed.
 	        // This prevents adding two remove patches for a widget.
@@ -21935,7 +21613,7 @@
 	            clearState(a, patch, index)
 	            apply = patch[index]
 	        }
-	
+
 	        apply = appendPatch(apply, new VPatch(VPatch.REMOVE, a, b))
 	    } else if (isVNode(b)) {
 	        if (isVNode(a)) {
@@ -21967,33 +21645,33 @@
 	        if (!isWidget(a)) {
 	            applyClear = true
 	        }
-	
+
 	        apply = appendPatch(apply, new VPatch(VPatch.WIDGET, a, b))
 	    }
-	
+
 	    if (apply) {
 	        patch[index] = apply
 	    }
-	
+
 	    if (applyClear) {
 	        clearState(a, patch, index)
 	    }
 	}
-	
+
 	function diffChildren(a, b, patch, apply, index) {
 	    var aChildren = a.children
 	    var orderedSet = reorder(aChildren, b.children)
 	    var bChildren = orderedSet.children
-	
+
 	    var aLen = aChildren.length
 	    var bLen = bChildren.length
 	    var len = aLen > bLen ? aLen : bLen
-	
+
 	    for (var i = 0; i < len; i++) {
 	        var leftNode = aChildren[i]
 	        var rightNode = bChildren[i]
 	        index += 1
-	
+
 	        if (!leftNode) {
 	            if (rightNode) {
 	                // Excess nodes in b need to be added
@@ -22003,12 +21681,12 @@
 	        } else {
 	            walk(leftNode, rightNode, patch, index)
 	        }
-	
+
 	        if (isVNode(leftNode) && leftNode.count) {
 	            index += leftNode.count
 	        }
 	    }
-	
+
 	    if (orderedSet.moves) {
 	        // Reorder nodes last
 	        apply = appendPatch(apply, new VPatch(
@@ -22017,16 +21695,16 @@
 	            orderedSet.moves
 	        ))
 	    }
-	
+
 	    return apply
 	}
-	
+
 	function clearState(vNode, patch, index) {
 	    // TODO: Make this a single walk, not two
 	    unhook(vNode, patch, index)
 	    destroyWidgets(vNode, patch, index)
 	}
-	
+
 	// Patch records for all destroyed widgets must be added because we need
 	// a DOM node reference for the destroy function
 	function destroyWidgets(vNode, patch, index) {
@@ -22043,9 +21721,9 @@
 	        for (var i = 0; i < len; i++) {
 	            var child = children[i]
 	            index += 1
-	
+
 	            destroyWidgets(child, patch, index)
-	
+
 	            if (isVNode(child) && child.count) {
 	                index += child.count
 	            }
@@ -22054,7 +21732,7 @@
 	        thunks(vNode, null, patch, index)
 	    }
 	}
-	
+
 	// Create a sub-patch for thunks
 	function thunks(a, b, patch, index) {
 	    var nodes = handleThunk(a, b)
@@ -22063,17 +21741,17 @@
 	        patch[index] = new VPatch(VPatch.THUNK, null, thunkPatch)
 	    }
 	}
-	
+
 	function hasPatches(patch) {
 	    for (var index in patch) {
 	        if (index !== "a") {
 	            return true
 	        }
 	    }
-	
+
 	    return false
 	}
-	
+
 	// Execute hooks when two nodes are identical
 	function unhook(vNode, patch, index) {
 	    if (isVNode(vNode)) {
@@ -22087,16 +21765,16 @@
 	                )
 	            )
 	        }
-	
+
 	        if (vNode.descendantHooks || vNode.hasThunks) {
 	            var children = vNode.children
 	            var len = children.length
 	            for (var i = 0; i < len; i++) {
 	                var child = children[i]
 	                index += 1
-	
+
 	                unhook(child, patch, index)
-	
+
 	                if (isVNode(child) && child.count) {
 	                    index += child.count
 	                }
@@ -22106,62 +21784,62 @@
 	        thunks(vNode, null, patch, index)
 	    }
 	}
-	
+
 	function undefinedKeys(obj) {
 	    var result = {}
-	
+
 	    for (var key in obj) {
 	        result[key] = undefined
 	    }
-	
+
 	    return result
 	}
-	
+
 	// List diff, naive left to right reordering
 	function reorder(aChildren, bChildren) {
 	    // O(M) time, O(M) memory
 	    var bChildIndex = keyIndex(bChildren)
 	    var bKeys = bChildIndex.keys
 	    var bFree = bChildIndex.free
-	
+
 	    if (bFree.length === bChildren.length) {
 	        return {
 	            children: bChildren,
 	            moves: null
 	        }
 	    }
-	
+
 	    // O(N) time, O(N) memory
 	    var aChildIndex = keyIndex(aChildren)
 	    var aKeys = aChildIndex.keys
 	    var aFree = aChildIndex.free
-	
+
 	    if (aFree.length === aChildren.length) {
 	        return {
 	            children: bChildren,
 	            moves: null
 	        }
 	    }
-	
+
 	    // O(MAX(N, M)) memory
 	    var newChildren = []
-	
+
 	    var freeIndex = 0
 	    var freeCount = bFree.length
 	    var deletedItems = 0
-	
+
 	    // Iterate through a and match a node in b
 	    // O(N) time,
 	    for (var i = 0 ; i < aChildren.length; i++) {
 	        var aItem = aChildren[i]
 	        var itemIndex
-	
+
 	        if (aItem.key) {
 	            if (bKeys.hasOwnProperty(aItem.key)) {
 	                // Match up the old keys
 	                itemIndex = bKeys[aItem.key]
 	                newChildren.push(bChildren[itemIndex])
-	
+
 	            } else {
 	                // Remove old keyed items
 	                itemIndex = i - deletedItems++
@@ -22181,16 +21859,16 @@
 	            }
 	        }
 	    }
-	
+
 	    var lastFreeIndex = freeIndex >= bFree.length ?
 	        bChildren.length :
 	        bFree[freeIndex]
-	
+
 	    // Iterate through b and append any new keys
 	    // O(M) time
 	    for (var j = 0; j < bChildren.length; j++) {
 	        var newItem = bChildren[j]
-	
+
 	        if (newItem.key) {
 	            if (!aKeys.hasOwnProperty(newItem.key)) {
 	                // Add any new keyed items
@@ -22203,23 +21881,23 @@
 	            newChildren.push(newItem)
 	        }
 	    }
-	
+
 	    var simulate = newChildren.slice()
 	    var simulateIndex = 0
 	    var removes = []
 	    var inserts = []
 	    var simulateItem
-	
+
 	    for (var k = 0; k < bChildren.length;) {
 	        var wantedItem = bChildren[k]
 	        simulateItem = simulate[simulateIndex]
-	
+
 	        // remove items
 	        while (simulateItem === null && simulate.length) {
 	            removes.push(remove(simulate, simulateIndex, null))
 	            simulateItem = simulate[simulateIndex]
 	        }
-	
+
 	        if (!simulateItem || simulateItem.key !== wantedItem.key) {
 	            // if we need a key in this position...
 	            if (wantedItem.key) {
@@ -22256,13 +21934,13 @@
 	            k++
 	        }
 	    }
-	
+
 	    // remove all the remaining nodes from simulate
 	    while(simulateIndex < simulate.length) {
 	        simulateItem = simulate[simulateIndex]
 	        removes.push(remove(simulate, simulateIndex, simulateItem && simulateItem.key))
 	    }
-	
+
 	    // If the only moves we have are deletes then we can just
 	    // let the delete patch remove these items.
 	    if (removes.length === deletedItems && !inserts.length) {
@@ -22271,7 +21949,7 @@
 	            moves: null
 	        }
 	    }
-	
+
 	    return {
 	        children: newChildren,
 	        moves: {
@@ -22280,37 +21958,37 @@
 	        }
 	    }
 	}
-	
+
 	function remove(arr, index, key) {
 	    arr.splice(index, 1)
-	
+
 	    return {
 	        from: index,
 	        key: key
 	    }
 	}
-	
+
 	function keyIndex(children) {
 	    var keys = {}
 	    var free = []
 	    var length = children.length
-	
+
 	    for (var i = 0; i < length; i++) {
 	        var child = children[i]
-	
+
 	        if (child.key) {
 	            keys[child.key] = i
 	        } else {
 	            free.push(i)
 	        }
 	    }
-	
+
 	    return {
 	        keys: keys,     // A hash of key name to index
 	        free: free      // An array of unkeyed item indices
 	    }
 	}
-	
+
 	function appendPatch(apply, patch) {
 	    if (apply) {
 	        if (isArray(apply)) {
@@ -22318,7 +21996,7 @@
 	        } else {
 	            apply = [apply, patch]
 	        }
-	
+
 	        return apply
 	    } else {
 	        return patch
@@ -22327,11 +22005,11 @@
 
 
 /***/ },
-/* 42 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var version = __webpack_require__(26)
-	
+	var version = __webpack_require__(16)
+
 	VirtualPatch.NONE = 0
 	VirtualPatch.VTEXT = 1
 	VirtualPatch.VNODE = 2
@@ -22341,86 +22019,86 @@
 	VirtualPatch.INSERT = 6
 	VirtualPatch.REMOVE = 7
 	VirtualPatch.THUNK = 8
-	
+
 	module.exports = VirtualPatch
-	
+
 	function VirtualPatch(type, vNode, patch) {
 	    this.type = Number(type)
 	    this.vNode = vNode
 	    this.patch = patch
 	}
-	
+
 	VirtualPatch.prototype.version = version
 	VirtualPatch.prototype.type = "VirtualPatch"
 
 
 /***/ },
-/* 43 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isVNode = __webpack_require__(27)
-	var isVText = __webpack_require__(32)
-	var isWidget = __webpack_require__(28)
-	var isThunk = __webpack_require__(29)
-	
+	var isVNode = __webpack_require__(17)
+	var isVText = __webpack_require__(22)
+	var isWidget = __webpack_require__(18)
+	var isThunk = __webpack_require__(19)
+
 	module.exports = handleThunk
-	
+
 	function handleThunk(a, b) {
 	    var renderedA = a
 	    var renderedB = b
-	
+
 	    if (isThunk(b)) {
 	        renderedB = renderThunk(b, a)
 	    }
-	
+
 	    if (isThunk(a)) {
 	        renderedA = renderThunk(a, null)
 	    }
-	
+
 	    return {
 	        a: renderedA,
 	        b: renderedB
 	    }
 	}
-	
+
 	function renderThunk(thunk, previous) {
 	    var renderedThunk = thunk.vnode
-	
+
 	    if (!renderedThunk) {
 	        renderedThunk = thunk.vnode = thunk.render(previous)
 	    }
-	
+
 	    if (!(isVNode(renderedThunk) ||
 	            isVText(renderedThunk) ||
 	            isWidget(renderedThunk))) {
 	        throw new Error("thunk did not return a valid node");
 	    }
-	
+
 	    return renderedThunk
 	}
 
 
 /***/ },
-/* 44 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(45)
-	var isHook = __webpack_require__(30)
-	
+	var isObject = __webpack_require__(35)
+	var isHook = __webpack_require__(20)
+
 	module.exports = diffProps
-	
+
 	function diffProps(a, b) {
 	    var diff
-	
+
 	    for (var aKey in a) {
 	        if (!(aKey in b)) {
 	            diff = diff || {}
 	            diff[aKey] = undefined
 	        }
-	
+
 	        var aValue = a[aKey]
 	        var bValue = b[aKey]
-	
+
 	        if (aValue === bValue) {
 	            continue
 	        } else if (isObject(aValue) && isObject(bValue)) {
@@ -22442,17 +22120,17 @@
 	            diff[aKey] = bValue
 	        }
 	    }
-	
+
 	    for (var bKey in b) {
 	        if (!(bKey in a)) {
 	            diff = diff || {}
 	            diff[bKey] = b[bKey]
 	        }
 	    }
-	
+
 	    return diff
 	}
-	
+
 	function getPrototype(value) {
 	  if (Object.getPrototypeOf) {
 	    return Object.getPrototypeOf(value)
@@ -22465,61 +22143,61 @@
 
 
 /***/ },
-/* 45 */
+/* 35 */
 /***/ function(module, exports) {
 
 	"use strict";
-	
+
 	module.exports = function isObject(x) {
 		return typeof x === "object" && x !== null;
 	};
 
 
 /***/ },
-/* 46 */
+/* 36 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var patch = __webpack_require__(47)
-	
+	var patch = __webpack_require__(37)
+
 	module.exports = patch
 
 
 /***/ },
-/* 47 */
+/* 37 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var document = __webpack_require__(48)
-	var isArray = __webpack_require__(24)
-	
-	var render = __webpack_require__(50)
-	var domIndex = __webpack_require__(52)
-	var patchOp = __webpack_require__(53)
+	var document = __webpack_require__(38)
+	var isArray = __webpack_require__(14)
+
+	var render = __webpack_require__(40)
+	var domIndex = __webpack_require__(42)
+	var patchOp = __webpack_require__(43)
 	module.exports = patch
-	
+
 	function patch(rootNode, patches, renderOptions) {
 	    renderOptions = renderOptions || {}
 	    renderOptions.patch = renderOptions.patch && renderOptions.patch !== patch
 	        ? renderOptions.patch
 	        : patchRecursive
 	    renderOptions.render = renderOptions.render || render
-	
+
 	    return renderOptions.patch(rootNode, patches, renderOptions)
 	}
-	
+
 	function patchRecursive(rootNode, patches, renderOptions) {
 	    var indices = patchIndices(patches)
-	
+
 	    if (indices.length === 0) {
 	        return rootNode
 	    }
-	
+
 	    var index = domIndex(rootNode, patches.a, indices)
 	    var ownerDocument = rootNode.ownerDocument
-	
+
 	    if (!renderOptions.document && ownerDocument !== document) {
 	        renderOptions.document = ownerDocument
 	    }
-	
+
 	    for (var i = 0; i < indices.length; i++) {
 	        var nodeIndex = indices[i]
 	        rootNode = applyPatch(rootNode,
@@ -22527,98 +22205,98 @@
 	            patches[nodeIndex],
 	            renderOptions)
 	    }
-	
+
 	    return rootNode
 	}
-	
+
 	function applyPatch(rootNode, domNode, patchList, renderOptions) {
 	    if (!domNode) {
 	        return rootNode
 	    }
-	
+
 	    var newNode
-	
+
 	    if (isArray(patchList)) {
 	        for (var i = 0; i < patchList.length; i++) {
 	            newNode = patchOp(patchList[i], domNode, renderOptions)
-	
+
 	            if (domNode === rootNode) {
 	                rootNode = newNode
 	            }
 	        }
 	    } else {
 	        newNode = patchOp(patchList, domNode, renderOptions)
-	
+
 	        if (domNode === rootNode) {
 	            rootNode = newNode
 	        }
 	    }
-	
+
 	    return rootNode
 	}
-	
+
 	function patchIndices(patches) {
 	    var indices = []
-	
+
 	    for (var key in patches) {
 	        if (key !== "a") {
 	            indices.push(Number(key))
 	        }
 	    }
-	
+
 	    return indices
 	}
 
 
 /***/ },
-/* 48 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {var topLevel = typeof global !== 'undefined' ? global :
 	    typeof window !== 'undefined' ? window : {}
-	var minDoc = __webpack_require__(49);
-	
+	var minDoc = __webpack_require__(39);
+
 	if (typeof document !== 'undefined') {
 	    module.exports = document;
 	} else {
 	    var doccy = topLevel['__GLOBAL_DOCUMENT_CACHE@4'];
-	
+
 	    if (!doccy) {
 	        doccy = topLevel['__GLOBAL_DOCUMENT_CACHE@4'] = minDoc;
 	    }
-	
+
 	    module.exports = doccy;
 	}
-	
+
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 49 */
+/* 39 */
 /***/ function(module, exports) {
 
 	/* (ignored) */
 
 /***/ },
-/* 50 */
+/* 40 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var document = __webpack_require__(48)
-	
-	var applyProperties = __webpack_require__(51)
-	
-	var isVNode = __webpack_require__(27)
-	var isVText = __webpack_require__(32)
-	var isWidget = __webpack_require__(28)
-	var handleThunk = __webpack_require__(43)
-	
+	var document = __webpack_require__(38)
+
+	var applyProperties = __webpack_require__(41)
+
+	var isVNode = __webpack_require__(17)
+	var isVText = __webpack_require__(22)
+	var isWidget = __webpack_require__(18)
+	var handleThunk = __webpack_require__(33)
+
 	module.exports = createElement
-	
+
 	function createElement(vnode, opts) {
 	    var doc = opts ? opts.document || document : document
 	    var warn = opts ? opts.warn : null
-	
+
 	    vnode = handleThunk(vnode).a
-	
+
 	    if (isWidget(vnode)) {
 	        return vnode.init()
 	    } else if (isVText(vnode)) {
@@ -22629,40 +22307,40 @@
 	        }
 	        return null
 	    }
-	
+
 	    var node = (vnode.namespace === null) ?
 	        doc.createElement(vnode.tagName) :
 	        doc.createElementNS(vnode.namespace, vnode.tagName)
-	
+
 	    var props = vnode.properties
 	    applyProperties(node, props)
-	
+
 	    var children = vnode.children
-	
+
 	    for (var i = 0; i < children.length; i++) {
 	        var childNode = createElement(children[i], opts)
 	        if (childNode) {
 	            node.appendChild(childNode)
 	        }
 	    }
-	
+
 	    return node
 	}
 
 
 /***/ },
-/* 51 */
+/* 41 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(45)
-	var isHook = __webpack_require__(30)
-	
+	var isObject = __webpack_require__(35)
+	var isHook = __webpack_require__(20)
+
 	module.exports = applyProperties
-	
+
 	function applyProperties(node, props, previous) {
 	    for (var propName in props) {
 	        var propValue = props[propName]
-	
+
 	        if (propValue === undefined) {
 	            removeProperty(node, propName, propValue, previous);
 	        } else if (isHook(propValue)) {
@@ -22681,11 +22359,11 @@
 	        }
 	    }
 	}
-	
+
 	function removeProperty(node, propName, propValue, previous) {
 	    if (previous) {
 	        var previousValue = previous[propName]
-	
+
 	        if (!isHook(previousValue)) {
 	            if (propName === "attributes") {
 	                for (var attrName in previousValue) {
@@ -22705,43 +22383,43 @@
 	        }
 	    }
 	}
-	
+
 	function patchObject(node, props, previous, propName, propValue) {
 	    var previousValue = previous ? previous[propName] : undefined
-	
+
 	    // Set attributes
 	    if (propName === "attributes") {
 	        for (var attrName in propValue) {
 	            var attrValue = propValue[attrName]
-	
+
 	            if (attrValue === undefined) {
 	                node.removeAttribute(attrName)
 	            } else {
 	                node.setAttribute(attrName, attrValue)
 	            }
 	        }
-	
+
 	        return
 	    }
-	
+
 	    if(previousValue && isObject(previousValue) &&
 	        getPrototype(previousValue) !== getPrototype(propValue)) {
 	        node[propName] = propValue
 	        return
 	    }
-	
+
 	    if (!isObject(node[propName])) {
 	        node[propName] = {}
 	    }
-	
+
 	    var replacer = propName === "style" ? "" : undefined
-	
+
 	    for (var k in propValue) {
 	        var value = propValue[k]
 	        node[propName][k] = (value === undefined) ? replacer : value
 	    }
 	}
-	
+
 	function getPrototype(value) {
 	    if (Object.getPrototypeOf) {
 	        return Object.getPrototypeOf(value)
@@ -22754,7 +22432,7 @@
 
 
 /***/ },
-/* 52 */
+/* 42 */
 /***/ function(module, exports) {
 
 	// Maps a virtual DOM tree onto a real DOM tree in an efficient manner.
@@ -22762,11 +22440,11 @@
 	// the in-order tree indexing to eliminate recursion down certain branches.
 	// We only recurse into a DOM node if we know that it contains a child of
 	// interest.
-	
+
 	var noChild = {}
-	
+
 	module.exports = domIndex
-	
+
 	function domIndex(rootNode, tree, indices, nodes) {
 	    if (!indices || indices.length === 0) {
 	        return {}
@@ -22775,56 +22453,56 @@
 	        return recurse(rootNode, tree, indices, nodes, 0)
 	    }
 	}
-	
+
 	function recurse(rootNode, tree, indices, nodes, rootIndex) {
 	    nodes = nodes || {}
-	
-	
+
+
 	    if (rootNode) {
 	        if (indexInRange(indices, rootIndex, rootIndex)) {
 	            nodes[rootIndex] = rootNode
 	        }
-	
+
 	        var vChildren = tree.children
-	
+
 	        if (vChildren) {
-	
+
 	            var childNodes = rootNode.childNodes
-	
+
 	            for (var i = 0; i < tree.children.length; i++) {
 	                rootIndex += 1
-	
+
 	                var vChild = vChildren[i] || noChild
 	                var nextIndex = rootIndex + (vChild.count || 0)
-	
+
 	                // skip recursion down the tree if there are no nodes down here
 	                if (indexInRange(indices, rootIndex, nextIndex)) {
 	                    recurse(childNodes[i], vChild, indices, nodes, rootIndex)
 	                }
-	
+
 	                rootIndex = nextIndex
 	            }
 	        }
 	    }
-	
+
 	    return nodes
 	}
-	
+
 	// Binary search for an index in the interval [left, right]
 	function indexInRange(indices, left, right) {
 	    if (indices.length === 0) {
 	        return false
 	    }
-	
+
 	    var minIndex = 0
 	    var maxIndex = indices.length - 1
 	    var currentIndex
 	    var currentItem
-	
+
 	    while (minIndex <= maxIndex) {
 	        currentIndex = ((maxIndex + minIndex) / 2) >> 0
 	        currentItem = indices[currentIndex]
-	
+
 	        if (minIndex === maxIndex) {
 	            return currentItem >= left && currentItem <= right
 	        } else if (currentItem < left) {
@@ -22835,33 +22513,33 @@
 	            return true
 	        }
 	    }
-	
+
 	    return false;
 	}
-	
+
 	function ascending(a, b) {
 	    return a > b ? 1 : -1
 	}
 
 
 /***/ },
-/* 53 */
+/* 43 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var applyProperties = __webpack_require__(51)
-	
-	var isWidget = __webpack_require__(28)
-	var VPatch = __webpack_require__(42)
-	
-	var updateWidget = __webpack_require__(54)
-	
+	var applyProperties = __webpack_require__(41)
+
+	var isWidget = __webpack_require__(18)
+	var VPatch = __webpack_require__(32)
+
+	var updateWidget = __webpack_require__(44)
+
 	module.exports = applyPatch
-	
+
 	function applyPatch(vpatch, domNode, renderOptions) {
 	    var type = vpatch.type
 	    var vNode = vpatch.vNode
 	    var patch = vpatch.patch
-	
+
 	    switch (type) {
 	        case VPatch.REMOVE:
 	            return removeNode(domNode, vNode)
@@ -22886,94 +22564,94 @@
 	            return domNode
 	    }
 	}
-	
+
 	function removeNode(domNode, vNode) {
 	    var parentNode = domNode.parentNode
-	
+
 	    if (parentNode) {
 	        parentNode.removeChild(domNode)
 	    }
-	
+
 	    destroyWidget(domNode, vNode);
-	
+
 	    return null
 	}
-	
+
 	function insertNode(parentNode, vNode, renderOptions) {
 	    var newNode = renderOptions.render(vNode, renderOptions)
-	
+
 	    if (parentNode) {
 	        parentNode.appendChild(newNode)
 	    }
-	
+
 	    return parentNode
 	}
-	
+
 	function stringPatch(domNode, leftVNode, vText, renderOptions) {
 	    var newNode
-	
+
 	    if (domNode.nodeType === 3) {
 	        domNode.replaceData(0, domNode.length, vText.text)
 	        newNode = domNode
 	    } else {
 	        var parentNode = domNode.parentNode
 	        newNode = renderOptions.render(vText, renderOptions)
-	
+
 	        if (parentNode && newNode !== domNode) {
 	            parentNode.replaceChild(newNode, domNode)
 	        }
 	    }
-	
+
 	    return newNode
 	}
-	
+
 	function widgetPatch(domNode, leftVNode, widget, renderOptions) {
 	    var updating = updateWidget(leftVNode, widget)
 	    var newNode
-	
+
 	    if (updating) {
 	        newNode = widget.update(leftVNode, domNode) || domNode
 	    } else {
 	        newNode = renderOptions.render(widget, renderOptions)
 	    }
-	
+
 	    var parentNode = domNode.parentNode
-	
+
 	    if (parentNode && newNode !== domNode) {
 	        parentNode.replaceChild(newNode, domNode)
 	    }
-	
+
 	    if (!updating) {
 	        destroyWidget(domNode, leftVNode)
 	    }
-	
+
 	    return newNode
 	}
-	
+
 	function vNodePatch(domNode, leftVNode, vNode, renderOptions) {
 	    var parentNode = domNode.parentNode
 	    var newNode = renderOptions.render(vNode, renderOptions)
-	
+
 	    if (parentNode && newNode !== domNode) {
 	        parentNode.replaceChild(newNode, domNode)
 	    }
-	
+
 	    return newNode
 	}
-	
+
 	function destroyWidget(domNode, w) {
 	    if (typeof w.destroy === "function" && isWidget(w)) {
 	        w.destroy(domNode)
 	    }
 	}
-	
+
 	function reorderChildren(domNode, moves) {
 	    var childNodes = domNode.childNodes
 	    var keyMap = {}
 	    var node
 	    var remove
 	    var insert
-	
+
 	    for (var i = 0; i < moves.removes.length; i++) {
 	        remove = moves.removes[i]
 	        node = childNodes[remove.from]
@@ -22982,7 +22660,7 @@
 	        }
 	        domNode.removeChild(node)
 	    }
-	
+
 	    var length = childNodes.length
 	    for (var j = 0; j < moves.inserts.length; j++) {
 	        insert = moves.inserts[j]
@@ -22991,24 +22669,24 @@
 	        domNode.insertBefore(node, insert.to >= length++ ? null : childNodes[insert.to])
 	    }
 	}
-	
+
 	function replaceRoot(oldRoot, newRoot) {
 	    if (oldRoot && newRoot && oldRoot !== newRoot && oldRoot.parentNode) {
 	        oldRoot.parentNode.replaceChild(newRoot, oldRoot)
 	    }
-	
+
 	    return newRoot;
 	}
 
 
 /***/ },
-/* 54 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isWidget = __webpack_require__(28)
-	
+	var isWidget = __webpack_require__(18)
+
 	module.exports = updateWidget
-	
+
 	function updateWidget(a, b) {
 	    if (isWidget(a) && isWidget(b)) {
 	        if ("name" in a && "name" in b) {
@@ -23017,31 +22695,493 @@
 	            return a.init === b.init
 	        }
 	    }
-	
+
 	    return false
 	}
 
 
 /***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var createElement = __webpack_require__(40)
+
+	module.exports = createElement
+
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//this is the main todo file
+	'use strict';
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var $ = __webpack_require__(7);
+	var Rx = __webpack_require__(1);
+	__webpack_require__(47);
+	var view = __webpack_require__(57);
+
+	var spinnerMain = function spinnerMain() {
+		_classCallCheck(this, spinnerMain);
+
+		view.wire();
+	};
+
+	module.exports = new spinnerMain();
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(48);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(56)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!./../../css-loader/index.js!./../../sass-loader/index.js!./font-awesome.scss", function() {
+				var newContent = require("!!./../../css-loader/index.js!./../../sass-loader/index.js!./font-awesome.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ },
+/* 48 */
+/***/ function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(49)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "@charset \"UTF-8\";\n/*!\n *  Font Awesome 4.4.0 by @davegandy - http://fontawesome.io - @fontawesome\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\n */\n/* FONT PATH\n * -------------------------- */\n@font-face {\n  font-family: 'FontAwesome';\n  src: url(" + __webpack_require__(50) + ");\n  src: url(" + __webpack_require__(51) + "?#iefix&v=4.4.0) format(\"embedded-opentype\"), url(" + __webpack_require__(52) + ") format(\"woff2\"), url(" + __webpack_require__(53) + ") format(\"woff\"), url(" + __webpack_require__(54) + ") format(\"truetype\"), url(" + __webpack_require__(55) + "#fontawesomeregular) format(\"svg\");\n  font-weight: normal;\n  font-style: normal; }\n\n.fa {\n  display: inline-block;\n  font: normal normal normal 14px/1 FontAwesome;\n  font-size: inherit;\n  text-rendering: auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\n/* makes the font 33% larger relative to the icon container */\n.fa-lg {\n  font-size: 1.33333em;\n  line-height: 0.75em;\n  vertical-align: -15%; }\n\n.fa-2x {\n  font-size: 2em; }\n\n.fa-3x {\n  font-size: 3em; }\n\n.fa-4x {\n  font-size: 4em; }\n\n.fa-5x {\n  font-size: 5em; }\n\n.fa-fw {\n  width: 1.28571em;\n  text-align: center; }\n\n.fa-ul {\n  padding-left: 0;\n  margin-left: 2.14286em;\n  list-style-type: none; }\n  .fa-ul > li {\n    position: relative; }\n\n.fa-li {\n  position: absolute;\n  left: -2.14286em;\n  width: 2.14286em;\n  top: 0.14286em;\n  text-align: center; }\n  .fa-li.fa-lg {\n    left: -1.85714em; }\n\n.fa-border {\n  padding: 0.2em 0.25em 0.15em;\n  border: solid 0.08em #eee;\n  border-radius: .1em; }\n\n.fa-pull-left {\n  float: left; }\n\n.fa-pull-right {\n  float: right; }\n\n.fa.fa-pull-left {\n  margin-right: .3em; }\n\n.fa.fa-pull-right {\n  margin-left: .3em; }\n\n/* Deprecated as of 4.4.0 */\n.pull-right {\n  float: right; }\n\n.pull-left {\n  float: left; }\n\n.fa.pull-left {\n  margin-right: .3em; }\n\n.fa.pull-right {\n  margin-left: .3em; }\n\n.fa-spin {\n  -webkit-animation: fa-spin 2s infinite linear;\n  animation: fa-spin 2s infinite linear; }\n\n.fa-pulse {\n  -webkit-animation: fa-spin 1s infinite steps(8);\n  animation: fa-spin 1s infinite steps(8); }\n\n@-webkit-keyframes fa-spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg); }\n  100% {\n    -webkit-transform: rotate(359deg);\n    transform: rotate(359deg); } }\n\n@keyframes fa-spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg); }\n  100% {\n    -webkit-transform: rotate(359deg);\n    transform: rotate(359deg); } }\n\n.fa-rotate-90 {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);\n  -webkit-transform: rotate(90deg);\n  -ms-transform: rotate(90deg);\n  transform: rotate(90deg); }\n\n.fa-rotate-180 {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);\n  -webkit-transform: rotate(180deg);\n  -ms-transform: rotate(180deg);\n  transform: rotate(180deg); }\n\n.fa-rotate-270 {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);\n  -webkit-transform: rotate(270deg);\n  -ms-transform: rotate(270deg);\n  transform: rotate(270deg); }\n\n.fa-flip-horizontal {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0);\n  -webkit-transform: scale(-1, 1);\n  -ms-transform: scale(-1, 1);\n  transform: scale(-1, 1); }\n\n.fa-flip-vertical {\n  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);\n  -webkit-transform: scale(1, -1);\n  -ms-transform: scale(1, -1);\n  transform: scale(1, -1); }\n\n:root .fa-rotate-90,\n:root .fa-rotate-180,\n:root .fa-rotate-270,\n:root .fa-flip-horizontal,\n:root .fa-flip-vertical {\n  filter: none; }\n\n.fa-stack {\n  position: relative;\n  display: inline-block;\n  width: 2em;\n  height: 2em;\n  line-height: 2em;\n  vertical-align: middle; }\n\n.fa-stack-1x, .fa-stack-2x {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  text-align: center; }\n\n.fa-stack-1x {\n  line-height: inherit; }\n\n.fa-stack-2x {\n  font-size: 2em; }\n\n.fa-inverse {\n  color: #fff; }\n\n/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen\n   readers do not read off random characters that represent icons */\n.fa-glass:before {\n  content: \"\\F000\"; }\n\n.fa-music:before {\n  content: \"\\F001\"; }\n\n.fa-search:before {\n  content: \"\\F002\"; }\n\n.fa-envelope-o:before {\n  content: \"\\F003\"; }\n\n.fa-heart:before {\n  content: \"\\F004\"; }\n\n.fa-star:before {\n  content: \"\\F005\"; }\n\n.fa-star-o:before {\n  content: \"\\F006\"; }\n\n.fa-user:before {\n  content: \"\\F007\"; }\n\n.fa-film:before {\n  content: \"\\F008\"; }\n\n.fa-th-large:before {\n  content: \"\\F009\"; }\n\n.fa-th:before {\n  content: \"\\F00A\"; }\n\n.fa-th-list:before {\n  content: \"\\F00B\"; }\n\n.fa-check:before {\n  content: \"\\F00C\"; }\n\n.fa-remove:before,\n.fa-close:before,\n.fa-times:before {\n  content: \"\\F00D\"; }\n\n.fa-search-plus:before {\n  content: \"\\F00E\"; }\n\n.fa-search-minus:before {\n  content: \"\\F010\"; }\n\n.fa-power-off:before {\n  content: \"\\F011\"; }\n\n.fa-signal:before {\n  content: \"\\F012\"; }\n\n.fa-gear:before,\n.fa-cog:before {\n  content: \"\\F013\"; }\n\n.fa-trash-o:before {\n  content: \"\\F014\"; }\n\n.fa-home:before {\n  content: \"\\F015\"; }\n\n.fa-file-o:before {\n  content: \"\\F016\"; }\n\n.fa-clock-o:before {\n  content: \"\\F017\"; }\n\n.fa-road:before {\n  content: \"\\F018\"; }\n\n.fa-download:before {\n  content: \"\\F019\"; }\n\n.fa-arrow-circle-o-down:before {\n  content: \"\\F01A\"; }\n\n.fa-arrow-circle-o-up:before {\n  content: \"\\F01B\"; }\n\n.fa-inbox:before {\n  content: \"\\F01C\"; }\n\n.fa-play-circle-o:before {\n  content: \"\\F01D\"; }\n\n.fa-rotate-right:before,\n.fa-repeat:before {\n  content: \"\\F01E\"; }\n\n.fa-refresh:before {\n  content: \"\\F021\"; }\n\n.fa-list-alt:before {\n  content: \"\\F022\"; }\n\n.fa-lock:before {\n  content: \"\\F023\"; }\n\n.fa-flag:before {\n  content: \"\\F024\"; }\n\n.fa-headphones:before {\n  content: \"\\F025\"; }\n\n.fa-volume-off:before {\n  content: \"\\F026\"; }\n\n.fa-volume-down:before {\n  content: \"\\F027\"; }\n\n.fa-volume-up:before {\n  content: \"\\F028\"; }\n\n.fa-qrcode:before {\n  content: \"\\F029\"; }\n\n.fa-barcode:before {\n  content: \"\\F02A\"; }\n\n.fa-tag:before {\n  content: \"\\F02B\"; }\n\n.fa-tags:before {\n  content: \"\\F02C\"; }\n\n.fa-book:before {\n  content: \"\\F02D\"; }\n\n.fa-bookmark:before {\n  content: \"\\F02E\"; }\n\n.fa-print:before {\n  content: \"\\F02F\"; }\n\n.fa-camera:before {\n  content: \"\\F030\"; }\n\n.fa-font:before {\n  content: \"\\F031\"; }\n\n.fa-bold:before {\n  content: \"\\F032\"; }\n\n.fa-italic:before {\n  content: \"\\F033\"; }\n\n.fa-text-height:before {\n  content: \"\\F034\"; }\n\n.fa-text-width:before {\n  content: \"\\F035\"; }\n\n.fa-align-left:before {\n  content: \"\\F036\"; }\n\n.fa-align-center:before {\n  content: \"\\F037\"; }\n\n.fa-align-right:before {\n  content: \"\\F038\"; }\n\n.fa-align-justify:before {\n  content: \"\\F039\"; }\n\n.fa-list:before {\n  content: \"\\F03A\"; }\n\n.fa-dedent:before,\n.fa-outdent:before {\n  content: \"\\F03B\"; }\n\n.fa-indent:before {\n  content: \"\\F03C\"; }\n\n.fa-video-camera:before {\n  content: \"\\F03D\"; }\n\n.fa-photo:before,\n.fa-image:before,\n.fa-picture-o:before {\n  content: \"\\F03E\"; }\n\n.fa-pencil:before {\n  content: \"\\F040\"; }\n\n.fa-map-marker:before {\n  content: \"\\F041\"; }\n\n.fa-adjust:before {\n  content: \"\\F042\"; }\n\n.fa-tint:before {\n  content: \"\\F043\"; }\n\n.fa-edit:before,\n.fa-pencil-square-o:before {\n  content: \"\\F044\"; }\n\n.fa-share-square-o:before {\n  content: \"\\F045\"; }\n\n.fa-check-square-o:before {\n  content: \"\\F046\"; }\n\n.fa-arrows:before {\n  content: \"\\F047\"; }\n\n.fa-step-backward:before {\n  content: \"\\F048\"; }\n\n.fa-fast-backward:before {\n  content: \"\\F049\"; }\n\n.fa-backward:before {\n  content: \"\\F04A\"; }\n\n.fa-play:before {\n  content: \"\\F04B\"; }\n\n.fa-pause:before {\n  content: \"\\F04C\"; }\n\n.fa-stop:before {\n  content: \"\\F04D\"; }\n\n.fa-forward:before {\n  content: \"\\F04E\"; }\n\n.fa-fast-forward:before {\n  content: \"\\F050\"; }\n\n.fa-step-forward:before {\n  content: \"\\F051\"; }\n\n.fa-eject:before {\n  content: \"\\F052\"; }\n\n.fa-chevron-left:before {\n  content: \"\\F053\"; }\n\n.fa-chevron-right:before {\n  content: \"\\F054\"; }\n\n.fa-plus-circle:before {\n  content: \"\\F055\"; }\n\n.fa-minus-circle:before {\n  content: \"\\F056\"; }\n\n.fa-times-circle:before {\n  content: \"\\F057\"; }\n\n.fa-check-circle:before {\n  content: \"\\F058\"; }\n\n.fa-question-circle:before {\n  content: \"\\F059\"; }\n\n.fa-info-circle:before {\n  content: \"\\F05A\"; }\n\n.fa-crosshairs:before {\n  content: \"\\F05B\"; }\n\n.fa-times-circle-o:before {\n  content: \"\\F05C\"; }\n\n.fa-check-circle-o:before {\n  content: \"\\F05D\"; }\n\n.fa-ban:before {\n  content: \"\\F05E\"; }\n\n.fa-arrow-left:before {\n  content: \"\\F060\"; }\n\n.fa-arrow-right:before {\n  content: \"\\F061\"; }\n\n.fa-arrow-up:before {\n  content: \"\\F062\"; }\n\n.fa-arrow-down:before {\n  content: \"\\F063\"; }\n\n.fa-mail-forward:before,\n.fa-share:before {\n  content: \"\\F064\"; }\n\n.fa-expand:before {\n  content: \"\\F065\"; }\n\n.fa-compress:before {\n  content: \"\\F066\"; }\n\n.fa-plus:before {\n  content: \"\\F067\"; }\n\n.fa-minus:before {\n  content: \"\\F068\"; }\n\n.fa-asterisk:before {\n  content: \"\\F069\"; }\n\n.fa-exclamation-circle:before {\n  content: \"\\F06A\"; }\n\n.fa-gift:before {\n  content: \"\\F06B\"; }\n\n.fa-leaf:before {\n  content: \"\\F06C\"; }\n\n.fa-fire:before {\n  content: \"\\F06D\"; }\n\n.fa-eye:before {\n  content: \"\\F06E\"; }\n\n.fa-eye-slash:before {\n  content: \"\\F070\"; }\n\n.fa-warning:before,\n.fa-exclamation-triangle:before {\n  content: \"\\F071\"; }\n\n.fa-plane:before {\n  content: \"\\F072\"; }\n\n.fa-calendar:before {\n  content: \"\\F073\"; }\n\n.fa-random:before {\n  content: \"\\F074\"; }\n\n.fa-comment:before {\n  content: \"\\F075\"; }\n\n.fa-magnet:before {\n  content: \"\\F076\"; }\n\n.fa-chevron-up:before {\n  content: \"\\F077\"; }\n\n.fa-chevron-down:before {\n  content: \"\\F078\"; }\n\n.fa-retweet:before {\n  content: \"\\F079\"; }\n\n.fa-shopping-cart:before {\n  content: \"\\F07A\"; }\n\n.fa-folder:before {\n  content: \"\\F07B\"; }\n\n.fa-folder-open:before {\n  content: \"\\F07C\"; }\n\n.fa-arrows-v:before {\n  content: \"\\F07D\"; }\n\n.fa-arrows-h:before {\n  content: \"\\F07E\"; }\n\n.fa-bar-chart-o:before,\n.fa-bar-chart:before {\n  content: \"\\F080\"; }\n\n.fa-twitter-square:before {\n  content: \"\\F081\"; }\n\n.fa-facebook-square:before {\n  content: \"\\F082\"; }\n\n.fa-camera-retro:before {\n  content: \"\\F083\"; }\n\n.fa-key:before {\n  content: \"\\F084\"; }\n\n.fa-gears:before,\n.fa-cogs:before {\n  content: \"\\F085\"; }\n\n.fa-comments:before {\n  content: \"\\F086\"; }\n\n.fa-thumbs-o-up:before {\n  content: \"\\F087\"; }\n\n.fa-thumbs-o-down:before {\n  content: \"\\F088\"; }\n\n.fa-star-half:before {\n  content: \"\\F089\"; }\n\n.fa-heart-o:before {\n  content: \"\\F08A\"; }\n\n.fa-sign-out:before {\n  content: \"\\F08B\"; }\n\n.fa-linkedin-square:before {\n  content: \"\\F08C\"; }\n\n.fa-thumb-tack:before {\n  content: \"\\F08D\"; }\n\n.fa-external-link:before {\n  content: \"\\F08E\"; }\n\n.fa-sign-in:before {\n  content: \"\\F090\"; }\n\n.fa-trophy:before {\n  content: \"\\F091\"; }\n\n.fa-github-square:before {\n  content: \"\\F092\"; }\n\n.fa-upload:before {\n  content: \"\\F093\"; }\n\n.fa-lemon-o:before {\n  content: \"\\F094\"; }\n\n.fa-phone:before {\n  content: \"\\F095\"; }\n\n.fa-square-o:before {\n  content: \"\\F096\"; }\n\n.fa-bookmark-o:before {\n  content: \"\\F097\"; }\n\n.fa-phone-square:before {\n  content: \"\\F098\"; }\n\n.fa-twitter:before {\n  content: \"\\F099\"; }\n\n.fa-facebook-f:before,\n.fa-facebook:before {\n  content: \"\\F09A\"; }\n\n.fa-github:before {\n  content: \"\\F09B\"; }\n\n.fa-unlock:before {\n  content: \"\\F09C\"; }\n\n.fa-credit-card:before {\n  content: \"\\F09D\"; }\n\n.fa-feed:before,\n.fa-rss:before {\n  content: \"\\F09E\"; }\n\n.fa-hdd-o:before {\n  content: \"\\F0A0\"; }\n\n.fa-bullhorn:before {\n  content: \"\\F0A1\"; }\n\n.fa-bell:before {\n  content: \"\\F0F3\"; }\n\n.fa-certificate:before {\n  content: \"\\F0A3\"; }\n\n.fa-hand-o-right:before {\n  content: \"\\F0A4\"; }\n\n.fa-hand-o-left:before {\n  content: \"\\F0A5\"; }\n\n.fa-hand-o-up:before {\n  content: \"\\F0A6\"; }\n\n.fa-hand-o-down:before {\n  content: \"\\F0A7\"; }\n\n.fa-arrow-circle-left:before {\n  content: \"\\F0A8\"; }\n\n.fa-arrow-circle-right:before {\n  content: \"\\F0A9\"; }\n\n.fa-arrow-circle-up:before {\n  content: \"\\F0AA\"; }\n\n.fa-arrow-circle-down:before {\n  content: \"\\F0AB\"; }\n\n.fa-globe:before {\n  content: \"\\F0AC\"; }\n\n.fa-wrench:before {\n  content: \"\\F0AD\"; }\n\n.fa-tasks:before {\n  content: \"\\F0AE\"; }\n\n.fa-filter:before {\n  content: \"\\F0B0\"; }\n\n.fa-briefcase:before {\n  content: \"\\F0B1\"; }\n\n.fa-arrows-alt:before {\n  content: \"\\F0B2\"; }\n\n.fa-group:before,\n.fa-users:before {\n  content: \"\\F0C0\"; }\n\n.fa-chain:before,\n.fa-link:before {\n  content: \"\\F0C1\"; }\n\n.fa-cloud:before {\n  content: \"\\F0C2\"; }\n\n.fa-flask:before {\n  content: \"\\F0C3\"; }\n\n.fa-cut:before,\n.fa-scissors:before {\n  content: \"\\F0C4\"; }\n\n.fa-copy:before,\n.fa-files-o:before {\n  content: \"\\F0C5\"; }\n\n.fa-paperclip:before {\n  content: \"\\F0C6\"; }\n\n.fa-save:before,\n.fa-floppy-o:before {\n  content: \"\\F0C7\"; }\n\n.fa-square:before {\n  content: \"\\F0C8\"; }\n\n.fa-navicon:before,\n.fa-reorder:before,\n.fa-bars:before {\n  content: \"\\F0C9\"; }\n\n.fa-list-ul:before {\n  content: \"\\F0CA\"; }\n\n.fa-list-ol:before {\n  content: \"\\F0CB\"; }\n\n.fa-strikethrough:before {\n  content: \"\\F0CC\"; }\n\n.fa-underline:before {\n  content: \"\\F0CD\"; }\n\n.fa-table:before {\n  content: \"\\F0CE\"; }\n\n.fa-magic:before {\n  content: \"\\F0D0\"; }\n\n.fa-truck:before {\n  content: \"\\F0D1\"; }\n\n.fa-pinterest:before {\n  content: \"\\F0D2\"; }\n\n.fa-pinterest-square:before {\n  content: \"\\F0D3\"; }\n\n.fa-google-plus-square:before {\n  content: \"\\F0D4\"; }\n\n.fa-google-plus:before {\n  content: \"\\F0D5\"; }\n\n.fa-money:before {\n  content: \"\\F0D6\"; }\n\n.fa-caret-down:before {\n  content: \"\\F0D7\"; }\n\n.fa-caret-up:before {\n  content: \"\\F0D8\"; }\n\n.fa-caret-left:before {\n  content: \"\\F0D9\"; }\n\n.fa-caret-right:before {\n  content: \"\\F0DA\"; }\n\n.fa-columns:before {\n  content: \"\\F0DB\"; }\n\n.fa-unsorted:before,\n.fa-sort:before {\n  content: \"\\F0DC\"; }\n\n.fa-sort-down:before,\n.fa-sort-desc:before {\n  content: \"\\F0DD\"; }\n\n.fa-sort-up:before,\n.fa-sort-asc:before {\n  content: \"\\F0DE\"; }\n\n.fa-envelope:before {\n  content: \"\\F0E0\"; }\n\n.fa-linkedin:before {\n  content: \"\\F0E1\"; }\n\n.fa-rotate-left:before,\n.fa-undo:before {\n  content: \"\\F0E2\"; }\n\n.fa-legal:before,\n.fa-gavel:before {\n  content: \"\\F0E3\"; }\n\n.fa-dashboard:before,\n.fa-tachometer:before {\n  content: \"\\F0E4\"; }\n\n.fa-comment-o:before {\n  content: \"\\F0E5\"; }\n\n.fa-comments-o:before {\n  content: \"\\F0E6\"; }\n\n.fa-flash:before,\n.fa-bolt:before {\n  content: \"\\F0E7\"; }\n\n.fa-sitemap:before {\n  content: \"\\F0E8\"; }\n\n.fa-umbrella:before {\n  content: \"\\F0E9\"; }\n\n.fa-paste:before,\n.fa-clipboard:before {\n  content: \"\\F0EA\"; }\n\n.fa-lightbulb-o:before {\n  content: \"\\F0EB\"; }\n\n.fa-exchange:before {\n  content: \"\\F0EC\"; }\n\n.fa-cloud-download:before {\n  content: \"\\F0ED\"; }\n\n.fa-cloud-upload:before {\n  content: \"\\F0EE\"; }\n\n.fa-user-md:before {\n  content: \"\\F0F0\"; }\n\n.fa-stethoscope:before {\n  content: \"\\F0F1\"; }\n\n.fa-suitcase:before {\n  content: \"\\F0F2\"; }\n\n.fa-bell-o:before {\n  content: \"\\F0A2\"; }\n\n.fa-coffee:before {\n  content: \"\\F0F4\"; }\n\n.fa-cutlery:before {\n  content: \"\\F0F5\"; }\n\n.fa-file-text-o:before {\n  content: \"\\F0F6\"; }\n\n.fa-building-o:before {\n  content: \"\\F0F7\"; }\n\n.fa-hospital-o:before {\n  content: \"\\F0F8\"; }\n\n.fa-ambulance:before {\n  content: \"\\F0F9\"; }\n\n.fa-medkit:before {\n  content: \"\\F0FA\"; }\n\n.fa-fighter-jet:before {\n  content: \"\\F0FB\"; }\n\n.fa-beer:before {\n  content: \"\\F0FC\"; }\n\n.fa-h-square:before {\n  content: \"\\F0FD\"; }\n\n.fa-plus-square:before {\n  content: \"\\F0FE\"; }\n\n.fa-angle-double-left:before {\n  content: \"\\F100\"; }\n\n.fa-angle-double-right:before {\n  content: \"\\F101\"; }\n\n.fa-angle-double-up:before {\n  content: \"\\F102\"; }\n\n.fa-angle-double-down:before {\n  content: \"\\F103\"; }\n\n.fa-angle-left:before {\n  content: \"\\F104\"; }\n\n.fa-angle-right:before {\n  content: \"\\F105\"; }\n\n.fa-angle-up:before {\n  content: \"\\F106\"; }\n\n.fa-angle-down:before {\n  content: \"\\F107\"; }\n\n.fa-desktop:before {\n  content: \"\\F108\"; }\n\n.fa-laptop:before {\n  content: \"\\F109\"; }\n\n.fa-tablet:before {\n  content: \"\\F10A\"; }\n\n.fa-mobile-phone:before,\n.fa-mobile:before {\n  content: \"\\F10B\"; }\n\n.fa-circle-o:before {\n  content: \"\\F10C\"; }\n\n.fa-quote-left:before {\n  content: \"\\F10D\"; }\n\n.fa-quote-right:before {\n  content: \"\\F10E\"; }\n\n.fa-spinner:before {\n  content: \"\\F110\"; }\n\n.fa-circle:before {\n  content: \"\\F111\"; }\n\n.fa-mail-reply:before,\n.fa-reply:before {\n  content: \"\\F112\"; }\n\n.fa-github-alt:before {\n  content: \"\\F113\"; }\n\n.fa-folder-o:before {\n  content: \"\\F114\"; }\n\n.fa-folder-open-o:before {\n  content: \"\\F115\"; }\n\n.fa-smile-o:before {\n  content: \"\\F118\"; }\n\n.fa-frown-o:before {\n  content: \"\\F119\"; }\n\n.fa-meh-o:before {\n  content: \"\\F11A\"; }\n\n.fa-gamepad:before {\n  content: \"\\F11B\"; }\n\n.fa-keyboard-o:before {\n  content: \"\\F11C\"; }\n\n.fa-flag-o:before {\n  content: \"\\F11D\"; }\n\n.fa-flag-checkered:before {\n  content: \"\\F11E\"; }\n\n.fa-terminal:before {\n  content: \"\\F120\"; }\n\n.fa-code:before {\n  content: \"\\F121\"; }\n\n.fa-mail-reply-all:before,\n.fa-reply-all:before {\n  content: \"\\F122\"; }\n\n.fa-star-half-empty:before,\n.fa-star-half-full:before,\n.fa-star-half-o:before {\n  content: \"\\F123\"; }\n\n.fa-location-arrow:before {\n  content: \"\\F124\"; }\n\n.fa-crop:before {\n  content: \"\\F125\"; }\n\n.fa-code-fork:before {\n  content: \"\\F126\"; }\n\n.fa-unlink:before,\n.fa-chain-broken:before {\n  content: \"\\F127\"; }\n\n.fa-question:before {\n  content: \"\\F128\"; }\n\n.fa-info:before {\n  content: \"\\F129\"; }\n\n.fa-exclamation:before {\n  content: \"\\F12A\"; }\n\n.fa-superscript:before {\n  content: \"\\F12B\"; }\n\n.fa-subscript:before {\n  content: \"\\F12C\"; }\n\n.fa-eraser:before {\n  content: \"\\F12D\"; }\n\n.fa-puzzle-piece:before {\n  content: \"\\F12E\"; }\n\n.fa-microphone:before {\n  content: \"\\F130\"; }\n\n.fa-microphone-slash:before {\n  content: \"\\F131\"; }\n\n.fa-shield:before {\n  content: \"\\F132\"; }\n\n.fa-calendar-o:before {\n  content: \"\\F133\"; }\n\n.fa-fire-extinguisher:before {\n  content: \"\\F134\"; }\n\n.fa-rocket:before {\n  content: \"\\F135\"; }\n\n.fa-maxcdn:before {\n  content: \"\\F136\"; }\n\n.fa-chevron-circle-left:before {\n  content: \"\\F137\"; }\n\n.fa-chevron-circle-right:before {\n  content: \"\\F138\"; }\n\n.fa-chevron-circle-up:before {\n  content: \"\\F139\"; }\n\n.fa-chevron-circle-down:before {\n  content: \"\\F13A\"; }\n\n.fa-html5:before {\n  content: \"\\F13B\"; }\n\n.fa-css3:before {\n  content: \"\\F13C\"; }\n\n.fa-anchor:before {\n  content: \"\\F13D\"; }\n\n.fa-unlock-alt:before {\n  content: \"\\F13E\"; }\n\n.fa-bullseye:before {\n  content: \"\\F140\"; }\n\n.fa-ellipsis-h:before {\n  content: \"\\F141\"; }\n\n.fa-ellipsis-v:before {\n  content: \"\\F142\"; }\n\n.fa-rss-square:before {\n  content: \"\\F143\"; }\n\n.fa-play-circle:before {\n  content: \"\\F144\"; }\n\n.fa-ticket:before {\n  content: \"\\F145\"; }\n\n.fa-minus-square:before {\n  content: \"\\F146\"; }\n\n.fa-minus-square-o:before {\n  content: \"\\F147\"; }\n\n.fa-level-up:before {\n  content: \"\\F148\"; }\n\n.fa-level-down:before {\n  content: \"\\F149\"; }\n\n.fa-check-square:before {\n  content: \"\\F14A\"; }\n\n.fa-pencil-square:before {\n  content: \"\\F14B\"; }\n\n.fa-external-link-square:before {\n  content: \"\\F14C\"; }\n\n.fa-share-square:before {\n  content: \"\\F14D\"; }\n\n.fa-compass:before {\n  content: \"\\F14E\"; }\n\n.fa-toggle-down:before,\n.fa-caret-square-o-down:before {\n  content: \"\\F150\"; }\n\n.fa-toggle-up:before,\n.fa-caret-square-o-up:before {\n  content: \"\\F151\"; }\n\n.fa-toggle-right:before,\n.fa-caret-square-o-right:before {\n  content: \"\\F152\"; }\n\n.fa-euro:before,\n.fa-eur:before {\n  content: \"\\F153\"; }\n\n.fa-gbp:before {\n  content: \"\\F154\"; }\n\n.fa-dollar:before,\n.fa-usd:before {\n  content: \"\\F155\"; }\n\n.fa-rupee:before,\n.fa-inr:before {\n  content: \"\\F156\"; }\n\n.fa-cny:before,\n.fa-rmb:before,\n.fa-yen:before,\n.fa-jpy:before {\n  content: \"\\F157\"; }\n\n.fa-ruble:before,\n.fa-rouble:before,\n.fa-rub:before {\n  content: \"\\F158\"; }\n\n.fa-won:before,\n.fa-krw:before {\n  content: \"\\F159\"; }\n\n.fa-bitcoin:before,\n.fa-btc:before {\n  content: \"\\F15A\"; }\n\n.fa-file:before {\n  content: \"\\F15B\"; }\n\n.fa-file-text:before {\n  content: \"\\F15C\"; }\n\n.fa-sort-alpha-asc:before {\n  content: \"\\F15D\"; }\n\n.fa-sort-alpha-desc:before {\n  content: \"\\F15E\"; }\n\n.fa-sort-amount-asc:before {\n  content: \"\\F160\"; }\n\n.fa-sort-amount-desc:before {\n  content: \"\\F161\"; }\n\n.fa-sort-numeric-asc:before {\n  content: \"\\F162\"; }\n\n.fa-sort-numeric-desc:before {\n  content: \"\\F163\"; }\n\n.fa-thumbs-up:before {\n  content: \"\\F164\"; }\n\n.fa-thumbs-down:before {\n  content: \"\\F165\"; }\n\n.fa-youtube-square:before {\n  content: \"\\F166\"; }\n\n.fa-youtube:before {\n  content: \"\\F167\"; }\n\n.fa-xing:before {\n  content: \"\\F168\"; }\n\n.fa-xing-square:before {\n  content: \"\\F169\"; }\n\n.fa-youtube-play:before {\n  content: \"\\F16A\"; }\n\n.fa-dropbox:before {\n  content: \"\\F16B\"; }\n\n.fa-stack-overflow:before {\n  content: \"\\F16C\"; }\n\n.fa-instagram:before {\n  content: \"\\F16D\"; }\n\n.fa-flickr:before {\n  content: \"\\F16E\"; }\n\n.fa-adn:before {\n  content: \"\\F170\"; }\n\n.fa-bitbucket:before {\n  content: \"\\F171\"; }\n\n.fa-bitbucket-square:before {\n  content: \"\\F172\"; }\n\n.fa-tumblr:before {\n  content: \"\\F173\"; }\n\n.fa-tumblr-square:before {\n  content: \"\\F174\"; }\n\n.fa-long-arrow-down:before {\n  content: \"\\F175\"; }\n\n.fa-long-arrow-up:before {\n  content: \"\\F176\"; }\n\n.fa-long-arrow-left:before {\n  content: \"\\F177\"; }\n\n.fa-long-arrow-right:before {\n  content: \"\\F178\"; }\n\n.fa-apple:before {\n  content: \"\\F179\"; }\n\n.fa-windows:before {\n  content: \"\\F17A\"; }\n\n.fa-android:before {\n  content: \"\\F17B\"; }\n\n.fa-linux:before {\n  content: \"\\F17C\"; }\n\n.fa-dribbble:before {\n  content: \"\\F17D\"; }\n\n.fa-skype:before {\n  content: \"\\F17E\"; }\n\n.fa-foursquare:before {\n  content: \"\\F180\"; }\n\n.fa-trello:before {\n  content: \"\\F181\"; }\n\n.fa-female:before {\n  content: \"\\F182\"; }\n\n.fa-male:before {\n  content: \"\\F183\"; }\n\n.fa-gittip:before,\n.fa-gratipay:before {\n  content: \"\\F184\"; }\n\n.fa-sun-o:before {\n  content: \"\\F185\"; }\n\n.fa-moon-o:before {\n  content: \"\\F186\"; }\n\n.fa-archive:before {\n  content: \"\\F187\"; }\n\n.fa-bug:before {\n  content: \"\\F188\"; }\n\n.fa-vk:before {\n  content: \"\\F189\"; }\n\n.fa-weibo:before {\n  content: \"\\F18A\"; }\n\n.fa-renren:before {\n  content: \"\\F18B\"; }\n\n.fa-pagelines:before {\n  content: \"\\F18C\"; }\n\n.fa-stack-exchange:before {\n  content: \"\\F18D\"; }\n\n.fa-arrow-circle-o-right:before {\n  content: \"\\F18E\"; }\n\n.fa-arrow-circle-o-left:before {\n  content: \"\\F190\"; }\n\n.fa-toggle-left:before,\n.fa-caret-square-o-left:before {\n  content: \"\\F191\"; }\n\n.fa-dot-circle-o:before {\n  content: \"\\F192\"; }\n\n.fa-wheelchair:before {\n  content: \"\\F193\"; }\n\n.fa-vimeo-square:before {\n  content: \"\\F194\"; }\n\n.fa-turkish-lira:before,\n.fa-try:before {\n  content: \"\\F195\"; }\n\n.fa-plus-square-o:before {\n  content: \"\\F196\"; }\n\n.fa-space-shuttle:before {\n  content: \"\\F197\"; }\n\n.fa-slack:before {\n  content: \"\\F198\"; }\n\n.fa-envelope-square:before {\n  content: \"\\F199\"; }\n\n.fa-wordpress:before {\n  content: \"\\F19A\"; }\n\n.fa-openid:before {\n  content: \"\\F19B\"; }\n\n.fa-institution:before,\n.fa-bank:before,\n.fa-university:before {\n  content: \"\\F19C\"; }\n\n.fa-mortar-board:before,\n.fa-graduation-cap:before {\n  content: \"\\F19D\"; }\n\n.fa-yahoo:before {\n  content: \"\\F19E\"; }\n\n.fa-google:before {\n  content: \"\\F1A0\"; }\n\n.fa-reddit:before {\n  content: \"\\F1A1\"; }\n\n.fa-reddit-square:before {\n  content: \"\\F1A2\"; }\n\n.fa-stumbleupon-circle:before {\n  content: \"\\F1A3\"; }\n\n.fa-stumbleupon:before {\n  content: \"\\F1A4\"; }\n\n.fa-delicious:before {\n  content: \"\\F1A5\"; }\n\n.fa-digg:before {\n  content: \"\\F1A6\"; }\n\n.fa-pied-piper:before {\n  content: \"\\F1A7\"; }\n\n.fa-pied-piper-alt:before {\n  content: \"\\F1A8\"; }\n\n.fa-drupal:before {\n  content: \"\\F1A9\"; }\n\n.fa-joomla:before {\n  content: \"\\F1AA\"; }\n\n.fa-language:before {\n  content: \"\\F1AB\"; }\n\n.fa-fax:before {\n  content: \"\\F1AC\"; }\n\n.fa-building:before {\n  content: \"\\F1AD\"; }\n\n.fa-child:before {\n  content: \"\\F1AE\"; }\n\n.fa-paw:before {\n  content: \"\\F1B0\"; }\n\n.fa-spoon:before {\n  content: \"\\F1B1\"; }\n\n.fa-cube:before {\n  content: \"\\F1B2\"; }\n\n.fa-cubes:before {\n  content: \"\\F1B3\"; }\n\n.fa-behance:before {\n  content: \"\\F1B4\"; }\n\n.fa-behance-square:before {\n  content: \"\\F1B5\"; }\n\n.fa-steam:before {\n  content: \"\\F1B6\"; }\n\n.fa-steam-square:before {\n  content: \"\\F1B7\"; }\n\n.fa-recycle:before {\n  content: \"\\F1B8\"; }\n\n.fa-automobile:before,\n.fa-car:before {\n  content: \"\\F1B9\"; }\n\n.fa-cab:before,\n.fa-taxi:before {\n  content: \"\\F1BA\"; }\n\n.fa-tree:before {\n  content: \"\\F1BB\"; }\n\n.fa-spotify:before {\n  content: \"\\F1BC\"; }\n\n.fa-deviantart:before {\n  content: \"\\F1BD\"; }\n\n.fa-soundcloud:before {\n  content: \"\\F1BE\"; }\n\n.fa-database:before {\n  content: \"\\F1C0\"; }\n\n.fa-file-pdf-o:before {\n  content: \"\\F1C1\"; }\n\n.fa-file-word-o:before {\n  content: \"\\F1C2\"; }\n\n.fa-file-excel-o:before {\n  content: \"\\F1C3\"; }\n\n.fa-file-powerpoint-o:before {\n  content: \"\\F1C4\"; }\n\n.fa-file-photo-o:before,\n.fa-file-picture-o:before,\n.fa-file-image-o:before {\n  content: \"\\F1C5\"; }\n\n.fa-file-zip-o:before,\n.fa-file-archive-o:before {\n  content: \"\\F1C6\"; }\n\n.fa-file-sound-o:before,\n.fa-file-audio-o:before {\n  content: \"\\F1C7\"; }\n\n.fa-file-movie-o:before,\n.fa-file-video-o:before {\n  content: \"\\F1C8\"; }\n\n.fa-file-code-o:before {\n  content: \"\\F1C9\"; }\n\n.fa-vine:before {\n  content: \"\\F1CA\"; }\n\n.fa-codepen:before {\n  content: \"\\F1CB\"; }\n\n.fa-jsfiddle:before {\n  content: \"\\F1CC\"; }\n\n.fa-life-bouy:before,\n.fa-life-buoy:before,\n.fa-life-saver:before,\n.fa-support:before,\n.fa-life-ring:before {\n  content: \"\\F1CD\"; }\n\n.fa-circle-o-notch:before {\n  content: \"\\F1CE\"; }\n\n.fa-ra:before,\n.fa-rebel:before {\n  content: \"\\F1D0\"; }\n\n.fa-ge:before,\n.fa-empire:before {\n  content: \"\\F1D1\"; }\n\n.fa-git-square:before {\n  content: \"\\F1D2\"; }\n\n.fa-git:before {\n  content: \"\\F1D3\"; }\n\n.fa-y-combinator-square:before,\n.fa-yc-square:before,\n.fa-hacker-news:before {\n  content: \"\\F1D4\"; }\n\n.fa-tencent-weibo:before {\n  content: \"\\F1D5\"; }\n\n.fa-qq:before {\n  content: \"\\F1D6\"; }\n\n.fa-wechat:before,\n.fa-weixin:before {\n  content: \"\\F1D7\"; }\n\n.fa-send:before,\n.fa-paper-plane:before {\n  content: \"\\F1D8\"; }\n\n.fa-send-o:before,\n.fa-paper-plane-o:before {\n  content: \"\\F1D9\"; }\n\n.fa-history:before {\n  content: \"\\F1DA\"; }\n\n.fa-circle-thin:before {\n  content: \"\\F1DB\"; }\n\n.fa-header:before {\n  content: \"\\F1DC\"; }\n\n.fa-paragraph:before {\n  content: \"\\F1DD\"; }\n\n.fa-sliders:before {\n  content: \"\\F1DE\"; }\n\n.fa-share-alt:before {\n  content: \"\\F1E0\"; }\n\n.fa-share-alt-square:before {\n  content: \"\\F1E1\"; }\n\n.fa-bomb:before {\n  content: \"\\F1E2\"; }\n\n.fa-soccer-ball-o:before,\n.fa-futbol-o:before {\n  content: \"\\F1E3\"; }\n\n.fa-tty:before {\n  content: \"\\F1E4\"; }\n\n.fa-binoculars:before {\n  content: \"\\F1E5\"; }\n\n.fa-plug:before {\n  content: \"\\F1E6\"; }\n\n.fa-slideshare:before {\n  content: \"\\F1E7\"; }\n\n.fa-twitch:before {\n  content: \"\\F1E8\"; }\n\n.fa-yelp:before {\n  content: \"\\F1E9\"; }\n\n.fa-newspaper-o:before {\n  content: \"\\F1EA\"; }\n\n.fa-wifi:before {\n  content: \"\\F1EB\"; }\n\n.fa-calculator:before {\n  content: \"\\F1EC\"; }\n\n.fa-paypal:before {\n  content: \"\\F1ED\"; }\n\n.fa-google-wallet:before {\n  content: \"\\F1EE\"; }\n\n.fa-cc-visa:before {\n  content: \"\\F1F0\"; }\n\n.fa-cc-mastercard:before {\n  content: \"\\F1F1\"; }\n\n.fa-cc-discover:before {\n  content: \"\\F1F2\"; }\n\n.fa-cc-amex:before {\n  content: \"\\F1F3\"; }\n\n.fa-cc-paypal:before {\n  content: \"\\F1F4\"; }\n\n.fa-cc-stripe:before {\n  content: \"\\F1F5\"; }\n\n.fa-bell-slash:before {\n  content: \"\\F1F6\"; }\n\n.fa-bell-slash-o:before {\n  content: \"\\F1F7\"; }\n\n.fa-trash:before {\n  content: \"\\F1F8\"; }\n\n.fa-copyright:before {\n  content: \"\\F1F9\"; }\n\n.fa-at:before {\n  content: \"\\F1FA\"; }\n\n.fa-eyedropper:before {\n  content: \"\\F1FB\"; }\n\n.fa-paint-brush:before {\n  content: \"\\F1FC\"; }\n\n.fa-birthday-cake:before {\n  content: \"\\F1FD\"; }\n\n.fa-area-chart:before {\n  content: \"\\F1FE\"; }\n\n.fa-pie-chart:before {\n  content: \"\\F200\"; }\n\n.fa-line-chart:before {\n  content: \"\\F201\"; }\n\n.fa-lastfm:before {\n  content: \"\\F202\"; }\n\n.fa-lastfm-square:before {\n  content: \"\\F203\"; }\n\n.fa-toggle-off:before {\n  content: \"\\F204\"; }\n\n.fa-toggle-on:before {\n  content: \"\\F205\"; }\n\n.fa-bicycle:before {\n  content: \"\\F206\"; }\n\n.fa-bus:before {\n  content: \"\\F207\"; }\n\n.fa-ioxhost:before {\n  content: \"\\F208\"; }\n\n.fa-angellist:before {\n  content: \"\\F209\"; }\n\n.fa-cc:before {\n  content: \"\\F20A\"; }\n\n.fa-shekel:before,\n.fa-sheqel:before,\n.fa-ils:before {\n  content: \"\\F20B\"; }\n\n.fa-meanpath:before {\n  content: \"\\F20C\"; }\n\n.fa-buysellads:before {\n  content: \"\\F20D\"; }\n\n.fa-connectdevelop:before {\n  content: \"\\F20E\"; }\n\n.fa-dashcube:before {\n  content: \"\\F210\"; }\n\n.fa-forumbee:before {\n  content: \"\\F211\"; }\n\n.fa-leanpub:before {\n  content: \"\\F212\"; }\n\n.fa-sellsy:before {\n  content: \"\\F213\"; }\n\n.fa-shirtsinbulk:before {\n  content: \"\\F214\"; }\n\n.fa-simplybuilt:before {\n  content: \"\\F215\"; }\n\n.fa-skyatlas:before {\n  content: \"\\F216\"; }\n\n.fa-cart-plus:before {\n  content: \"\\F217\"; }\n\n.fa-cart-arrow-down:before {\n  content: \"\\F218\"; }\n\n.fa-diamond:before {\n  content: \"\\F219\"; }\n\n.fa-ship:before {\n  content: \"\\F21A\"; }\n\n.fa-user-secret:before {\n  content: \"\\F21B\"; }\n\n.fa-motorcycle:before {\n  content: \"\\F21C\"; }\n\n.fa-street-view:before {\n  content: \"\\F21D\"; }\n\n.fa-heartbeat:before {\n  content: \"\\F21E\"; }\n\n.fa-venus:before {\n  content: \"\\F221\"; }\n\n.fa-mars:before {\n  content: \"\\F222\"; }\n\n.fa-mercury:before {\n  content: \"\\F223\"; }\n\n.fa-intersex:before,\n.fa-transgender:before {\n  content: \"\\F224\"; }\n\n.fa-transgender-alt:before {\n  content: \"\\F225\"; }\n\n.fa-venus-double:before {\n  content: \"\\F226\"; }\n\n.fa-mars-double:before {\n  content: \"\\F227\"; }\n\n.fa-venus-mars:before {\n  content: \"\\F228\"; }\n\n.fa-mars-stroke:before {\n  content: \"\\F229\"; }\n\n.fa-mars-stroke-v:before {\n  content: \"\\F22A\"; }\n\n.fa-mars-stroke-h:before {\n  content: \"\\F22B\"; }\n\n.fa-neuter:before {\n  content: \"\\F22C\"; }\n\n.fa-genderless:before {\n  content: \"\\F22D\"; }\n\n.fa-facebook-official:before {\n  content: \"\\F230\"; }\n\n.fa-pinterest-p:before {\n  content: \"\\F231\"; }\n\n.fa-whatsapp:before {\n  content: \"\\F232\"; }\n\n.fa-server:before {\n  content: \"\\F233\"; }\n\n.fa-user-plus:before {\n  content: \"\\F234\"; }\n\n.fa-user-times:before {\n  content: \"\\F235\"; }\n\n.fa-hotel:before,\n.fa-bed:before {\n  content: \"\\F236\"; }\n\n.fa-viacoin:before {\n  content: \"\\F237\"; }\n\n.fa-train:before {\n  content: \"\\F238\"; }\n\n.fa-subway:before {\n  content: \"\\F239\"; }\n\n.fa-medium:before {\n  content: \"\\F23A\"; }\n\n.fa-yc:before,\n.fa-y-combinator:before {\n  content: \"\\F23B\"; }\n\n.fa-optin-monster:before {\n  content: \"\\F23C\"; }\n\n.fa-opencart:before {\n  content: \"\\F23D\"; }\n\n.fa-expeditedssl:before {\n  content: \"\\F23E\"; }\n\n.fa-battery-4:before,\n.fa-battery-full:before {\n  content: \"\\F240\"; }\n\n.fa-battery-3:before,\n.fa-battery-three-quarters:before {\n  content: \"\\F241\"; }\n\n.fa-battery-2:before,\n.fa-battery-half:before {\n  content: \"\\F242\"; }\n\n.fa-battery-1:before,\n.fa-battery-quarter:before {\n  content: \"\\F243\"; }\n\n.fa-battery-0:before,\n.fa-battery-empty:before {\n  content: \"\\F244\"; }\n\n.fa-mouse-pointer:before {\n  content: \"\\F245\"; }\n\n.fa-i-cursor:before {\n  content: \"\\F246\"; }\n\n.fa-object-group:before {\n  content: \"\\F247\"; }\n\n.fa-object-ungroup:before {\n  content: \"\\F248\"; }\n\n.fa-sticky-note:before {\n  content: \"\\F249\"; }\n\n.fa-sticky-note-o:before {\n  content: \"\\F24A\"; }\n\n.fa-cc-jcb:before {\n  content: \"\\F24B\"; }\n\n.fa-cc-diners-club:before {\n  content: \"\\F24C\"; }\n\n.fa-clone:before {\n  content: \"\\F24D\"; }\n\n.fa-balance-scale:before {\n  content: \"\\F24E\"; }\n\n.fa-hourglass-o:before {\n  content: \"\\F250\"; }\n\n.fa-hourglass-1:before,\n.fa-hourglass-start:before {\n  content: \"\\F251\"; }\n\n.fa-hourglass-2:before,\n.fa-hourglass-half:before {\n  content: \"\\F252\"; }\n\n.fa-hourglass-3:before,\n.fa-hourglass-end:before {\n  content: \"\\F253\"; }\n\n.fa-hourglass:before {\n  content: \"\\F254\"; }\n\n.fa-hand-grab-o:before,\n.fa-hand-rock-o:before {\n  content: \"\\F255\"; }\n\n.fa-hand-stop-o:before,\n.fa-hand-paper-o:before {\n  content: \"\\F256\"; }\n\n.fa-hand-scissors-o:before {\n  content: \"\\F257\"; }\n\n.fa-hand-lizard-o:before {\n  content: \"\\F258\"; }\n\n.fa-hand-spock-o:before {\n  content: \"\\F259\"; }\n\n.fa-hand-pointer-o:before {\n  content: \"\\F25A\"; }\n\n.fa-hand-peace-o:before {\n  content: \"\\F25B\"; }\n\n.fa-trademark:before {\n  content: \"\\F25C\"; }\n\n.fa-registered:before {\n  content: \"\\F25D\"; }\n\n.fa-creative-commons:before {\n  content: \"\\F25E\"; }\n\n.fa-gg:before {\n  content: \"\\F260\"; }\n\n.fa-gg-circle:before {\n  content: \"\\F261\"; }\n\n.fa-tripadvisor:before {\n  content: \"\\F262\"; }\n\n.fa-odnoklassniki:before {\n  content: \"\\F263\"; }\n\n.fa-odnoklassniki-square:before {\n  content: \"\\F264\"; }\n\n.fa-get-pocket:before {\n  content: \"\\F265\"; }\n\n.fa-wikipedia-w:before {\n  content: \"\\F266\"; }\n\n.fa-safari:before {\n  content: \"\\F267\"; }\n\n.fa-chrome:before {\n  content: \"\\F268\"; }\n\n.fa-firefox:before {\n  content: \"\\F269\"; }\n\n.fa-opera:before {\n  content: \"\\F26A\"; }\n\n.fa-internet-explorer:before {\n  content: \"\\F26B\"; }\n\n.fa-tv:before,\n.fa-television:before {\n  content: \"\\F26C\"; }\n\n.fa-contao:before {\n  content: \"\\F26D\"; }\n\n.fa-500px:before {\n  content: \"\\F26E\"; }\n\n.fa-amazon:before {\n  content: \"\\F270\"; }\n\n.fa-calendar-plus-o:before {\n  content: \"\\F271\"; }\n\n.fa-calendar-minus-o:before {\n  content: \"\\F272\"; }\n\n.fa-calendar-times-o:before {\n  content: \"\\F273\"; }\n\n.fa-calendar-check-o:before {\n  content: \"\\F274\"; }\n\n.fa-industry:before {\n  content: \"\\F275\"; }\n\n.fa-map-pin:before {\n  content: \"\\F276\"; }\n\n.fa-map-signs:before {\n  content: \"\\F277\"; }\n\n.fa-map-o:before {\n  content: \"\\F278\"; }\n\n.fa-map:before {\n  content: \"\\F279\"; }\n\n.fa-commenting:before {\n  content: \"\\F27A\"; }\n\n.fa-commenting-o:before {\n  content: \"\\F27B\"; }\n\n.fa-houzz:before {\n  content: \"\\F27C\"; }\n\n.fa-vimeo:before {\n  content: \"\\F27D\"; }\n\n.fa-black-tie:before {\n  content: \"\\F27E\"; }\n\n.fa-fonticons:before {\n  content: \"\\F280\"; }\n", ""]);
+
+	// exports
+
+
+/***/ },
+/* 49 */
+/***/ function(module, exports) {
+
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	// css base code, injected by the css-loader
+	module.exports = function() {
+		var list = [];
+
+		// return the list of modules as css string
+		list.toString = function toString() {
+			var result = [];
+			for(var i = 0; i < this.length; i++) {
+				var item = this[i];
+				if(item[2]) {
+					result.push("@media " + item[2] + "{" + item[1] + "}");
+				} else {
+					result.push(item[1]);
+				}
+			}
+			return result.join("");
+		};
+
+		// import a list of modules into the list
+		list.i = function(modules, mediaQuery) {
+			if(typeof modules === "string")
+				modules = [[null, modules, ""]];
+			var alreadyImportedModules = {};
+			for(var i = 0; i < this.length; i++) {
+				var id = this[i][0];
+				if(typeof id === "number")
+					alreadyImportedModules[id] = true;
+			}
+			for(i = 0; i < modules.length; i++) {
+				var item = modules[i];
+				// skip already imported module
+				// this implementation is not 100% perfect for weird media query combinations
+				//  when a module is imported multiple times with different media queries.
+				//  I hope this will never occur (Hey this way we have smaller bundles)
+				if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+					if(mediaQuery && !item[2]) {
+						item[2] = mediaQuery;
+					} else if(mediaQuery) {
+						item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+					}
+					list.push(item);
+				}
+			}
+		};
+		return list;
+	};
+
+
+/***/ },
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "45c73723862c6fc5eb3d6961db2d71fb.eot"
+
+/***/ },
+/* 51 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "45c73723862c6fc5eb3d6961db2d71fb.eot"
+
+/***/ },
+/* 52 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "4b5a84aaf1c9485e060c503a0ff8cadb.woff2"
+
+/***/ },
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "dfb02f8f6d0cedc009ee5887cc68f1f3.woff"
+
+/***/ },
+/* 54 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "7c87870ab40d63cfb8870c1f183f9939.ttf"
+
+/***/ },
 /* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var createElement = __webpack_require__(50)
-	
-	module.exports = createElement
-
+	module.exports = __webpack_require__.p + "76a4f23c6be74fd309e0d0fd2c27a5de.svg"
 
 /***/ },
 /* 56 */
 /***/ function(module, exports, __webpack_require__) {
 
+	/*
+		MIT License http://www.opensource.org/licenses/mit-license.php
+		Author Tobias Koppers @sokra
+	*/
+	var stylesInDom = {},
+		memoize = function(fn) {
+			var memo;
+			return function () {
+				if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+				return memo;
+			};
+		},
+		isOldIE = memoize(function() {
+			return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+		}),
+		getHeadElement = memoize(function () {
+			return document.head || document.getElementsByTagName("head")[0];
+		}),
+		singletonElement = null,
+		singletonCounter = 0;
+
+	module.exports = function(list, options) {
+		if(false) {
+			if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+		}
+
+		options = options || {};
+		// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+		// tags it will allow on a page
+		if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+		var styles = listToStyles(list);
+		addStylesToDom(styles, options);
+
+		return function update(newList) {
+			var mayRemove = [];
+			for(var i = 0; i < styles.length; i++) {
+				var item = styles[i];
+				var domStyle = stylesInDom[item.id];
+				domStyle.refs--;
+				mayRemove.push(domStyle);
+			}
+			if(newList) {
+				var newStyles = listToStyles(newList);
+				addStylesToDom(newStyles, options);
+			}
+			for(var i = 0; i < mayRemove.length; i++) {
+				var domStyle = mayRemove[i];
+				if(domStyle.refs === 0) {
+					for(var j = 0; j < domStyle.parts.length; j++)
+						domStyle.parts[j]();
+					delete stylesInDom[domStyle.id];
+				}
+			}
+		};
+	}
+
+	function addStylesToDom(styles, options) {
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			if(domStyle) {
+				domStyle.refs++;
+				for(var j = 0; j < domStyle.parts.length; j++) {
+					domStyle.parts[j](item.parts[j]);
+				}
+				for(; j < item.parts.length; j++) {
+					domStyle.parts.push(addStyle(item.parts[j], options));
+				}
+			} else {
+				var parts = [];
+				for(var j = 0; j < item.parts.length; j++) {
+					parts.push(addStyle(item.parts[j], options));
+				}
+				stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+			}
+		}
+	}
+
+	function listToStyles(list) {
+		var styles = [];
+		var newStyles = {};
+		for(var i = 0; i < list.length; i++) {
+			var item = list[i];
+			var id = item[0];
+			var css = item[1];
+			var media = item[2];
+			var sourceMap = item[3];
+			var part = {css: css, media: media, sourceMap: sourceMap};
+			if(!newStyles[id])
+				styles.push(newStyles[id] = {id: id, parts: [part]});
+			else
+				newStyles[id].parts.push(part);
+		}
+		return styles;
+	}
+
+	function createStyleElement() {
+		var styleElement = document.createElement("style");
+		var head = getHeadElement();
+		styleElement.type = "text/css";
+		head.appendChild(styleElement);
+		return styleElement;
+	}
+
+	function createLinkElement() {
+		var linkElement = document.createElement("link");
+		var head = getHeadElement();
+		linkElement.rel = "stylesheet";
+		head.appendChild(linkElement);
+		return linkElement;
+	}
+
+	function addStyle(obj, options) {
+		var styleElement, update, remove;
+
+		if (options.singleton) {
+			var styleIndex = singletonCounter++;
+			styleElement = singletonElement || (singletonElement = createStyleElement());
+			update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+			remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+		} else if(obj.sourceMap &&
+			typeof URL === "function" &&
+			typeof URL.createObjectURL === "function" &&
+			typeof URL.revokeObjectURL === "function" &&
+			typeof Blob === "function" &&
+			typeof btoa === "function") {
+			styleElement = createLinkElement();
+			update = updateLink.bind(null, styleElement);
+			remove = function() {
+				styleElement.parentNode.removeChild(styleElement);
+				if(styleElement.href)
+					URL.revokeObjectURL(styleElement.href);
+			};
+		} else {
+			styleElement = createStyleElement();
+			update = applyToTag.bind(null, styleElement);
+			remove = function() {
+				styleElement.parentNode.removeChild(styleElement);
+			};
+		}
+
+		update(obj);
+
+		return function updateStyle(newObj) {
+			if(newObj) {
+				if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+					return;
+				update(obj = newObj);
+			} else {
+				remove();
+			}
+		};
+	}
+
+	var replaceText = (function () {
+		var textStore = [];
+
+		return function (index, replacement) {
+			textStore[index] = replacement;
+			return textStore.filter(Boolean).join('\n');
+		};
+	})();
+
+	function applyToSingletonTag(styleElement, index, remove, obj) {
+		var css = remove ? "" : obj.css;
+
+		if (styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = replaceText(index, css);
+		} else {
+			var cssNode = document.createTextNode(css);
+			var childNodes = styleElement.childNodes;
+			if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+			if (childNodes.length) {
+				styleElement.insertBefore(cssNode, childNodes[index]);
+			} else {
+				styleElement.appendChild(cssNode);
+			}
+		}
+	}
+
+	function applyToTag(styleElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+		var sourceMap = obj.sourceMap;
+
+		if(media) {
+			styleElement.setAttribute("media", media)
+		}
+
+		if(styleElement.styleSheet) {
+			styleElement.styleSheet.cssText = css;
+		} else {
+			while(styleElement.firstChild) {
+				styleElement.removeChild(styleElement.firstChild);
+			}
+			styleElement.appendChild(document.createTextNode(css));
+		}
+	}
+
+	function updateLink(linkElement, obj) {
+		var css = obj.css;
+		var media = obj.media;
+		var sourceMap = obj.sourceMap;
+
+		if(sourceMap) {
+			// http://stackoverflow.com/a/26603875
+			css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+		}
+
+		var blob = new Blob([css], { type: "text/css" });
+
+		var oldSrc = linkElement.href;
+
+		linkElement.href = URL.createObjectURL(blob);
+
+		if(oldSrc)
+			URL.revokeObjectURL(oldSrc);
+	}
+
+
+/***/ },
+/* 57 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//this is the main todo file
+	'use strict';
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var $ = __webpack_require__(7);
+	var Rx = __webpack_require__(1);
+	var actions = __webpack_require__(6);
+	var h = __webpack_require__(12);
+	var diff = __webpack_require__(30);
+	var patch = __webpack_require__(36);
+	var createElement = __webpack_require__(45);
+
+	var spinnerView = (function () {
+		function spinnerView() {
+			_classCallCheck(this, spinnerView);
+
+			this.actions = {
+				templateLoaded$: Rx.Observable.fromPromise($.get('./app/client/components/spinner/spinner.html'))
+			};
+
+			//export actions to the top actions
+			actions['spinnerView.templateLoaded$'] = this.actions.templateLoaded$;
+
+			this.template = "spinner";
+
+			this.currentTree;
+
+			this.currentNode;
+
+			this.render = function (count) {
+				return h('div', ['hello, this is the todo main'], [String(count)]);
+			};
+		}
+
+		//registers todoModel events to actions
+
+		_createClass(spinnerView, [{
+			key: 'wire',
+			value: function wire() {
+				var _this = this;
+
+				this.actions.templateLoaded$.subscribe(function (data) {
+					//I can test the type of the data here before diswireing it
+					$('spinner').append(data);
+					var count = 0;
+					var vtree = _this.render(count);
+					var rootNode = createElement(vtree);
+
+					_this.currentTree = vtree;
+					_this.currentNode = rootNode;
+
+					//first load the template html
+					$(_this.template).append(_this.currentNode);
+					//create the scene graph here
+				});
+				//play the spinner
+				actions.insertTodo$.subscribe(function () {});
+				actions['todoModel.dataChanged$'].subscribe(function () {
+					var vtree = _this.render("loaded!");
+					var rootNode = createElement(vtree);
+					_this.currentTree = vtree;
+					_this.currentNode = rootNode;
+					//first load the template html
+					$(_this.template).replaceWith(_this.currentNode);
+				});
+			}
+		}, {
+			key: 'unWire',
+			value: function unWire() {}
+		}]);
+
+		return spinnerView;
+	})();
+
+	module.exports = new spinnerView();
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
 	// style-loader: Adds some css to the DOM by adding a <style> tag
-	
+
 	// load the styles
-	var content = __webpack_require__(57);
+	var content = __webpack_require__(59);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(15)(content, {});
+	var update = __webpack_require__(56)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -23058,107 +23198,18 @@
 	}
 
 /***/ },
-/* 57 */
-/***/ function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(8)();
-	exports.push([module.id, "@charset \"UTF-8\";\nhtml,\nbody {\n  margin: 0;\n  padding: 0; }\n\nbutton {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  background: none;\n  font-size: 100%;\n  vertical-align: baseline;\n  font-family: inherit;\n  font-weight: inherit;\n  color: inherit;\n  -webkit-appearance: none;\n  appearance: none;\n  -webkit-font-smoothing: antialiased;\n  -moz-font-smoothing: antialiased;\n  font-smoothing: antialiased; }\n\nbody {\n  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  line-height: 1.4em;\n  background: #f5f5f5;\n  color: #4d4d4d;\n  min-width: 230px;\n  max-width: 550px;\n  margin: 0 auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-font-smoothing: antialiased;\n  font-smoothing: antialiased;\n  font-weight: 300; }\n\nbutton,\ninput[type=\"checkbox\"] {\n  outline: none; }\n\n.hidden {\n  display: none; }\n\n.todoapp {\n  background: #fff;\n  margin: 130px 0 40px 0;\n  position: relative;\n  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1); }\n\n.todoapp input::-webkit-input-placeholder {\n  font-style: italic;\n  font-weight: 300;\n  color: #e6e6e6; }\n\n.todoapp input::-moz-placeholder {\n  font-style: italic;\n  font-weight: 300;\n  color: #e6e6e6; }\n\n.todoapp input::input-placeholder {\n  font-style: italic;\n  font-weight: 300;\n  color: #e6e6e6; }\n\n.todoapp h1 {\n  position: absolute;\n  top: -155px;\n  width: 100%;\n  font-size: 100px;\n  font-weight: 100;\n  text-align: center;\n  color: rgba(175, 47, 47, 0.15);\n  -webkit-text-rendering: optimizeLegibility;\n  -moz-text-rendering: optimizeLegibility;\n  text-rendering: optimizeLegibility; }\n\n.new-todo,\n.edit {\n  position: relative;\n  margin: 0;\n  width: 100%;\n  font-size: 24px;\n  font-family: inherit;\n  font-weight: inherit;\n  line-height: 1.4em;\n  border: 0;\n  outline: none;\n  color: inherit;\n  padding: 6px;\n  border: 1px solid #999;\n  box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);\n  box-sizing: border-box;\n  -webkit-font-smoothing: antialiased;\n  -moz-font-smoothing: antialiased;\n  font-smoothing: antialiased; }\n\n.new-todo {\n  padding: 16px 16px 16px 60px;\n  border: none;\n  background: rgba(0, 0, 0, 0.003);\n  box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03); }\n\n.main {\n  position: relative;\n  z-index: 2;\n  border-top: 1px solid #e6e6e6; }\n\nlabel[for='toggle-all'] {\n  display: none; }\n\n.toggle-all {\n  position: absolute;\n  top: -55px;\n  left: -12px;\n  width: 60px;\n  height: 34px;\n  text-align: center;\n  border: none;\n  /* Mobile Safari */ }\n\n.toggle-all:before {\n  content: '❯';\n  font-size: 22px;\n  color: #e6e6e6;\n  padding: 10px 27px 10px 27px; }\n\n.toggle-all:checked:before {\n  color: #737373; }\n\n.todo-list {\n  margin: 0;\n  padding: 0;\n  list-style: none; }\n\n.todo-list li {\n  position: relative;\n  font-size: 24px;\n  border-bottom: 1px solid #ededed; }\n\n.todo-list li:last-child {\n  border-bottom: none; }\n\n.todo-list li.editing {\n  border-bottom: none;\n  padding: 0; }\n\n.todo-list li.editing .edit {\n  display: block;\n  width: 506px;\n  padding: 13px 17px 12px 17px;\n  margin: 0 0 0 43px; }\n\n.todo-list li.editing .view {\n  display: none; }\n\n.todo-list li .toggle {\n  text-align: center;\n  width: 40px;\n  /* auto, since non-WebKit browsers doesn't support input styling */\n  height: auto;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  margin: auto 0;\n  border: none;\n  /* Mobile Safari */\n  -webkit-appearance: none;\n  appearance: none; }\n\n.todo-list li .toggle:after {\n  content: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"-10 -18 100 135\"><circle cx=\"50\" cy=\"50\" r=\"50\" fill=\"none\" stroke=\"#ededed\" stroke-width=\"3\"/></svg>'); }\n\n.todo-list li .toggle:checked:after {\n  content: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"-10 -18 100 135\"><circle cx=\"50\" cy=\"50\" r=\"50\" fill=\"none\" stroke=\"#bddad5\" stroke-width=\"3\"/><path fill=\"#5dc2af\" d=\"M72 25L42 71 27 56l-4 4 20 20 34-52z\"/></svg>'); }\n\n.todo-list li label {\n  white-space: pre;\n  word-break: break-word;\n  padding: 15px 60px 15px 15px;\n  margin-left: 45px;\n  display: block;\n  line-height: 1.2;\n  transition: color 0.4s; }\n\n.todo-list li.completed label {\n  color: #d9d9d9;\n  text-decoration: line-through; }\n\n.todo-list li .destroy {\n  display: none;\n  position: absolute;\n  top: 0;\n  right: 10px;\n  bottom: 0;\n  width: 40px;\n  height: 40px;\n  margin: auto 0;\n  font-size: 30px;\n  color: #cc9a9a;\n  margin-bottom: 11px;\n  transition: color 0.2s ease-out; }\n\n.todo-list li .destroy:hover {\n  color: #af5b5e; }\n\n.todo-list li .destroy:after {\n  content: '×'; }\n\n.todo-list li:hover .destroy {\n  display: block; }\n\n.todo-list li .edit {\n  display: none; }\n\n.todo-list li.editing:last-child {\n  margin-bottom: -1px; }\n\n.footer {\n  color: #777;\n  padding: 10px 15px;\n  height: 20px;\n  text-align: center;\n  border-top: 1px solid #e6e6e6; }\n\n.footer:before {\n  content: '';\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  height: 50px;\n  overflow: hidden;\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6, 0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f6f6f6, 0 17px 2px -6px rgba(0, 0, 0, 0.2); }\n\n.todo-count {\n  float: left;\n  text-align: left; }\n\n.todo-count strong {\n  font-weight: 300; }\n\n.filters {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n  position: absolute;\n  right: 0;\n  left: 0; }\n\n.filters li {\n  display: inline; }\n\n.filters li a {\n  color: inherit;\n  margin: 3px;\n  padding: 3px 7px;\n  text-decoration: none;\n  border: 1px solid transparent;\n  border-radius: 3px; }\n\n.filters li a.selected,\n.filters li a:hover {\n  border-color: rgba(175, 47, 47, 0.1); }\n\n.filters li a.selected {\n  border-color: rgba(175, 47, 47, 0.2); }\n\n.clear-completed,\nhtml .clear-completed:active {\n  float: right;\n  position: relative;\n  line-height: 20px;\n  text-decoration: none;\n  cursor: pointer;\n  position: relative; }\n\n.clear-completed:hover {\n  text-decoration: underline; }\n\n.info {\n  margin: 65px auto 0;\n  color: #bfbfbf;\n  font-size: 10px;\n  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);\n  text-align: center; }\n\n.info p {\n  line-height: 1; }\n\n.info a {\n  color: inherit;\n  text-decoration: none;\n  font-weight: 400; }\n\n.info a:hover {\n  text-decoration: underline; }\n\n/*\n\tHack to remove background from Mobile Safari.\n\tCan't use it globally since it destroys checkboxes in Firefox\n*/\n@media screen and (-webkit-min-device-pixel-ratio: 0) {\n  .toggle-all,\n  .todo-list li .toggle {\n    background: none; }\n  .todo-list li .toggle {\n    height: 40px; }\n  .toggle-all {\n    -webkit-transform: rotate(90deg);\n    transform: rotate(90deg);\n    -webkit-appearance: none;\n    appearance: none; } }\n\n@media (max-width: 430px) {\n  .footer {\n    height: 50px; }\n  .filters {\n    bottom: 10px; } }\n", ""]);
-
-/***/ },
-/* 58 */
-/***/ function(module, exports, __webpack_require__) {
-
-	//this is the main todo file
-	'use strict';
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	var $ = __webpack_require__(17);
-	var Rx = __webpack_require__(1);
-	var view = __webpack_require__(59);
-	
-	var spinnerMain = function spinnerMain() {
-		_classCallCheck(this, spinnerMain);
-	
-		view.wire();
-	};
-	
-	module.exports = new spinnerMain();
-
-/***/ },
 /* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
-	//this is the main todo file
-	'use strict';
-	
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-	
-	var $ = __webpack_require__(17);
-	var Rx = __webpack_require__(1);
-	var actions = __webpack_require__(16);
-	var h = __webpack_require__(22);
-	var diff = __webpack_require__(40);
-	var patch = __webpack_require__(46);
-	var createElement = __webpack_require__(55);
-	
-	var spinnerView = (function () {
-		function spinnerView() {
-			_classCallCheck(this, spinnerView);
-	
-			this.actions = {
-				templateLoaded$: Rx.Observable.fromPromise($.get('./app/client/components/spinner/spinner.html'))
-			};
-	
-			//export actions to the top actions
-			actions['spinnerView.templateLoaded$'] = this.actions.templateLoaded$;
-	
-			this.template = "spinner";
-	
-			this.currentTree;
-	
-			this.currentNode;
-	
-			this.render = function (count) {
-				return h('div', ['hello, this is the todo main'], [String(count)]);
-			};
-		}
-	
-		//registers todoModel events to actions
-	
-		_createClass(spinnerView, [{
-			key: 'wire',
-			value: function wire() {
-				var _this = this;
-	
-				this.actions.templateLoaded$.subscribe(function (data) {
-					//I can test the type of the data here before diswireing it
-					$('app').append(data);
-					var count = 0;
-					var vtree = _this.render(count);
-					var rootNode = createElement(vtree);
-	
-					_this.currentTree = vtree;
-					_this.currentNode = rootNode;
-	
-					//first load the template html
-					$(_this.template).append(_this.currentNode);
-					//create the scene graph here
-				});
-				actions.insertTodo$.subscribe(function () {});
-			}
-		}, {
-			key: 'unWire',
-			value: function unWire() {}
-		}]);
-	
-		return spinnerView;
-	})();
-	
-	module.exports = new spinnerView();
+	exports = module.exports = __webpack_require__(49)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "@charset \"UTF-8\";\nhtml,\nbody {\n  margin: 0;\n  padding: 0; }\n\nbutton {\n  margin: 0;\n  padding: 0;\n  border: 0;\n  background: none;\n  font-size: 100%;\n  vertical-align: baseline;\n  font-family: inherit;\n  font-weight: inherit;\n  color: inherit;\n  -webkit-appearance: none;\n  appearance: none;\n  -webkit-font-smoothing: antialiased;\n  -moz-font-smoothing: antialiased;\n  font-smoothing: antialiased; }\n\nbody {\n  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;\n  line-height: 1.4em;\n  background: #f5f5f5;\n  color: #4d4d4d;\n  min-width: 230px;\n  max-width: 550px;\n  margin: 0 auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-font-smoothing: antialiased;\n  font-smoothing: antialiased;\n  font-weight: 300; }\n\nbutton,\ninput[type=\"checkbox\"] {\n  outline: none; }\n\n.hidden {\n  display: none; }\n\n.todoapp {\n  background: #fff;\n  margin: 130px 0 40px 0;\n  position: relative;\n  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1); }\n\n.todoapp input::-webkit-input-placeholder {\n  font-style: italic;\n  font-weight: 300;\n  color: #e6e6e6; }\n\n.todoapp input::-moz-placeholder {\n  font-style: italic;\n  font-weight: 300;\n  color: #e6e6e6; }\n\n.todoapp input::input-placeholder {\n  font-style: italic;\n  font-weight: 300;\n  color: #e6e6e6; }\n\n.todoapp h1 {\n  position: absolute;\n  top: -155px;\n  width: 100%;\n  font-size: 100px;\n  font-weight: 100;\n  text-align: center;\n  color: rgba(175, 47, 47, 0.15);\n  -webkit-text-rendering: optimizeLegibility;\n  -moz-text-rendering: optimizeLegibility;\n  text-rendering: optimizeLegibility; }\n\n.new-todo,\n.edit {\n  position: relative;\n  margin: 0;\n  width: 100%;\n  font-size: 24px;\n  font-family: inherit;\n  font-weight: inherit;\n  line-height: 1.4em;\n  border: 0;\n  outline: none;\n  color: inherit;\n  padding: 6px;\n  border: 1px solid #999;\n  box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);\n  box-sizing: border-box;\n  -webkit-font-smoothing: antialiased;\n  -moz-font-smoothing: antialiased;\n  font-smoothing: antialiased; }\n\n.new-todo {\n  padding: 16px 16px 16px 60px;\n  border: none;\n  background: rgba(0, 0, 0, 0.003);\n  box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03); }\n\n.main {\n  position: relative;\n  z-index: 2;\n  border-top: 1px solid #e6e6e6; }\n\nlabel[for='toggle-all'] {\n  display: none; }\n\n.toggle-all {\n  position: absolute;\n  top: -55px;\n  left: -12px;\n  width: 60px;\n  height: 34px;\n  text-align: center;\n  border: none;\n  /* Mobile Safari */ }\n\n.toggle-all:before {\n  content: '\\276F';\n  font-size: 22px;\n  color: #e6e6e6;\n  padding: 10px 27px 10px 27px; }\n\n.toggle-all:checked:before {\n  color: #737373; }\n\n.todo-list {\n  margin: 0;\n  padding: 0;\n  list-style: none; }\n\n.todo-list li {\n  position: relative;\n  font-size: 24px;\n  border-bottom: 1px solid #ededed; }\n\n.todo-list li:last-child {\n  border-bottom: none; }\n\n.todo-list li.editing {\n  border-bottom: none;\n  padding: 0; }\n\n.todo-list li.editing .edit {\n  display: block;\n  width: 506px;\n  padding: 13px 17px 12px 17px;\n  margin: 0 0 0 43px; }\n\n.todo-list li.editing .view {\n  display: none; }\n\n.todo-list li .toggle {\n  text-align: center;\n  width: 40px;\n  /* auto, since non-WebKit browsers doesn't support input styling */\n  height: auto;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  margin: auto 0;\n  border: none;\n  /* Mobile Safari */\n  -webkit-appearance: none;\n  appearance: none; }\n\n.todo-list li .toggle:after {\n  content: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"-10 -18 100 135\"><circle cx=\"50\" cy=\"50\" r=\"50\" fill=\"none\" stroke=\"#ededed\" stroke-width=\"3\"/></svg>'); }\n\n.todo-list li .toggle:checked:after {\n  content: url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"-10 -18 100 135\"><circle cx=\"50\" cy=\"50\" r=\"50\" fill=\"none\" stroke=\"#bddad5\" stroke-width=\"3\"/><path fill=\"#5dc2af\" d=\"M72 25L42 71 27 56l-4 4 20 20 34-52z\"/></svg>'); }\n\n.todo-list li label {\n  white-space: pre;\n  word-break: break-word;\n  padding: 15px 60px 15px 15px;\n  margin-left: 45px;\n  display: block;\n  line-height: 1.2;\n  transition: color 0.4s; }\n\n.todo-list li.completed label {\n  color: #d9d9d9;\n  text-decoration: line-through; }\n\n.todo-list li .destroy {\n  display: none;\n  position: absolute;\n  top: 0;\n  right: 10px;\n  bottom: 0;\n  width: 40px;\n  height: 40px;\n  margin: auto 0;\n  font-size: 30px;\n  color: #cc9a9a;\n  margin-bottom: 11px;\n  transition: color 0.2s ease-out; }\n\n.todo-list li .destroy:hover {\n  color: #af5b5e; }\n\n.todo-list li .destroy:after {\n  content: '\\D7'; }\n\n.todo-list li:hover .destroy {\n  display: block; }\n\n.todo-list li .edit {\n  display: none; }\n\n.todo-list li.editing:last-child {\n  margin-bottom: -1px; }\n\n.footer {\n  color: #777;\n  padding: 10px 15px;\n  height: 20px;\n  text-align: center;\n  border-top: 1px solid #e6e6e6; }\n\n.footer:before {\n  content: '';\n  position: absolute;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  height: 50px;\n  overflow: hidden;\n  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6, 0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f6f6f6, 0 17px 2px -6px rgba(0, 0, 0, 0.2); }\n\n.todo-count {\n  float: left;\n  text-align: left; }\n\n.todo-count strong {\n  font-weight: 300; }\n\n.filters {\n  margin: 0;\n  padding: 0;\n  list-style: none;\n  position: absolute;\n  right: 0;\n  left: 0; }\n\n.filters li {\n  display: inline; }\n\n.filters li a {\n  color: inherit;\n  margin: 3px;\n  padding: 3px 7px;\n  text-decoration: none;\n  border: 1px solid transparent;\n  border-radius: 3px; }\n\n.filters li a.selected,\n.filters li a:hover {\n  border-color: rgba(175, 47, 47, 0.1); }\n\n.filters li a.selected {\n  border-color: rgba(175, 47, 47, 0.2); }\n\n.clear-completed,\nhtml .clear-completed:active {\n  float: right;\n  position: relative;\n  line-height: 20px;\n  text-decoration: none;\n  cursor: pointer;\n  position: relative; }\n\n.clear-completed:hover {\n  text-decoration: underline; }\n\n.info {\n  margin: 65px auto 0;\n  color: #bfbfbf;\n  font-size: 10px;\n  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);\n  text-align: center; }\n\n.info p {\n  line-height: 1; }\n\n.info a {\n  color: inherit;\n  text-decoration: none;\n  font-weight: 400; }\n\n.info a:hover {\n  text-decoration: underline; }\n\n/*\n\tHack to remove background from Mobile Safari.\n\tCan't use it globally since it destroys checkboxes in Firefox\n*/\n@media screen and (-webkit-min-device-pixel-ratio: 0) {\n  .toggle-all,\n  .todo-list li .toggle {\n    background: none; }\n  .todo-list li .toggle {\n    height: 40px; }\n  .toggle-all {\n    -webkit-transform: rotate(90deg);\n    transform: rotate(90deg);\n    -webkit-appearance: none;\n    appearance: none; } }\n\n@media (max-width: 430px) {\n  .footer {\n    height: 50px; }\n  .filters {\n    bottom: 10px; } }\n", ""]);
+
+	// exports
+
 
 /***/ }
 /******/ ]);
-//# sourceMappingURL=bundle.js.map

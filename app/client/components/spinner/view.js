@@ -7,7 +7,6 @@ var diff = require('virtual-dom/diff');
 var patch = require('virtual-dom/patch');
 var createElement = require('virtual-dom/create-element');
 
-
 class spinnerView{
 
 	constructor() {
@@ -31,10 +30,9 @@ class spinnerView{
 	}
 	//registers todoModel events to actions
 	wire(){
-
 		this.actions.templateLoaded$.subscribe((data) =>{
 			//I can test the type of the data here before diswireing it
-			$('app').append(data);
+			$('spinner').append(data);
 			var count = 0;
 			var vtree = this.render(count);
 			var rootNode = createElement(vtree);
@@ -46,9 +44,19 @@ class spinnerView{
 			$(this.template).append(this.currentNode);
 			//create the scene graph here
 		});
+		//play the spinner
 		actions.insertTodo$.subscribe(function(){
-
+		
 		});
+		actions['todoModel.dataChanged$'].subscribe(()=>{
+			var vtree = this.render("loaded!");
+			var rootNode = createElement(vtree);
+			this.currentTree = vtree;
+			this.currentNode = rootNode;
+			//first load the template html
+			$(this.template).replaceWith(this.currentNode);
+		});
+
 
 	}
 	unWire(){

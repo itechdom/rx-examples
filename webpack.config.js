@@ -2,7 +2,7 @@ var path = require("path");
 var webpack = require("webpack");
 module.exports = {
 	entry:{
-		      docs:'./app/client/app.js'
+		      dist:'./app/client/main.js'
 	      },
 	output: {
 			path: __dirname + "/dist",
@@ -18,18 +18,12 @@ module.exports = {
 			{ test: /\.html$/, loader: 'raw' },
 			{ test: /\.css$/, loader: "style-loader!css-loader" },
 			{
-				test   : /\.(ttf|eot|woff(2)?)(\?[a-z0-9]+)?$/,
+				test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg)(\?.*$|$)/,
 				loader : 'file-loader'
 			},
 			{
 				test: /\.scss$/,
 				loader: 'style!css!sass'
-			},
-			{
-				test: /\.(jpe?g|png|gif|svg)$/i,
-				loaders: [
-					'file?hash=sha512&digest=hex&name=[hash].[ext]'
-					]
 			},
 			]
 		},
