@@ -1,4 +1,5 @@
-//this is the main todo file
+'use strict';
+
 var $ = require('jquery');
 var Rx = require('rx');
 var fromEvent = Rx.Observable.fromEvent;
@@ -7,15 +8,11 @@ var fromEvent = Rx.Observable.fromEvent;
  */
 var EventEmitter = require('events').EventEmitter,
 	customEvent = new EventEmitter();
-var server = require("../server/server.js");
+var server = require("./server.js");
 
 
 //handle one side of the request, which is initializing the globals
 server.on('request',function(req,res){
-	//we are making res global so we can render the response down the pipeline
-	//TODO: replace this with something that makes more sense, like an object (app ... etc)
-	global.res = res;
-	global.server = server;
 	//I will use this custom event here instead since it will make it very easy to send throught he pipeline insted of using a global routes file;
 	customEvent.emit('request',req);
 	customEvent.emit('response',res);
