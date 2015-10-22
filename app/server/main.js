@@ -2,13 +2,15 @@
 var http = require('http');
 var server = http.createServer();
 var Rx = require('rx');
-var router = require('./components/router.js');
+var router = require('./router.js');
 var EventEmitter = require('events').EventEmitter,
         customEvent = new EventEmitter();
 var util = require('util');
 var renderer = require('./components/renderer.js');
 var request = require('./components/request.js');
 var debug = require('./components/debugger.js');
+
+console.log("gfgfgfg")
 
 //var RxNode = require('rx-node');
 
@@ -43,19 +45,19 @@ source['from'] = 'main';
 
 //we attach a debugger here to display the stream as we are going through
 //final resort is here
-source.subscribe(function(req){
-    index = global.myRoutes.indexOf(req.url);
-    if(index == -1){
-	renderer("route aint here buddy");
-    }
-});
+//source.subscribe(function(req){
+//    index = global.myRoutes.indexOf(req.url);
+//    if(index == -1){
+//	renderer("route aint here buddy");
+//    }
+//});
 
 debug('main',null,source);
 
 
 //plugin to routes here, or why not make this agnostic and leave it to the dispatcher to do that?
-server.listen(3000, '127.0.0.1');
+server.listen(4000, '127.0.0.1');
 
-console.log("server is listening on 1337");
+console.log("server is listening on 4000");
 
 module.exports = source;

@@ -2,8 +2,8 @@
 Rx = require('rx');
 RouteParser = require('route-parser');
 var routeMatcher = require("route-matcher").routeMatcher;
-var request = require('./request.js');
-var debug = require('./debugger.js');
+var request = require('./components/request.js');
+var debug = require('./components/debugger.js');
 
 //here can we have an observable that connects a url to a controller?
 module.exports = function(requestStream,route){
