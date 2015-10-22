@@ -1,0 +1,40 @@
+<section class="todoapp">
+<header class="header">
+<h1>todos</h1>
+<form class="todo-form" >
+	<input class="new-todo" placeholder="What needs to be done?"  autofocus>
+</form>
+</header>
+<section class="main" ng-show="todos.length" ng-cloak>
+<input class="toggle-all" type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)">
+<label for="toggle-all">Mark all as complete</label>
+<todo></todo>
+<spinner></spinner>
+</section>
+<footer class="footer" ng-show="todos.length" ng-cloak>
+<span class="todo-count"><strong></strong>
+</span>
+<ul class="filters">
+	<li>
+	<a  href="#/">All</a>
+	</li>
+	<li>
+	<a  href="#/active">Active</a>
+	</li>
+	<li>
+	<a  href="#/completed">Completed</a>
+	</li>
+</ul>
+<button class="clear-completed">Clear completed</button>
+</footer>
+</section>
+<footer class="info">
+<p>Double-click to edit a todo</p>
+<p>Credits:
+<a href="http://twitter.com/cburgdorf">Christoph Burgdorf</a>,
+<a href="http://ericbclasselman.com">Eric Bidelman</a>,
+<a href="http://jacobmumm.com">Jacob Mumm</a> and
+<a href="http://igorminar.com">Igor Minar</a>
+</p>
+<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+</footer>

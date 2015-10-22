@@ -10,13 +10,10 @@ var renderer = require('./components/renderer.js');
 var request = require('./components/request.js');
 var debug = require('./components/debugger.js');
 
-console.log("gfgfgfg")
-
-//var RxNode = require('rx-node');
-
 //handle one side of the request, which is initializing the globals
 server.on('request',function(req,res){
     //we are making res global so we can render the response down the pipeline
+    //TODO: replace this with something that makes more sense, like an object (app ... etc)
     global.res = res;
     global.server = server;
 
@@ -24,8 +21,6 @@ server.on('request',function(req,res){
     customEvent.emit('request',req);
     customEvent.emit('response',res);
 
-    //dispatcher(source,'router');
-    //check to see if the route belongs to us?
 });
 
 
@@ -34,23 +29,11 @@ var requestStream = Rx.Observable.fromEvent(customEvent,'request');
 var responseStream = Rx.Observable.fromEvent(customEvent,'response');
 request.stream = requestStream;
 
-//combines both of them at once
+
 var inputStream = Rx.Observable.combineLatest(requestStream,responseStream,function(req,res){
 	return {request:req,response:res};
 });
 
-//add the information of the output here
-source['from'] = 'main';
-
-
-//we attach a debugger here to display the stream as we are going through
-//final resort is here
-//source.subscribe(function(req){
-//    index = global.myRoutes.indexOf(req.url);
-//    if(index == -1){
-//	renderer("route aint here buddy");
-//    }
-//});
 
 debug('main',null,source);
 
