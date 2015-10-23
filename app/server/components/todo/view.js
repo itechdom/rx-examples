@@ -3,22 +3,21 @@ var $ = require('jquery');
 var Rx = require('rx');
 var actions = require('./actions.js');
 var model = require('./model.js');
+var renderer = require('../renderer/renderer.js');
 
 
 class todoView{
 
     constructor() {
 
-        actions.request$.subscribe(function(data){
-            console.log("HEYYY");
-        });
-        this.render = function(){
-
-        }
-
     }
     wire(){
-
+        actions.request$.subscribe((data)=>{
+            this.render("message here ...")
+        });
+        this.render = function(message){
+            renderer(message);
+        }
     }
     unWire(){
 

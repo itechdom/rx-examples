@@ -14,6 +14,8 @@ var server = require("./server.js");
 //handle one side of the request, which is initializing the globals
 server.on('request',function(req,res){
 	//I will use this custom event here instead since it will make it very easy to send throught he pipeline insted of using a global routes file;
+	global.res = res;
+	global.reg = req;
 	customEvent.emit('request',req);
 	customEvent.emit('response',res);
 });
