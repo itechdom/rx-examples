@@ -2,12 +2,15 @@
 var Rx = require('rx');
 var actions = require('./router.actions.js');
 var renderer = require('../renderer/renderer.js');
-
+var util = require('util');
 
 class routerView{
 
     constructor() {
-        this.renderer = renderer;
+
+    }
+    render(routes){
+       renderer(util.inspect(routes, false, null));
     }
     wire(){
 

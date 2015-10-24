@@ -10,14 +10,23 @@ class routerMain{
         this.model = model;
         this.view = view;
 
+        model.registerRoute("/routes");
+
         actions.request$.subscribe((req)=>{
             if (model.matchRoute(req.url)){
                 console.log("I got a route");
             }
             else{
-                view.renderer("No Route for here");
+                view.render("No Route for here");
             }
         });
+
+        actions.request$.filter((req)=>{
+            return req.url == '/routes';
+        }).subscribe((req)=>{
+            view.render(model.routes);
+        });
+
 
         model.wire();
         view.wire();
