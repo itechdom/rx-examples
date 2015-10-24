@@ -13,7 +13,7 @@ class todoView{
     }
     wire(){
         actions.request$.subscribe((data)=>{
-            this.render("message here ...")
+            this.render("<h1>message here ...</h1>")
         });
         this.render = function(message){
             renderer(message);
