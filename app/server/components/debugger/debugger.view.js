@@ -11,6 +11,7 @@ class debuggerView{
 
     }
     wire(){
+
         actions.request$.subscribe((data)=>{
             this.render("message here ...")
         });

@@ -6,12 +6,11 @@ var dataEmitter = new EventEmitter();
 class debuggerModel{
 
     constructor() {
-        this.routes = {};
+        this.components = [];
     }
-    registerRoute(){
-
+    registerComponent(component){
+        this.components.push(component);
     }
-    //handles different actions
     wire(){
     }
 }
