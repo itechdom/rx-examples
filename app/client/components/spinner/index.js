@@ -2,7 +2,7 @@
 var $ = require('jquery');
 var Rx = require('rx');
 require("font-awesome/scss/font-awesome.scss");
-var view = require('./view.js');
+var view = require('./spinner.view.js');
 
 class spinnerMain{
 

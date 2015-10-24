@@ -1,10 +1,10 @@
 //this is the main todo file
 var $ = require('jquery');
 var Rx = require('rx');
-var model = require('./model.js');
-var view = require('./view.js');
+var model = require('./todo.model.js');
+var view = require('./todo.view.js');
 var spinnerComponent = require('../spinner/index.js');
-var actions = require("./actions.js");
+var actions = require("./todo.actions.js");
 
 class todoMain{
 
@@ -14,6 +14,4 @@ class todoMain{
 	}
 }
 
-
 module.exports = new todoMain();
-

@@ -1,5 +1,5 @@
 var Rx = require('rx');
-var actions = require("./actions.js");
+var actions = require("./todo.actions.js");
 var EventEmitter = require('wolfy87-eventemitter');
 var dataEmitter = new EventEmitter();
 
