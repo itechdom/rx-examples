@@ -2,6 +2,7 @@
 var $ = require('jquery');
 var Rx = require('rx');
 var serverActions = require('../server/actions.js');
+
 class actionMain{
 
     constructor(){

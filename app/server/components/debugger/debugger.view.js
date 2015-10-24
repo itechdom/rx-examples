@@ -1,12 +1,11 @@
 'use strict';
-var $ = require('jquery');
 var Rx = require('rx');
 var actions = require('./actions.js');
 var model = require('./model.js');
 var renderer = require('../renderer/renderer.js');
 
 
-class todoView{
+class debuggerView{
 
     constructor() {
 
@@ -24,4 +23,4 @@ class todoView{
     }
 }
 
-module.exports = new todoView();
+module.exports = new debuggerView();

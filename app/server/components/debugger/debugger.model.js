@@ -3,7 +3,7 @@ var Rx = require('rx');
 var EventEmitter = require('wolfy87-eventemitter');
 var dataEmitter = new EventEmitter();
 
-class routerModel{
+class debuggerModel{
 
     constructor() {
         this.routes = {};
@@ -15,4 +15,4 @@ class routerModel{
     wire(){
     }
 }
-module.exports = new routerModel();
+module.exports = new debuggerModel();
