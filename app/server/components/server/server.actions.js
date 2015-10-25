@@ -3,9 +3,6 @@
 var $ = require('jquery');
 var Rx = require('rx');
 var fromEvent = Rx.Observable.fromEvent;
-/**
- * Created by osama on 10/22/2015.
- */
 var EventEmitter = require('events').EventEmitter,
 	customEvent = new EventEmitter();
 var server = require("./server.js");

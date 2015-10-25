@@ -1,3 +1,11 @@
-/**
- * Created by osama on 10/24/2015.
- */
+'use strict';
+var EventEmitter = require('events').EventEmitter,
+    customEvent = new EventEmitter();
+
+class dispatcherMain{
+    constructor(){
+        this.customEvent = customEvent;
+    }
+}
+
+module.exports = new dispatcherMain();

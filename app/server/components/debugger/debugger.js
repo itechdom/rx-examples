@@ -3,6 +3,7 @@ var Rx = require('rx');
 var model = require('./debugger.model.js');
 var view = require('./debugger.view.js');
 var actions = require('./debugger.actions.js');
+
 class debuggerMain{
     constructor(){
         this.model = model;
