@@ -1,7 +1,7 @@
 'use strict';
 var Rx = require('rx');
-var actions = require('./actions.js');
-var model = require('./model.js');
+var actions = require('./debugger.actions.js');
+var model = require('./debugger.model.js');
 var renderer = require('../renderer/renderer.js');
 
 

@@ -2,6 +2,7 @@
 var Rx = require('rx');
 var serverActions = require('../server/server.actions.js');
 
+
 class actionMain{
 
     constructor(){
@@ -11,9 +12,9 @@ class actionMain{
                 return req.url == "/test";
             }),
             response$: serverActions['response$']
-        }
+       }
+    }
+    wire(){
     }
 }
 module.exports = new actionMain();
-
-

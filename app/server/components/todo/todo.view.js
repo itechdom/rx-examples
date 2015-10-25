@@ -5,17 +5,16 @@ var actions = require('./todo.actions.js');
 var model = require('./todo.model.js');
 var renderer = require('../renderer/renderer.js');
 
-
 class todoView{
 
     constructor() {
-
     }
     wire(){
         actions.request$.subscribe((data)=>{
             this.render("<h1>message here ...</h1>")
         });
         this.render = function(message){
+            //todo.customEvent.emit("todo.view.rendered$",message);
             renderer(message);
         }
     }

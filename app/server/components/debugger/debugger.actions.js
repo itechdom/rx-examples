@@ -1,7 +1,7 @@
 'use strict';
 var $ = require('jquery');
 var Rx = require('rx');
-var serverActions = require('../server/actions.js');
+var serverActions = require('../server/server.actions.js');
 
 class actionMain{
 
