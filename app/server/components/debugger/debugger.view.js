@@ -10,20 +10,21 @@ class debuggerView{
     constructor() {
 
     }
-    formatOutput(){
-        //what's the logic?
-        //handle all component's input events?
-        //
-        //component.actions.request$.subscribe((data)=>{
-        //    console.log("debug called",count);
-        //});
+    formatOutput() {
         var modelComponentsEvents = Rx.Observable.from(model.components);
         var count = 0;
-        modelComponentsEvents.map((component)=>{
+        var actions = [];
+        var merged;
+        modelComponentsEvents.map((component)=> {
             return component.actions.request$;
-        }).mergeAll().subscribe((req)=>{
+        }).mergeAll().subscribe((data)=>{
+            count++;
+            console.log(count);
+            console.log(data.url);
         })
     }
+
+
     wire(){
 
         actions.request$.subscribe(()=>{
