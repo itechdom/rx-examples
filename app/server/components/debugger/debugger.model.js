@@ -10,8 +10,11 @@ class debuggerModel{
     }
     registerComponent(component){
         this.components.push(component);
+        console.log(this.components);
     }
     wire(){
+
     }
+
 }
 module.exports = new debuggerModel();

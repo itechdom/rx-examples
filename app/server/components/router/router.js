@@ -3,6 +3,9 @@ var Rx = require('rx');
 var model = require('./router.model.js');
 var view = require('./router.view.js');
 var actions = require('./router.actions.js');
+var debug = require('../debugger/debugger.js');
+
+
 class routerMain{
     constructor(){
         //wire the view and model
@@ -26,6 +29,7 @@ class routerMain{
             view.render(model.routes);
         });
 
+        debug.model.registerComponent(this);
 
         model.wire();
         view.wire();
