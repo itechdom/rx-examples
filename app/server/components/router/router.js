@@ -11,6 +11,8 @@ class routerMain{
         //wire the view and model
         this.model = model;
         this.view = view;
+        this.actions = actions;
+
 
         model.registerRoute("/routes");
 
