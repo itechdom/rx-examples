@@ -13,7 +13,8 @@ class actionMain{
                 return req.url == "/test";
             }),
             response$: serverActions['response$'],
-            output$:Rx.Observable.fromEvent(dispatcher.customEvent,'todo.view.rendered$')
+            input$:Rx.Observable.fromEvent(dispatcher.customEvent,'todo.input$'),
+            output$:Rx.Observable.fromEvent(dispatcher.customEvent,'todo.output$')
        }
     }
     wire(){

@@ -16,7 +16,7 @@ class todoView{
             this.render("<h1>message here ...</h1>")
         });
         this.render = function(message){
-            dispatcher.customEvent.emit("todo.view.rendered$",message);
+            dispatcher.customEvent.emit("todo.output$",message);
             renderer(message);
         }
     }

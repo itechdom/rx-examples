@@ -5,6 +5,8 @@ var view = require('./todo.view.js');
 var router = require('../router/router.js');
 var actions = require('./todo.actions.js');
 var debug = require('../debugger/debugger.js');
+var dispatcher = require('../dispatcher/dispatcher.js');
+
 
 class todoMain{
 	constructor(){
@@ -12,6 +14,11 @@ class todoMain{
 		this.actions = actions;
 		this.model = model;
 		this.view = view;
+
+		actions.request$.subscribe((req)=>{
+			dispatcher.customEvent.emit("todo.input$",req);
+		});
+
 		model.wire();
 		view.wire();
 		debug.model.registerComponent(this);
