@@ -23,10 +23,10 @@ class spinnerView{
 		var modelComponentsEvents = Rx.Observable.from(model.components);
 		if(this.flag) {
 			var actions = modelComponentsEvents.map((component)=> {
-				return component.actions.request$;
+				return component.actions.viewLoaded$;
 			}).mergeAll().subscribe((a)=>{
-				output += a.url + "=======>";
-				console.log(output);
+				output += a + "=======>";
+				console.log("Hello this view was loaded","from spinner");
 			});
 			this.flag = false;
 		}
