@@ -2,7 +2,7 @@
 var $ = require('jquery');
 var Rx = require('rx');
 var actions = require('./todo.actions.js');
-var model = require('./todo.model.js')
+var model = require('./todo.model.js');
 var h = require('virtual-dom/h');
 var diff = require('virtual-dom/diff');
 var patch = require('virtual-dom/patch');
@@ -40,7 +40,6 @@ class todoView{
 	wire(){
 		//I can combine latest here and send back the template with its data
 		actions.viewLoaded$.subscribe((data) =>{
-
 			//first load the template html
 			$('todo').html(data);
 			//create the scene graph here
