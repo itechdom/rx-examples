@@ -1,19 +1,34 @@
-//this file is used if I wanted to route to different controllers from a central point
-Rx = require('rx');
-var routeMatcher = require("route-matcher").routeMatcher;
+'use strict';
+var Rx = require('rx');
+var model = require('./router.model.js');
+var view = require('./router.view.js');
+var actions = require('./router.actions.js');
+var debug = require('../debugger/debugger.js');
 
-//here can we have an observable that connects a url to a controller?
-module.exports = function(requestStream,route){
 
-	var outputStream = requestStream.filter(function(req){
-			matcher = routeMatcher(route);
-			return matcher.parse(req.url) != null;
-	});
-	//this is the component that will register everything 
-	outputStream["from"] = "router";
+class routerMain{
+    constructor(){
+        //wire the view and model
+        this.model = model;
+        this.view = view;
+        this.actions = actions;
 
-	return outputStream;
-	//urlStream = requestStream.filter(function(req){
-	//	return req.url == '/';
-	//});
-};
+        model.registerRoute("/routes");
+
+        actions.request$.subscribe((req)=>{
+            if (model.matchRoute(req.url)){
+                console.log("I got a route");
+                this.view.render(model.routes);
+            }
+            else{
+                view.render("No Route for here");
+            }
+        });
+
+        debug.model.registerComponent(this);
+
+        model.wire();
+        view.wire();
+    }
+}
+module.exports = new routerMain();

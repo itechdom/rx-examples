@@ -12,6 +12,8 @@ class debuggerModel{
         this.components.push(component);
     }
     wire(){
+
     }
+
 }
 module.exports = new debuggerModel();

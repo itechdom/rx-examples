@@ -18,6 +18,7 @@ class routerMain{
         actions.request$.subscribe((req)=>{
             if (model.matchRoute(req.url)){
                 console.log("I got a route");
+                this.view.render(model.routes);
             }
             else{
                 view.render("No Route for here");

@@ -23,7 +23,7 @@ class debuggerView{
             var actions = modelComponentsEvents.map((component)=> {
                 return component.actions.request$;
             }).mergeAll().subscribe((a)=>{
-                output += a.url;
+                output += a.url + "=======>";
                 console.log(output);
             });
             this.flag = false;
@@ -32,10 +32,9 @@ class debuggerView{
     wire(){
         this.render = function(message){
             this.formatOutput(message);
-            //renderer("hello");
+            //renderer(output);
         };
         actions.request$.subscribe((req)=>{
-            //console.log(req.url);
             this.render("hello");
         })
     }

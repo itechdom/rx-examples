@@ -18,7 +18,6 @@ server.on('request',function(req,res){
 });
 server.on('mount',function(req,res){
 	//I will use this custom event here instead since it will make it very easy to send throught he pipeline insted of using a global routes file;
-	console.log(req);
 	customEvent.emit('mount',req);
 });
 

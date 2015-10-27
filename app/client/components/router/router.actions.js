@@ -1,29 +1,19 @@
-/**
- *
- * Created by osama on 10/24/2015.
- */
+'use strict';
 var $ = require('jquery');
 var Rx = require('rx');
-var fromEvent = Rx.Observable.fromEvent;
+var serverActions = require('../server/server.actions.js');
 
 class actionMain{
 
-	constructor(){
-		//All the default actions for this app
-		return {
-
-			changeRoute$: Rx.Observable.fromEvent(window, 'hashchange')
-				.map(ev => ev.newURL.match(/\#[^\#]*$/)[0].replace('#', ''))
-				.startWith(window.location.hash.replace('#', '')),
-
-			insertTodo$: fromEvent($('#new-todo').on('keyup'))
-				.filter(ev => {
-					let trimmedVal = String(ev.target.value).trim();
-					return ev.keyCode === ENTER_KEY && trimmedVal;
-				})
-				.map(ev => String(ev.target.value).trim())
-		}
-	}
+    constructor(){
+        //All the default actions for this app
+        var request$ = serverActions['request$'].filter((req)=>{
+            return req.url == "/routes";
+        });
+        return {
+            request$: request$,
+            input$:request$
+        }
+    }
 }
 module.exports = new actionMain();
-
