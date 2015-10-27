@@ -24,12 +24,6 @@ class routerMain{
             }
         });
 
-        actions.request$.filter((req)=>{
-            return req.url == '/routes';
-        }).subscribe((req)=>{
-            view.render(model.routes);
-        });
-
         debug.model.registerComponent(this);
 
         model.wire();
