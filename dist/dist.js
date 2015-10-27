@@ -23366,6 +23366,7 @@
 						return component.actions.viewLoaded$;
 					}).mergeAll().subscribe(function (a) {
 						output += a + "=======>";
+						$('h2').hide();
 						console.log("Hello this view was loaded", "from spinner");
 					});
 					this.flag = false;
@@ -23378,9 +23379,10 @@
 
 				this.render = function (message) {
 					this.formatOutput(message);
-					//renderer(output);
 				};
 				actions.request$.subscribe(function (req) {
+					console.log("hello");
+					$('h1').append("<h2>LOOOOOADING</h2>");
 					_this.render("hello");
 				});
 			}
@@ -23450,7 +23452,11 @@
 
 	    _createClass(spinnerModel, [{
 	        key: 'registerComponent',
-	        value: function registerComponent(component) {
+	        value: function registerComponent(component, options) {
+	            //you can pass an options to override default event
+	            //currently it's viewLoaded
+	            // you can attach more events here (like dataLoaded ...)
+	            //Also you can pass the start event (weather it's viewLoading ..)
 	            this.components.push(component);
 	        }
 	    }, {

@@ -26,6 +26,7 @@ class spinnerView{
 				return component.actions.viewLoaded$;
 			}).mergeAll().subscribe((a)=>{
 				output += a + "=======>";
+				$('h2').hide();
 				console.log("Hello this view was loaded","from spinner");
 			});
 			this.flag = false;
@@ -34,9 +35,10 @@ class spinnerView{
 	wire(){
 		this.render = function(message){
 			this.formatOutput(message);
-			//renderer(output);
 		};
 		actions.request$.subscribe((req)=>{
+			console.log("hello");
+			$('h1').append("<h2>LOOOOOADING</h2>")
 			this.render("hello");
 		})
 	}
