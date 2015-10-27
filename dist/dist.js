@@ -20174,7 +20174,7 @@
 /* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -20192,7 +20192,8 @@
 	        return {
 	            request$: clientActions['request$'].filter(function (d) {
 	                return d.srcElement.URL == "http://localhost:3000/#/todo";
-	            })
+	            }),
+	            viewLoaded$: Rx.Observable.fromPromise($.get('./app/client/components/todo/todo.html'))
 	        };
 	    }
 
@@ -20205,6 +20206,7 @@
 	})();
 
 	module.exports = new actionMain();
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ },
 /* 8 */
@@ -21063,15 +21065,42 @@
 		function todoView() {
 			_classCallCheck(this, todoView);
 
-			this.template = "<todo></todo>";
-			actions.request$.subscribe(function (req) {
-				console.log("we are here folks!");
-			});
+			this.template = "todo";
+
+			this.render = function (todos) {
+
+				if (!todos) {
+					todos = [];
+				}
+
+				return h("ul.todo-list", todos.map(function (todo) {
+					return h("li", [h("div.view", [h("input.toggle", { "type": "checkbox" }), h("label", [todo.name]), h("button.destroy")]), h("form", [h("input.edit")])]);
+				}));
+			};
 		}
 
 		_createClass(todoView, [{
 			key: 'wire',
-			value: function wire() {}
+			value: function wire() {
+				//I can combine latest here and send back the template with its data
+				actions.viewLoaded$.subscribe(function (data) {
+
+					//first load the template html
+					$('todo').html(data);
+					//create the scene graph here
+				});
+				//actions.insertTodo$.subscribe(function(){
+				//
+				//});
+				//actions.dataChanged$.subscribe((data) => {
+				//	//add
+				//	var count = 1;
+				//	var vtree = this.render(data);
+				//	var patches = diff(this.currentTree, vtree);
+				//	this.rootNode = patch(this.currentNode,patches);
+				//	this.currentTree = vtree;
+				//});
+			}
 		}, {
 			key: 'unWire',
 			value: function unWire() {}
