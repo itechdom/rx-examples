@@ -8,8 +8,8 @@ class debuggerModel{
     constructor() {
         this.components = [];
     }
-    registerComponent(component){
-        this.components.push(component);
+    registerComponent(component,inputEvent,outputEvent){
+        this.components.push({component,inputEvent,outputEvent});
     }
     wire(){
 

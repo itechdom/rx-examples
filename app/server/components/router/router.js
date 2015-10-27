@@ -13,7 +13,6 @@ class routerMain{
         this.view = view;
         this.actions = actions;
 
-
         model.registerRoute("/routes");
 
         actions.request$.subscribe((req)=>{

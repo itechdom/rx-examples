@@ -9,7 +9,7 @@ class actionMain{
         //All the default actions for this app
         return {
             request$: serverActions['request$'].filter((req)=>{
-                return req.url == "/debug";
+                return req.url == '/debug';
             })
         }
     }
