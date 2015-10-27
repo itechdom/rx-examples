@@ -10910,7 +10910,7 @@
 	var todoMain = function todoMain() {
 		_classCallCheck(this, todoMain);
 
-		//model.wire();
+		model.wire();
 		view.wire();
 	};
 
@@ -21063,6 +21063,7 @@
 		function todoView() {
 			_classCallCheck(this, todoView);
 
+			this.template = "<todo></todo>";
 			actions.request$.subscribe(function (req) {
 				console.log("we are here folks!");
 			});

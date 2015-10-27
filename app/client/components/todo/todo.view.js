@@ -12,6 +12,7 @@ var createElement = require('virtual-dom/create-element');
 class todoView{
 
 	constructor() {
+		this.template = "<todo></todo>";
 		actions.request$.subscribe((req)=>{
 			console.log("we are here folks!");
 		})

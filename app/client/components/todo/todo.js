@@ -8,7 +8,7 @@ var actions = require("./todo.actions.js");
 class todoMain{
 
 	constructor(){
-		//model.wire();
+		model.wire();
 		view.wire();
 	}
 }
