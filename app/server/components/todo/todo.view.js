@@ -5,6 +5,7 @@ var actions = require('./todo.actions.js');
 var model = require('./todo.model.js');
 var renderer = require('../renderer/renderer.js');
 var dispatcher = require('../dispatcher/dispatcher.js');
+var util = require("util");
 
 
 class todoView{
@@ -13,11 +14,12 @@ class todoView{
     }
     wire(){
         actions.request$.subscribe((data)=>{
-            this.render("<h1>message here ...</h1>")
+            this.render([{'name':"hello"}])
         });
         this.render = function(message){
             dispatcher.customEvent.emit("todo.output$",message);
-            renderer(message);
+            var d = JSON.stringify(message);
+            renderer(d);
         }
     }
     unWire(){

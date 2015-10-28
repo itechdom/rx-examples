@@ -5,10 +5,11 @@
 	<input class="new-todo" placeholder="What needs to be done?"  autofocus>
 </form>
 </header>
-<section class="main" ng-show="todos.length" ng-cloak>
-<input class="toggle-all" type="checkbox" ng-model="allChecked" ng-click="markAll(allChecked)">
+	<ul class="todo__list">
+	</ul>
+<section class="main">
+<input class="toggle-all" type="checkbox">
 <label for="toggle-all">Mark all as complete</label>
-<todo></todo>
 </section>
 <footer class="footer" ng-show="todos.length" ng-cloak>
 <span class="todo-count"><strong></strong>

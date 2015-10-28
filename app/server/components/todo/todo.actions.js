@@ -10,7 +10,7 @@ class actionMain{
         //All the default actions for this app
         return {
             request$: serverActions['request$'].filter((req)=>{
-                return req.url == "/test";
+                return req.url == "/todo";
             }),
             response$: serverActions['response$'],
             input$:Rx.Observable.fromEvent(dispatcher.customEvent,'todo.input$'),

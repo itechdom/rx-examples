@@ -7,6 +7,7 @@ var h = require('virtual-dom/h');
 var diff = require('virtual-dom/diff');
 var patch = require('virtual-dom/patch');
 var createElement = require('virtual-dom/create-element');
+var dispatcher = require('../dispatcher/dispatcher.js');
 
 
 class todoView{
@@ -39,11 +40,27 @@ class todoView{
 
 	wire(){
 		//I can combine latest here and send back the template with its data
-		actions.viewLoaded$.subscribe((data) =>{
-			//first load the template html
-			$('todo').html(data);
-			//create the scene graph here
+		actions.request$.subscribe(()=>{
+			$.get('./app/client/components/todo/todo.html',function(data){
+				console.log(data);
+				$('todo').html(data);
+				dispatcher.customEvent.emit('viewLoaded$',data);
+			})
 		});
+		actions.dataLoaded$.subscribe((data)=>{
+			var data = data.map((item)=> {
+				return "<li class='todo__items'>" + item.name + "</li>"
+			});
+			data.forEach((item)=> {
+				$('.todo__list').append(item);
+			})
+		});
+
+		
+		//var dataViewLoaded$ = actions.viewLoaded$.combineLatest(actions.dataLoaded$);
+		//dataViewLoaded$.subscribe((data)=>{
+		//	console.log(data);
+		//})
 		//actions.insertTodo$.subscribe(function(){
 		//
 		//});

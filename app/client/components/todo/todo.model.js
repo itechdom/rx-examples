@@ -1,23 +1,20 @@
 var Rx = require('rx');
 var actions = require("./todo.actions.js");
-var EventEmitter = require('wolfy87-eventemitter');
-var dataEmitter = new EventEmitter();
+var dispatcher = require('../dispatcher/dispatcher.js');
+var $ = require('jquery');
 
 class todoModel{
 
 	constructor() {
-		this.initialTodos = [
-		{
-			"name":"hello"
-		},
-		{
-			"name":"hi"
-		}
 
-		];
 	}
 	//handles different actions
 	wire(){
+
+		$.get("http://localhost:4000/todo",function(data) {
+			var data = JSON.parse(data);
+			dispatcher.customEvent.emit('dataLoaded$',data);
+		});
 
 	}
 }
