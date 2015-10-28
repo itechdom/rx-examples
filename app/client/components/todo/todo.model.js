@@ -8,13 +8,14 @@ class todoModel{
 	constructor() {
 
 	}
-	//handles different actions
-	wire(){
-
+	getTodo(){
 		$.get("http://localhost:4000/todo",function(data) {
 			var data = JSON.parse(data);
 			dispatcher.customEvent.emit('dataLoaded$',data);
 		});
+	}
+	//handles different actions
+	wire(){
 
 	}
 }

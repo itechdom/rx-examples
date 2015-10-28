@@ -41,13 +41,15 @@ class todoView{
 	wire(){
 		//I can combine latest here and send back the template with its data
 		actions.request$.subscribe(()=>{
+			$('body').append("hellooooooooooooo");
 			$.get('./app/client/components/todo/todo.html',function(data){
-				console.log(data);
 				$('todo').html(data);
 				dispatcher.customEvent.emit('viewLoaded$',data);
 			})
+			model.getTodo();
 		});
-		actions.dataLoaded$.subscribe((data)=>{
+
+		actions.dataLoaded$.delay(500).subscribe((data)=>{
 			var data = data.map((item)=> {
 				return "<li class='todo__items'>" + item.name + "</li>"
 			});
@@ -55,23 +57,6 @@ class todoView{
 				$('.todo__list').append(item);
 			})
 		});
-
-		
-		//var dataViewLoaded$ = actions.viewLoaded$.combineLatest(actions.dataLoaded$);
-		//dataViewLoaded$.subscribe((data)=>{
-		//	console.log(data);
-		//})
-		//actions.insertTodo$.subscribe(function(){
-		//
-		//});
-		//actions.dataChanged$.subscribe((data) => {
-		//	//add
-		//	var count = 1;
-		//	var vtree = this.render(data);
-		//	var patches = diff(this.currentTree, vtree);
-		//	this.rootNode = patch(this.currentNode,patches);
-		//	this.currentTree = vtree;
-		//});
 	}
 	unWire(){
 

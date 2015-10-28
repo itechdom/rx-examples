@@ -20159,17 +20159,19 @@
 			_classCallCheck(this, todoModel);
 		}
 
-		//handles different actions
-
 		_createClass(todoModel, [{
-			key: 'wire',
-			value: function wire() {
-
+			key: 'getTodo',
+			value: function getTodo() {
 				$.get("http://localhost:4000/todo", function (data) {
 					var data = JSON.parse(data);
 					dispatcher.customEvent.emit('dataLoaded$', data);
 				});
 			}
+
+			//handles different actions
+		}, {
+			key: 'wire',
+			value: function wire() {}
 		}]);
 
 		return todoModel;
@@ -20195,11 +20197,15 @@
 	    function actionMain() {
 	        _classCallCheck(this, actionMain);
 
+	        clientActions['changeRoute$'].filter(function (d) {
+	            return d;
+	        }).subscribe(function (d) {
+	            console.log(d);
+	        });
 	        //All the default actions for this app
 	        return {
-	            request$: clientActions['request$'].filter(function (d) {
-	                console.log(d);
-	                return d.srcElement.URL == "http://localhost:3000/#/todo";
+	            request$: clientActions['changeRoute$'].filter(function (d) {
+	                return d == "/todo";
 	            }),
 	            viewLoaded$: Rx.Observable.fromEvent(dispatcher.customEvent, 'viewLoaded$'),
 	            dataLoaded$: Rx.Observable.fromEvent(dispatcher.customEvent, 'dataLoaded$')
@@ -20562,6 +20568,9 @@
 		//All the default actions for this app
 		return {
 			request$: Rx.Observable.fromEvent(document, 'DOMContentLoaded'),
+			changeRoute$: Rx.Observable.fromEvent(window, 'hashchange').map(function (ev) {
+				return ev.newURL.match(/\#[^\#]*$/)[0].replace('#', '');
+			}).startWith(window.location.hash.replace('#', '')),
 			response$: Rx.Observable.fromEvent(customEvent, 'response'),
 			mount$: Rx.Observable.fromEvent(customEvent, 'mount')
 		};
@@ -20613,13 +20622,15 @@
 			value: function wire() {
 				//I can combine latest here and send back the template with its data
 				actions.request$.subscribe(function () {
+					$('body').append("hellooooooooooooo");
 					$.get('./app/client/components/todo/todo.html', function (data) {
-						console.log(data);
 						$('todo').html(data);
 						dispatcher.customEvent.emit('viewLoaded$', data);
 					});
+					model.getTodo();
 				});
-				actions.dataLoaded$.subscribe(function (data) {
+
+				actions.dataLoaded$.delay(500).subscribe(function (data) {
 					var data = data.map(function (item) {
 						return "<li class='todo__items'>" + item.name + "</li>";
 					});
@@ -20627,22 +20638,6 @@
 						$('.todo__list').append(item);
 					});
 				});
-
-				//var dataViewLoaded$ = actions.viewLoaded$.combineLatest(actions.dataLoaded$);
-				//dataViewLoaded$.subscribe((data)=>{
-				//	console.log(data);
-				//})
-				//actions.insertTodo$.subscribe(function(){
-				//
-				//});
-				//actions.dataChanged$.subscribe((data) => {
-				//	//add
-				//	var count = 1;
-				//	var vtree = this.render(data);
-				//	var patches = diff(this.currentTree, vtree);
-				//	this.rootNode = patch(this.currentNode,patches);
-				//	this.currentTree = vtree;
-				//});
 			}
 		}, {
 			key: 'unWire',

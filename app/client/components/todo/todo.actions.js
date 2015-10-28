@@ -6,13 +6,16 @@ var clientActions = require('../client/client.actions.js')
 
 class actionMain{
 
-
     constructor(){
+        clientActions['changeRoute$'].filter((d)=>{
+           return d;
+        }).subscribe((d)=>{
+            console.log(d);
+        });
         //All the default actions for this app
         return {
-            request$: clientActions['request$'].filter((d)=> {
-                console.log(d);
-                return d.srcElement.URL == "http://localhost:3000/#/todo";
+            request$: clientActions['changeRoute$'].filter((d)=> {
+                return d == "/todo";
             }),
             viewLoaded$: Rx.Observable.fromEvent(dispatcher.customEvent,'viewLoaded$'),
             dataLoaded$:Rx.Observable.fromEvent(dispatcher.customEvent,'dataLoaded$')
