@@ -7,8 +7,8 @@ class actionMain{
 
     constructor(){
         //All the default actions for this app
-        var request$ = serverActions['request$'].filter((req)=>{
-            return req.url == "/routes";
+        var request$ = serverActions['changeRoute$'].subscribe((req)=>{
+            console.log("route Requested=====>",req)
         });
         return {
             request$: request$,
