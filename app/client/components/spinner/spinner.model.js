@@ -14,8 +14,5 @@ class spinnerModel{
         //Also you can pass the start event (weather it's viewLoading ..)
         this.components.push(component);
     }
-    wire(){
-
-    }
 }
 module.exports = new spinnerModel();

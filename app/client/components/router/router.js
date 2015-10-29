@@ -24,11 +24,7 @@ class routerMain{
                 view.render("No Route for here");
             }
         });
-
         debug.model.registerComponent(this);
-
-        model.wire();
-        view.wire();
     }
 }
 module.exports = new routerMain();

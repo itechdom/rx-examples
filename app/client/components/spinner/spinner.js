@@ -10,9 +10,6 @@ class spinnerMain {
     constructor() {
         this.view = view;
         this.model = model;
-
-        model.wire();
-        view.wire();
     }
 }
 

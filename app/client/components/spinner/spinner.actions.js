@@ -12,8 +12,6 @@ class actionMain{
             request$: clientActions['request$']
         }
     }
-    wire(){
-    }
 }
 module.exports = new actionMain();
 

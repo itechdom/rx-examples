@@ -22725,9 +22725,6 @@
 
 	    this.view = view;
 	    this.model = model;
-
-	    model.wire();
-	    view.wire();
 	};
 
 	module.exports = new spinnerMain();
@@ -22830,9 +22827,20 @@
 
 	var spinnerView = (function () {
 		function spinnerView() {
+			var _this = this;
+
 			_classCallCheck(this, spinnerView);
 
 			this.flag = true;
+
+			this.render = function (message) {
+				this.formatOutput(message);
+			};
+			actions.request$.subscribe(function (req) {
+				console.log("hello");
+				$('h1').append("<h2>LOOOOOADING</h2>");
+				_this.render("hello");
+			});
 		}
 
 		//this would be a remote control to all the components registered
@@ -22856,23 +22864,6 @@
 					this.flag = false;
 				}
 			}
-		}, {
-			key: 'wire',
-			value: function wire() {
-				var _this = this;
-
-				this.render = function (message) {
-					this.formatOutput(message);
-				};
-				actions.request$.subscribe(function (req) {
-					console.log("hello");
-					$('h1').append("<h2>LOOOOOADING</h2>");
-					_this.render("hello");
-				});
-			}
-		}, {
-			key: 'unWire',
-			value: function unWire() {}
 		}]);
 
 		return spinnerView;
@@ -22886,31 +22877,20 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 	var Rx = __webpack_require__(1);
 	var dispatcher = __webpack_require__(8);
 	var clientActions = __webpack_require__(10);
 
-	var actionMain = (function () {
-	    function actionMain() {
-	        _classCallCheck(this, actionMain);
+	var actionMain = function actionMain() {
+	    _classCallCheck(this, actionMain);
 
-	        //All the default actions for this app
-	        return {
-	            request$: clientActions['request$']
-	        };
-	    }
-
-	    _createClass(actionMain, [{
-	        key: 'wire',
-	        value: function wire() {}
-	    }]);
-
-	    return actionMain;
-	})();
+	    //All the default actions for this app
+	    return {
+	        request$: clientActions['request$']
+	    };
+	};
 
 	module.exports = new actionMain();
 
@@ -22943,9 +22923,6 @@
 	            //Also you can pass the start event (weather it's viewLoading ..)
 	            this.components.push(component);
 	        }
-	    }, {
-	        key: 'wire',
-	        value: function wire() {}
 	    }]);
 
 	    return spinnerModel;

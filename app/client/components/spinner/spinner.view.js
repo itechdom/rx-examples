@@ -13,6 +13,16 @@ class spinnerView{
 
 	constructor() {
 		this.flag = true;
+
+		this.render = function(message){
+			this.formatOutput(message);
+		};
+		actions.request$.subscribe((req)=>{
+			console.log("hello");
+			$('h1').append("<h2>LOOOOOADING</h2>")
+			this.render("hello");
+		})
+
 	}
 	//this would be a remote control to all the components registered
 	//meaning: it will run all the components one by one
@@ -31,19 +41,6 @@ class spinnerView{
 			});
 			this.flag = false;
 		}
-	}
-	wire(){
-		this.render = function(message){
-			this.formatOutput(message);
-		};
-		actions.request$.subscribe((req)=>{
-			console.log("hello");
-			$('h1').append("<h2>LOOOOOADING</h2>")
-			this.render("hello");
-		})
-	}
-	unWire(){
-
 	}
 }
 
