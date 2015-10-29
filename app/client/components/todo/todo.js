@@ -6,6 +6,9 @@ var view = require('./todo.view.js');
 var actions = require("./todo.actions.js");
 require("./todo.scss");
 var spinner = require('../spinner/spinner.js');
+var todoContent = require('./todo-content/todoContent.js');
+var todoFooter = require('./todo-footer/todoFooter.js');
+var todoHeader = require('./todo-Header/todoHeader.js');
 
 
 class todoMain{

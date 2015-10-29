@@ -10909,6 +10909,9 @@
 	var actions = __webpack_require__(7);
 	__webpack_require__(46);
 	var spinner = __webpack_require__(50);
+	var todoContent = __webpack_require__(62);
+	var todoFooter = __webpack_require__(64);
+	var todoHeader = __webpack_require__(66);
 
 	var todoMain = function todoMain() {
 		_classCallCheck(this, todoMain);
@@ -20593,7 +20596,7 @@
 				return "<li class='todo__items'>" + item.name + "</li>";
 			});
 			data.forEach(function (item) {
-				$('.todo__list').append(item);
+				$('.todo-list').append(item);
 			});
 		});
 	};
@@ -22928,6 +22931,171 @@
 	})();
 
 	module.exports = new spinnerModel();
+
+/***/ },
+/* 62 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//this is the main todo file
+	'use strict';
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var $ = __webpack_require__(5);
+	var Rx = __webpack_require__(1);
+	var view = __webpack_require__(63);
+
+	var todoMain = function todoMain() {
+		_classCallCheck(this, todoMain);
+
+		this.view = view;
+	};
+
+	module.exports = new todoMain();
+
+/***/ },
+/* 63 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//this is the main todo file
+	'use strict';
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var $ = __webpack_require__(5);
+	var Rx = __webpack_require__(1);
+	var actions = __webpack_require__(7);
+	var h = __webpack_require__(12);
+	var diff = __webpack_require__(30);
+	var patch = __webpack_require__(36);
+	var createElement = __webpack_require__(45);
+	var dispatcher = __webpack_require__(8);
+
+	var todoView = function todoView() {
+		_classCallCheck(this, todoView);
+
+		this.template = "todo";
+
+		//I can combine latest here and send back the template with its data
+		actions.request$.subscribe(function () {
+			$.get('./app/client/components/todo/todo-content/todoContent.html', function (data) {
+				$('todo-content').html(data);
+				dispatcher.customEvent.emit('viewLoaded$', data);
+			});
+		});
+	};
+
+	module.exports = new todoView();
+
+/***/ },
+/* 64 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//this is the main todo file
+	'use strict';
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var $ = __webpack_require__(5);
+	var Rx = __webpack_require__(1);
+	var view = __webpack_require__(65);
+
+	var todoMain = function todoMain() {
+		_classCallCheck(this, todoMain);
+
+		this.view = view;
+	};
+
+	module.exports = new todoMain();
+
+/***/ },
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//this is the main todo file
+	'use strict';
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var $ = __webpack_require__(5);
+	var Rx = __webpack_require__(1);
+	var actions = __webpack_require__(7);
+	var h = __webpack_require__(12);
+	var diff = __webpack_require__(30);
+	var patch = __webpack_require__(36);
+	var createElement = __webpack_require__(45);
+	var dispatcher = __webpack_require__(8);
+
+	var todoView = function todoView() {
+		_classCallCheck(this, todoView);
+
+		this.template = "todo";
+
+		//I can combine latest here and send back the template with its data
+		actions.request$.subscribe(function () {
+			$.get('./app/client/components/todo/todo-footer/todoFooter.html', function (data) {
+				$('todo-footer').html(data);
+				dispatcher.customEvent.emit('viewLoaded$', data);
+			});
+		});
+	};
+
+	module.exports = new todoView();
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//this is the main todo file
+	'use strict';
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var $ = __webpack_require__(5);
+	var Rx = __webpack_require__(1);
+	var view = __webpack_require__(67);
+
+	var todoMain = function todoMain() {
+		_classCallCheck(this, todoMain);
+
+		this.view = view;
+	};
+
+	module.exports = new todoMain();
+
+/***/ },
+/* 67 */
+/***/ function(module, exports, __webpack_require__) {
+
+	//this is the main todo file
+	'use strict';
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var $ = __webpack_require__(5);
+	var Rx = __webpack_require__(1);
+	var actions = __webpack_require__(7);
+	var h = __webpack_require__(12);
+	var diff = __webpack_require__(30);
+	var patch = __webpack_require__(36);
+	var createElement = __webpack_require__(45);
+	var dispatcher = __webpack_require__(8);
+
+	var todoView = function todoView() {
+		_classCallCheck(this, todoView);
+
+		this.template = "todo";
+
+		//I can combine latest here and send back the template with its data
+		actions.request$.subscribe(function () {
+			$.get('./app/client/components/todo/todo-header/todoheader.html', function (data) {
+				$('todo-header').html(data);
+				dispatcher.customEvent.emit('viewLoaded$', data);
+			});
+		});
+	};
+
+	module.exports = new todoView();
 
 /***/ }
 /******/ ]);
