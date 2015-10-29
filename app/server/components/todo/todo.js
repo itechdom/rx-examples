@@ -19,8 +19,6 @@ class todoMain{
 			dispatcher.customEvent.emit("todo.input$",req);
 		});
 
-		model.wire();
-		view.wire();
 		debug.model.registerComponent(this);
 	}
 }

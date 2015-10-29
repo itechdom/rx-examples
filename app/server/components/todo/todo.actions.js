@@ -17,7 +17,5 @@ class actionMain{
             output$:Rx.Observable.fromEvent(dispatcher.customEvent,'todo.output$')
        }
     }
-    wire(){
-    }
 }
 module.exports = new actionMain();

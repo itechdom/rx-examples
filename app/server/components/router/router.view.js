@@ -12,12 +12,6 @@ class routerView{
     render(routes){
        renderer(util.inspect(routes, false, null));
     }
-    wire() {
-
-    }
-    unWire(){
-
-    }
 }
 
 module.exports = new routerView();

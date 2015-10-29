@@ -11,8 +11,6 @@ var util = require("util");
 class todoView{
 
     constructor() {
-    }
-    wire(){
         actions.request$.subscribe((data)=>{
             this.render([{'name':"hello"}])
         });
@@ -21,9 +19,6 @@ class todoView{
             var d = JSON.stringify(message);
             renderer(d);
         }
-    }
-    unWire(){
-
     }
 }
 

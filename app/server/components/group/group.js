@@ -19,8 +19,7 @@ class groupMain{
 			dispatcher.customEvent.emit("group.input$",req);
 		});
 
-		model.wire();
-		view.wire();
+
 		debug.model.registerComponent(this);
 	}
 }

@@ -10,8 +10,7 @@ var dispatcher = require('../dispatcher/dispatcher.js');
 class groupView{
 
     constructor() {
-    }
-    wire(){
+
         actions.request$.subscribe((data)=>{
             this.render("<h1>message here ...</h1>")
         });
@@ -19,9 +18,6 @@ class groupView{
             dispatcher.customEvent.emit("group.output$",message);
             renderer(message);
         }
-    }
-    unWire(){
-
     }
 }
 

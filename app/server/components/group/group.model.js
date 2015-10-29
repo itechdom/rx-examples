@@ -14,8 +14,5 @@ class groupModel{
 
 		];
 	}
-	//handles different actions
-	wire(){
-	}
 }
 module.exports = new groupModel();

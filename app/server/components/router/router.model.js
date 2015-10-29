@@ -18,9 +18,5 @@ class routerModel{
             return false;
         }
     }
-    //handles different actions
-    wire(){
-
-    }
 }
 module.exports = new routerModel();

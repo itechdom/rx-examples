@@ -14,8 +14,5 @@ class todoModel{
 
 		];
 	}
-	//handles different actions
-	wire(){
-	}
 }
 module.exports = new todoModel();
