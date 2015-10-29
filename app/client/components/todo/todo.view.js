@@ -19,7 +19,6 @@ class todoView{
 
 		//I can combine latest here and send back the template with its data
 		actions.request$.subscribe(()=>{
-			$('body').append("hellooooooooooooo");
 			$.get('./app/client/components/todo/todo.html',function(data){
 				$('todo').html(data);
 				dispatcher.customEvent.emit('viewLoaded$',data);
