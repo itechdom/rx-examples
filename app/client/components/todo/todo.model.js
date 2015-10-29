@@ -14,9 +14,5 @@ class todoModel{
 			dispatcher.customEvent.emit('dataLoaded$',data);
 		});
 	}
-	//handles different actions
-	wire(){
-
-	}
 }
 module.exports = new todoModel();

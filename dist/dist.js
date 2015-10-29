@@ -10916,8 +10916,6 @@
 		this.actions = actions;
 		this.view = view;
 		this.model = model;
-		model.wire();
-		view.wire();
 		spinner.model.registerComponent(this);
 	};
 
@@ -20167,11 +20165,6 @@
 					dispatcher.customEvent.emit('dataLoaded$', data);
 				});
 			}
-
-			//handles different actions
-		}, {
-			key: 'wire',
-			value: function wire() {}
 		}]);
 
 		return todoModel;
@@ -20185,40 +20178,24 @@
 
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 	var Rx = __webpack_require__(1);
 	var dispatcher = __webpack_require__(8);
 	var clientActions = __webpack_require__(10);
 
-	var actionMain = (function () {
-	    function actionMain() {
-	        _classCallCheck(this, actionMain);
+	var actionMain = function actionMain() {
+	    _classCallCheck(this, actionMain);
 
-	        clientActions['changeRoute$'].filter(function (d) {
-	            return d;
-	        }).subscribe(function (d) {
-	            console.log(d);
-	        });
-	        //All the default actions for this app
-	        return {
-	            request$: clientActions['changeRoute$'].filter(function (d) {
-	                return d == "/todo";
-	            }),
-	            viewLoaded$: Rx.Observable.fromEvent(dispatcher.customEvent, 'viewLoaded$'),
-	            dataLoaded$: Rx.Observable.fromEvent(dispatcher.customEvent, 'dataLoaded$')
-	        };
-	    }
-
-	    _createClass(actionMain, [{
-	        key: 'wire',
-	        value: function wire() {}
-	    }]);
-
-	    return actionMain;
-	})();
+	    //All the default actions for this app
+	    return {
+	        request$: clientActions['changeRoute$'].filter(function (d) {
+	            return d == "/todo";
+	        }),
+	        viewLoaded$: Rx.Observable.fromEvent(dispatcher.customEvent, 'viewLoaded$'),
+	        dataLoaded$: Rx.Observable.fromEvent(dispatcher.customEvent, 'dataLoaded$')
+	    };
+	};
 
 	module.exports = new actionMain();
 
@@ -20585,8 +20562,6 @@
 	//this is the main todo file
 	'use strict';
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 	var $ = __webpack_require__(5);
@@ -20599,53 +20574,30 @@
 	var createElement = __webpack_require__(45);
 	var dispatcher = __webpack_require__(8);
 
-	var todoView = (function () {
-		function todoView() {
-			_classCallCheck(this, todoView);
+	var todoView = function todoView() {
+		_classCallCheck(this, todoView);
 
-			this.template = "todo";
+		this.template = "todo";
 
-			this.render = function (todos) {
+		//I can combine latest here and send back the template with its data
+		actions.request$.subscribe(function () {
+			$('body').append("hellooooooooooooo");
+			$.get('./app/client/components/todo/todo.html', function (data) {
+				$('todo').html(data);
+				dispatcher.customEvent.emit('viewLoaded$', data);
+			});
+			model.getTodo();
+		});
 
-				if (!todos) {
-					todos = [];
-				}
-
-				return h("ul.todo-list", todos.map(function (todo) {
-					return h("li", [h("div.view", [h("input.toggle", { "type": "checkbox" }), h("label", [todo.name]), h("button.destroy")]), h("form", [h("input.edit")])]);
-				}));
-			};
-		}
-
-		_createClass(todoView, [{
-			key: 'wire',
-			value: function wire() {
-				//I can combine latest here and send back the template with its data
-				actions.request$.subscribe(function () {
-					$('body').append("hellooooooooooooo");
-					$.get('./app/client/components/todo/todo.html', function (data) {
-						$('todo').html(data);
-						dispatcher.customEvent.emit('viewLoaded$', data);
-					});
-					model.getTodo();
-				});
-
-				actions.dataLoaded$.delay(500).subscribe(function (data) {
-					var data = data.map(function (item) {
-						return "<li class='todo__items'>" + item.name + "</li>";
-					});
-					data.forEach(function (item) {
-						$('.todo__list').append(item);
-					});
-				});
-			}
-		}, {
-			key: 'unWire',
-			value: function unWire() {}
-		}]);
-
-		return todoView;
-	})();
+		actions.dataLoaded$.delay(500).subscribe(function (data) {
+			var data = data.map(function (item) {
+				return "<li class='todo__items'>" + item.name + "</li>";
+			});
+			data.forEach(function (item) {
+				$('.todo__list').append(item);
+			});
+		});
+	};
 
 	module.exports = new todoView();
 

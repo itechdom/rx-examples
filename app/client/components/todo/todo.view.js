@@ -16,29 +16,7 @@ class todoView{
 
 		this.template = "todo";
 
-		this.render = function(todos){
 
-			if(!todos){
-				todos = [];
-			}
-
-			return 	h("ul.todo-list",todos.map(function(todo){
-				return	h("li", [
-					h("div.view", [
-						h("input.toggle", { "type": "checkbox"}),
-						h("label", [ todo.name ]),
-						h("button.destroy")
-					]),
-					h("form", [
-						h("input.edit")
-					])
-				])
-			}))
-		}
-
-	}
-
-	wire(){
 		//I can combine latest here and send back the template with its data
 		actions.request$.subscribe(()=>{
 			$('body').append("hellooooooooooooo");
@@ -57,8 +35,6 @@ class todoView{
 				$('.todo__list').append(item);
 			})
 		});
-	}
-	unWire(){
 
 	}
 }

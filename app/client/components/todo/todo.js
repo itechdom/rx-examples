@@ -14,8 +14,6 @@ class todoMain{
 		this.actions = actions;
 		this.view = view;
 		this.model = model;
-		model.wire();
-		view.wire();
 		spinner.model.registerComponent(this);
 	}
 }
