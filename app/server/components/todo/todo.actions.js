@@ -14,7 +14,7 @@ class actionMain{
         return {
             request$:request,
             get$:request.filter((req)=>{
-                return req.method == 'POST';
+                return req.method == 'GET';
             }),
             post$:request.filter((req)=>{
                 return req.method == 'POST';

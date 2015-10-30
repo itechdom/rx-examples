@@ -1,3 +1,18 @@
+var VNode = require("vtree/vnode");
+var diff = require("vtree/diff");
+var createElement = require("vdom/create-element");
+var patch = require("vdom/patch");
+
+class rendererMain{
+
+	constructor(){
+
+	}
+	render(){
+
+	}
+}
+
 //replaces VDom or Jquery in that it affects the output
 module.exports = function(data){
     global.res.write(data);
