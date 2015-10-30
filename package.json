@@ -23,9 +23,8 @@
   },
   "homepage": "https://github.com/itechdom/zpresent",
   "dependencies": {
-    "body-parser": "^1.13.1",
+    "body": "^5.1.0",
     "browserify": "^10.2.4",
-    "express": "^4.12.4",
     "flat": "^1.6.0",
     "font-awesome": "^4.4.0",
     "jquery": "^2.1.4",
