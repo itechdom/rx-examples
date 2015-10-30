@@ -28,7 +28,11 @@ class todoView{
 
 		actions.dataLoaded$.delay(500).subscribe((data)=>{
 			var data = data.map((item)=> {
-				return "<li class='todo__items'>" + item.name + "</li>"
+				return `<li>
+			<input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="toggleCompleted(todo)">
+			<label >hello</label>
+			<button class="destroy" ng-click="removeTodo(todo)"></button>
+			</li>`;
 			});
 			data.forEach((item)=> {
 				$('.todo-list').append(item);

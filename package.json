@@ -30,6 +30,7 @@
     "font-awesome": "^4.4.0",
     "jquery": "^2.1.4",
     "lodash": "^3.10.1",
+    "mongoose": "^4.2.3",
     "route-matcher": "^0.1.0",
     "route-parser": "0.0.4",
     "rx": "^2.5.3",

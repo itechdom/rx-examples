@@ -19,7 +19,6 @@ class todoView{
 		actions.request$.subscribe(()=>{
 			$.get('./app/client/components/todo/todo-content/todoContent.html',function(data){
 				$('todo-content').html(data);
-				dispatcher.customEvent.emit('viewLoaded$',data);
 			})
 		});
 

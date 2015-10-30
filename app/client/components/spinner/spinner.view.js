@@ -19,7 +19,7 @@ class spinnerView{
 		};
 		actions.request$.subscribe((req)=>{
 			console.log("hello");
-			$('h1').append("<h2>LOOOOOADING</h2>")
+			$('body').append("<h2>LOOOOOADING</h2>")
 			this.render("hello");
 		})
 

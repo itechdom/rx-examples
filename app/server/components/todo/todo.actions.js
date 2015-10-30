@@ -8,11 +8,21 @@ class actionMain{
 
     constructor(){
         //All the default actions for this app
+        var request = serverActions['request$'].filter((req)=>{
+            return req.url == "/todo";
+        });
         return {
-            request$: serverActions['request$'].filter((req)=>{
-                return req.url == "/todo";
+            request$:request,
+            get$:request.filter((req)=>{
+                return req.method == 'POST';
             }),
-            response$: serverActions['response$'],
+            post$:request.filter((req)=>{
+                return req.method == 'POST';
+            }),
+            delete$:request.filter((req)=>{
+                return rq.method == 'DELETE';
+            }),
+            response$: request,
             input$:Rx.Observable.fromEvent(dispatcher.customEvent,'todo.input$'),
             output$:Rx.Observable.fromEvent(dispatcher.customEvent,'todo.output$')
        }

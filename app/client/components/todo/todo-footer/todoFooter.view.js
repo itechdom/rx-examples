@@ -19,7 +19,6 @@ class todoView{
 		actions.request$.subscribe(()=>{
 			$.get('./app/client/components/todo/todo-footer/todoFooter.html',function(data){
 				$('todo-footer').html(data);
-				dispatcher.customEvent.emit('viewLoaded$',data);
 			})
 		});
 

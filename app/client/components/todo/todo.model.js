@@ -6,13 +6,25 @@ var $ = require('jquery');
 class todoModel{
 
 	constructor() {
-
+		this.schema = {
+			title:"title",
+			completed:"true|false"
+		}
 	}
 	getTodo(){
 		$.get("http://localhost:4000/todo",function(data) {
 			var data = JSON.parse(data);
 			dispatcher.customEvent.emit('dataLoaded$',data);
 		});
+	}
+	insertTodo(todo){
+
+	}
+	updateTodo(id){
+
+	}
+	deleteTodo(id){
+
 	}
 }
 module.exports = new todoModel();

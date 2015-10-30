@@ -19,6 +19,11 @@ class todoMain{
 			dispatcher.customEvent.emit("todo.input$",req);
 		});
 
+        actions.post$.subscribe((req)=>{
+            this.model.insertTodo();
+        });
+
+
 		debug.model.registerComponent(this);
 	}
 }

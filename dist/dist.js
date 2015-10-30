@@ -20158,6 +20158,11 @@
 	var todoModel = (function () {
 		function todoModel() {
 			_classCallCheck(this, todoModel);
+
+			this.schema = {
+				title: "title",
+				completed: "true|false"
+			};
 		}
 
 		_createClass(todoModel, [{
@@ -20168,6 +20173,15 @@
 					dispatcher.customEvent.emit('dataLoaded$', data);
 				});
 			}
+		}, {
+			key: 'insertTodo',
+			value: function insertTodo(todo) {}
+		}, {
+			key: 'updateTodo',
+			value: function updateTodo(id) {}
+		}, {
+			key: 'deleteTodo',
+			value: function deleteTodo(id) {}
 		}]);
 
 		return todoModel;
@@ -20593,7 +20607,7 @@
 
 		actions.dataLoaded$.delay(500).subscribe(function (data) {
 			var data = data.map(function (item) {
-				return "<li class='todo__items'>" + item.name + "</li>";
+				return '<li>\n\t\t\t<input class="toggle" type="checkbox" ng-model="todo.completed" ng-change="toggleCompleted(todo)">\n\t\t\t<label >hello</label>\n\t\t\t<button class="destroy" ng-click="removeTodo(todo)"></button>\n\t\t\t</li>';
 			});
 			data.forEach(function (item) {
 				$('.todo-list').append(item);
@@ -22840,7 +22854,7 @@
 			};
 			actions.request$.subscribe(function (req) {
 				console.log("hello");
-				$('h1').append("<h2>LOOOOOADING</h2>");
+				$('body').append("<h2>LOOOOOADING</h2>");
 				_this.render("hello");
 			});
 		}
@@ -22980,7 +22994,6 @@
 		actions.request$.subscribe(function () {
 			$.get('./app/client/components/todo/todo-content/todoContent.html', function (data) {
 				$('todo-content').html(data);
-				dispatcher.customEvent.emit('viewLoaded$', data);
 			});
 		});
 	};
@@ -23035,7 +23048,6 @@
 		actions.request$.subscribe(function () {
 			$.get('./app/client/components/todo/todo-footer/todoFooter.html', function (data) {
 				$('todo-footer').html(data);
-				dispatcher.customEvent.emit('viewLoaded$', data);
 			});
 		});
 	};
@@ -23090,7 +23102,6 @@
 		actions.request$.subscribe(function () {
 			$.get('./app/client/components/todo/todo-header/todoheader.html', function (data) {
 				$('todo-header').html(data);
-				dispatcher.customEvent.emit('viewLoaded$', data);
 			});
 		});
 	};

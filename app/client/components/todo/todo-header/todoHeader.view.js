@@ -19,10 +19,8 @@ class todoView{
 		actions.request$.subscribe(()=>{
 			$.get('./app/client/components/todo/todo-header/todoheader.html',function(data){
 				$('todo-header').html(data);
-				dispatcher.customEvent.emit('viewLoaded$',data);
 			})
 		});
-
 	}
 }
 
