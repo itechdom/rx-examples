@@ -23,7 +23,7 @@ class actionMain{
 		    return req.method == 'UPDATE';
 	    }),
             delete$:request.filter((req)=>{
-                return rq.method == 'DELETE';
+                return req.method == 'DELETE';
             }),
             input$:Rx.Observable.fromEvent(dispatcher.customEvent,'todo.input$'),
             output$:Rx.Observable.fromEvent(dispatcher.customEvent,'todo.output$')
