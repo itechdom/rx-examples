@@ -10,16 +10,14 @@ var util = require("util");
 
 class todoView{
 
-    constructor() {
-        actions.request$.subscribe((data)=>{
-            this.render([{'name':"hello"}])
-        });
-        this.render = function(message){
-            dispatcher.customEvent.emit("todo.output$",message);
-            var d = JSON.stringify(message);
-            renderer(d);
-        }
-    }
+	constructor() {
+
+	}
+	render(message){
+		dispatcher.customEvent.emit("todo.output$",message);
+		var d = JSON.stringify(message);
+		renderer(d);
+	}
 }
 
 module.exports = new todoView();

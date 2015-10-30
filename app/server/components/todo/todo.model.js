@@ -16,18 +16,19 @@ class todoModel{
 	}
 	getTodo(){
 		var query = this.model.find({});
-		query.exec(function(err,todos){
-			console.log(todos);
-		})
+		var callback = query.exec();
+		return callback;
 	}
 	insertTodo(){
 		var todo = new this.model({title:"hi",completed:false});
-		todo.save((err,todos)=>{
-			console.log(todos);
-		})
+		var callback = todo.save();
+		return callback;
+	}
+	updateTodo(todo){
+
 	}
 	deleteTodo(todo){
-
+		//var todo = this.model.findByIdAndRemove()
 	}
 }
 module.exports = new todoModel();

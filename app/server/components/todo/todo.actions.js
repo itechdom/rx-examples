@@ -19,10 +19,12 @@ class actionMain{
             post$:request.filter((req)=>{
                 return req.method == 'POST';
             }),
+	    update$:request.filter((req)=>{
+		    return req.method == 'UPDATE';
+	    }),
             delete$:request.filter((req)=>{
                 return rq.method == 'DELETE';
             }),
-            response$: request,
             input$:Rx.Observable.fromEvent(dispatcher.customEvent,'todo.input$'),
             output$:Rx.Observable.fromEvent(dispatcher.customEvent,'todo.output$')
        }

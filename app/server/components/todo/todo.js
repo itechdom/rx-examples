@@ -20,11 +20,16 @@ class todoMain{
 		});
 
 		actions.post$.subscribe((req)=>{
-			this.model.insertTodo();
+			this.model.insertTodo().then((todo)=>{
+				console.log(todo);
+				this.view.render(todo);
+			});
 		});
 
 		actions.get$.subscribe((req)=>{
-		this.model.getTodo();
+			this.model.getTodo().then((todos)=>{
+				this.view.render(todos);
+			});
 		})
 
 		debug.model.registerComponent(this);
