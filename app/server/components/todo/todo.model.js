@@ -14,11 +14,21 @@ class todoModel{
 		this.repo = orm.repo();
 		this.model = mongoose.model('todos', this.schema);
 	}
+	getTodo(){
+		var query = this.model.find({});
+		var callback = query.exec();
+		return callback;
+	}
 	insertTodo(){
 		var todo = new this.model({title:"hi",completed:false});
-		todo.save((err,todos)=>{
-			console.log(todos);
-		})
+		var callback = todo.save();
+		return callback;
+	}
+	updateTodo(todo){
+
+	}
+	deleteTodo(todo){
+		//var todo = this.model.findByIdAndRemove()
 	}
 }
 module.exports = new todoModel();

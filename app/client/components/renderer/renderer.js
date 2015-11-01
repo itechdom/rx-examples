@@ -1,8 +1,26 @@
-//replaces VDom or Jquery in that it affects the output
-module.exports = function(data){
-    global.res.write(data);
-    global.res.end();
-};
+var h = require('virtual-dom/h');
+var diff = require("vtree/diff");
+var createElement = require("vdom/create-element");
+var patch = require("vdom/patch");
+var model = require("./renderer.model.js");
+
+class rendererMain{
+
+	constructor(){
+		this.model = model;
+	}
+	//I can make render a component function
+	render(){
+		// Render the left node to a DOM node
+			 //var rootNode = createElement(leftNode)
+			 //document.body.appendChild(rootNode)
+
+			// Update the DOM with the results of a diff
+			 //var patches = diff(leftNode, rightNode)
+			 //patch(rootNode, patches)
+	}
+}
+
 
 //this.render = function(todos){
 //

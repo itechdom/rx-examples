@@ -14,15 +14,17 @@ class actionMain{
         return {
             request$:request,
             get$:request.filter((req)=>{
-                return req.method == 'POST';
+                return req.method == 'GET';
             }),
             post$:request.filter((req)=>{
                 return req.method == 'POST';
             }),
+	    update$:request.filter((req)=>{
+		    return req.method == 'UPDATE';
+	    }),
             delete$:request.filter((req)=>{
-                return rq.method == 'DELETE';
+                return req.method == 'DELETE';
             }),
-            response$: request,
             input$:Rx.Observable.fromEvent(dispatcher.customEvent,'todo.input$'),
             output$:Rx.Observable.fromEvent(dispatcher.customEvent,'todo.output$')
        }

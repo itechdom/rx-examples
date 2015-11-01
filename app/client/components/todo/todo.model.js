@@ -13,7 +13,6 @@ class todoModel{
 	}
 	getTodo(){
 		$.get("http://localhost:4000/todo",function(data) {
-			var data = JSON.parse(data);
 			dispatcher.customEvent.emit('dataLoaded$',data);
 		});
 	}

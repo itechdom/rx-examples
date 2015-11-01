@@ -9,20 +9,34 @@ var dispatcher = require('../dispatcher/dispatcher.js');
 
 
 class todoMain{
+
 	constructor(){
+
 		router.model.registerRoute("/test");
 		this.actions = actions;
 		this.model = model;
 		this.view = view;
 
-		actions.request$.subscribe((req)=>{
-			dispatcher.customEvent.emit("todo.input$",req);
+		actions.get$.subscribe((req)=>{
+			this.model.getTodo().then((todos)=>{
+				this.view.render(todos);
+			});
+		})
+
+		actions.post$.subscribe((req)=>{
+			this.model.insertTodo().then((todo)=>{
+				console.log(todo);
+				this.view.render(todo);
+			});
 		});
 
-        actions.post$.subscribe((req)=>{
-            this.model.insertTodo();
-        });
+		actions.update$.subscribe((req)=>{
 
+		});
+
+		actions.delete$.subscribe((req)=>{
+
+		});
 
 		debug.model.registerComponent(this);
 	}
